@@ -1,0 +1,21 @@
+.spending{
+    display: flex;
+    align-items: center;
+    height: 80px;
+}
+.spending__number{
+    margin-left: 10px;
+}
+.spending__name{
+    position: relative;
+    left: 130px;
+}
+.spending__quantity{
+    position: relative;
+    left: 280px;
+}
+.spending__currency{
+    position: relative;
+    left: 275px;
+    margin-left: 10px;
+}

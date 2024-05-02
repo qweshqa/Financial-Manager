@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your spending list</title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="spending-list">
+    <div class="spending" th:each="spending, iterStat: ${spendingList}">
+        <h2 class="spending__number" th:text="${iterStat.index + 1}"></h2>
+
+        <h2 class="spending__name" th:text="${spending.getName()}"></h2>
+
+        <h2 class="spending__quantity" th:text="${spending.getQuantity()}"></h2>
+        <h2 class="spending__currency" th:text="${spending.getCurrency()}"></h2>
+    </div>
+</div>
+
+</body>
+</html>
