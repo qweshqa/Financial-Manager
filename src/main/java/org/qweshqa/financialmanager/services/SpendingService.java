@@ -22,4 +22,9 @@ public class SpendingService {
     public List<Spending> index(){
         return spendingRepository.findAll();
     }
+
+    @Transactional
+    public void save(Spending spending){
+        spendingRepository.save(spending);
+    }
 }

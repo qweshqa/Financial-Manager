@@ -14,13 +14,36 @@
 
 <div class="spending-list">
     <div class="spending" th:each="spending, iterStat: ${spendingList}">
+
         <h2 class="spending__number" th:text="${iterStat.index + 1}"></h2>
 
         <h2 class="spending__name" th:text="${spending.getName()}"></h2>
 
         <h2 class="spending__quantity" th:text="${spending.getQuantity()}"></h2>
         <h2 class="spending__currency" th:text="${spending.getCurrency()}"></h2>
+
     </div>
+</div>
+
+<div class="new-spending">
+
+    <form class="new-spending-form" th:method="POST" th:action="@{/spending}" th:object="${newSpending}">
+        <label for="new-spending-name"></label>
+        <input class="new-spending__name" type="text" th:field="*{name}" id="new-spending-name" placeholder="name">
+
+        <label for="new-spending-quantity"></label>
+        <input class="new-spending__quantity" type="text" th:field="*{quantity}" id="new-spending-quantity" placeholder="quantity">
+
+        <label for="new-spending-currency"></label>
+        <input class="new-spending__currency" type="text" th:field="*{currency}" id="new-spending-currency" placeholder="currency">
+
+        <button class="add-spending-button" type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+            </svg>
+        </button>
+    </form>
+
 </div>
 
 </body>

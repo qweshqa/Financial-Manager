@@ -9,6 +9,7 @@
 .spending__name{
     position: relative;
     left: 130px;
+    width: 250px
 }
 .spending__quantity{
     position: relative;
@@ -18,4 +19,21 @@
     position: relative;
     left: 275px;
     margin-left: 10px;
+}
+.new-spending-form{
+    position: relative;
+    left: 150px;
+}
+.new-spending input{
+    margin-right: 90px;
+    font-size: 24px;
+    border-radius: 5px;
+}
+.add-spending-button{
+    position: relative;
+    left: -1335px;
+    width: 35px;
+    height: 35px;
+    background: lightgray;
+    border: inset;
 }
