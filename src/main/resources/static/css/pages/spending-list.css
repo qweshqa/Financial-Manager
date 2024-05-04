@@ -1,7 +1,12 @@
 .spending{
+    border-radius: 10px;
+    margin: 10px 0 10px 0;
     display: flex;
     align-items: center;
     height: 80px;
+}
+.spending:hover{
+    background-color: #f4f4f4;
 }
 .spending__number{
     margin-left: 10px;
@@ -35,6 +40,9 @@
 }
 .delete-spending-button:hover{
     background-color: #ff5255;
+}
+.new-spending{
+    background-color: #f4f4f4;
 }
 .new-spending-form{
     position: relative;
