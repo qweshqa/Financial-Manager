@@ -46,10 +46,15 @@
     border-radius: 5px;
 }
 .add-spending-button{
+    padding: 0;
+    height: 32px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
     position: relative;
-    left: -1335px;
-    width: 35px;
-    height: 35px;
-    background: lightgray;
-    border: inset;
+    right: 1277px;
+    bottom: -8px;
+}
+.add-spending-button:hover{
+    background-color: #80ff64;
 }
