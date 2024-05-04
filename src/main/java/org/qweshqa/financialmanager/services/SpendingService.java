@@ -27,4 +27,9 @@ public class SpendingService {
     public void save(Spending spending){
         spendingRepository.save(spending);
     }
+
+    @Transactional
+    public void delete(int id){
+        spendingRepository.deleteById(id);
+    }
 }

@@ -14,11 +14,27 @@
 .spending__quantity{
     position: relative;
     left: 280px;
+    width: 300px;
 }
 .spending__currency{
     position: relative;
     left: 275px;
     margin-left: 10px;
+    width: 0;
+}
+.delete-spending-form{
+    position: relative;
+    right: 520px;
+}
+.delete-spending-button{
+    padding: 0;
+    height: 32px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+}
+.delete-spending-button:hover{
+    background-color: #ff5255;
 }
 .new-spending-form{
     position: relative;
