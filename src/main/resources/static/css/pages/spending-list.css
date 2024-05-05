@@ -55,6 +55,7 @@
     margin-right: 90px;
     font-size: 24px;
     border-radius: 5px;
+    border-style: dashed;
 }
 .add-spending-button{
     padding: 0;
