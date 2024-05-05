@@ -14,22 +14,25 @@
 .spending__name{
     position: relative;
     left: 130px;
-    width: 250px
+    width: 360px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .spending__quantity{
     position: relative;
-    left: 280px;
-    width: 300px;
+    left: 170px;
+    width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .spending__currency{
     position: relative;
-    left: 275px;
-    margin-left: 10px;
+    left: 215px;
     width: 0;
 }
 .delete-spending-form{
     position: relative;
-    right: 520px;
+    right: 670px;
 }
 .delete-spending-button{
     padding: 0;

@@ -17,9 +17,9 @@
 
         <h2 class="spending__number" th:text="${iterStat.index + 1}"></h2>
 
-        <h2 class="spending__name" th:text="${spending.getName()}"></h2>
+        <h2 class="spending__name" th:text="${spending.getName()}" th:title="${spending.getName()}"></h2>
 
-        <h2 class="spending__quantity" th:text="${spending.getQuantity()}"></h2>
+        <h2 class="spending__quantity" th:text="${spending.getQuantity()}" th:title="${spending.getQuantity()}"></h2>
         <h2 class="spending__currency" th:text="${spending.getCurrency()}"></h2>
 
         <form class="delete-spending-form" th:method="POST" th:action="@{/spending/{id}(id=${spending.getId()})}" th:object="${spending}">
