@@ -3,6 +3,7 @@ package org.qweshqa.financialmanager.services;
 import org.qweshqa.financialmanager.models.Spending;
 import org.qweshqa.financialmanager.repositories.SpendingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,10 @@ public class SpendingService {
 
     public List<Spending> index(){
         return spendingRepository.findAll();
+    }
+
+    public List<Spending> index(short page){
+        return spendingRepository.findAll(PageRequest.of(page, 5)).getContent();
     }
 
     @Transactional

@@ -32,14 +32,7 @@
 }
 .delete-spending-form{
     position: relative;
-    right: 670px;
-}
-.delete-spending-button{
-    padding: 0;
-    height: 32px;
-    border: none;
-    border-radius: 5px;
-    background-color: white;
+    right: 680px;
 }
 .delete-spending-button:hover{
     background-color: #ff5255;
@@ -49,7 +42,7 @@
 }
 .new-spending-form{
     position: relative;
-    left: 150px;
+    left: 140px;
 }
 .new-spending input{
     margin-right: 90px;
@@ -57,16 +50,16 @@
     border-radius: 5px;
     border-style: dashed;
 }
-.add-spending-button{
-    padding: 0;
-    height: 32px;
-    border: none;
-    border-radius: 5px;
-    background-color: white;
+.add-spending{
     position: relative;
     right: 1277px;
     bottom: -8px;
 }
-.add-spending-button:hover{
+.add-spending:hover{
     background-color: #80ff64;
+}
+.page-navigation{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
