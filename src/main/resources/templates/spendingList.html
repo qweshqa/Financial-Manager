@@ -19,7 +19,7 @@
 
         <h2 class="spending__name" th:text="${spending.getName()}" th:title="${spending.getName()}"></h2>
 
-        <h2 class="spending__quantity" th:text="${spending.getQuantity()}" th:title="${spending.getQuantity()}"></h2>
+        <h2 class="spending__amount" th:text="${spending.getAmount()}" th:title="${spending.getAmount()}"></h2>
         <h2 class="spending__currency" th:text="${spending.getCurrency()}"></h2>
 
         <form class="delete-spending-form" th:method="POST" th:action="@{/spending/{id}(id=${spending.getId()})}" th:object="${spending}">
@@ -39,8 +39,8 @@
         <label for="new-spending-name"></label>
         <input class="new-spending__name" type="text" th:field="*{name}" id="new-spending-name" placeholder="name">
 
-        <label for="new-spending-quantity"></label>
-        <input class="new-spending__quantity" type="text" th:field="*{quantity}" id="new-spending-quantity" placeholder="quantity">
+        <label for="new-spending-amount"></label>
+        <input class="new-spending__amount" type="text" th:field="*{amount}" id="new-spending-amount" placeholder="amount">
 
         <label for="new-spending-currency"></label>
         <input class="new-spending__currency" type="text" th:field="*{currency}" id="new-spending-currency" placeholder="currency">

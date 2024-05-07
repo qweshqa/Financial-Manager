@@ -22,8 +22,8 @@ public class Spending{
     private String name;
 
     @NotNull
-    @Column(name = "quantity")
-    private BigDecimal quantity;
+    @Column(name = "amount")
+    private BigDecimal amount;
 
     @NotNull
     @Size(max = 20)
@@ -37,10 +37,10 @@ public class Spending{
     public Spending() {
     }
 
-    public Spending(int id, String name, BigDecimal quantity, String currency, LocalDate date) {
+    public Spending(int id, String name, BigDecimal amount, String currency, LocalDate date) {
         this.id = id;
         this.name = name;
-        this.quantity = quantity;
+        this.amount = amount;
         this.currency = currency;
         this.date = date;
     }
@@ -61,12 +61,12 @@ public class Spending{
         this.name = name;
     }
 
-    public BigDecimal getQuantity() {
-        return quantity;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setQuantity(BigDecimal quantity) {
-        this.quantity = quantity;
+    public void setAmount(BigDecimal quantity) {
+        this.amount = quantity;
     }
 
     public String getCurrency() {

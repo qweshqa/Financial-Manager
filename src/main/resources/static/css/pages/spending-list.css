@@ -18,7 +18,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.spending__quantity{
+.spending__amount{
     position: relative;
     left: 170px;
     width: 350px;
