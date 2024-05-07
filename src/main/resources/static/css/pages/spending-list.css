@@ -34,7 +34,7 @@
     position: relative;
     right: 680px;
 }
-.delete-spending-button:hover{
+.delete-spending:hover{
     background-color: #ff5255;
 }
 .new-spending{
@@ -44,7 +44,7 @@
     position: relative;
     left: 140px;
 }
-.new-spending input{
+.new-spending input, select{
     margin-right: 90px;
     font-size: 24px;
     border-radius: 5px;
@@ -52,7 +52,7 @@
 }
 .add-spending{
     position: relative;
-    right: 1277px;
+    right: 1054px;
     bottom: -8px;
 }
 .add-spending:hover{

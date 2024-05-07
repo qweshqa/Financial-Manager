@@ -42,8 +42,11 @@
         <label for="new-spending-amount"></label>
         <input class="new-spending__amount" type="text" th:field="*{amount}" id="new-spending-amount" placeholder="amount">
 
-        <label for="new-spending-currency"></label>
-        <input class="new-spending__currency" type="text" th:field="*{currency}" id="new-spending-currency" placeholder="currency">
+        <select class="new-spending__currency" th:field="*{currency}" id="new-spending-currency">
+            <option value="грн.">грн.</option>
+            <option value="руб.">руб.</option>
+            <option value="USD.">USD.</option>
+        </select>
 
         <button class="add-spending button" type="submit">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
