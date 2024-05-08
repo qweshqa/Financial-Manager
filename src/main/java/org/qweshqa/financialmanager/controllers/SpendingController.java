@@ -32,6 +32,7 @@ public class SpendingController {
 
         // page navigation
         model.addAttribute("page", page);
+        model.addAttribute("totalPages", spendingList.size() / 5);
 
         return "spendingList";
     }
