@@ -1,6 +1,7 @@
 package org.qweshqa.financialmanager.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -25,8 +26,7 @@ public class Spending{
     @Column(name = "amount")
     private BigDecimal amount;
 
-    @NotNull
-    @Size(max = 20)
+    @NotBlank
     @Column(name = "currency")
     private String currency;
 
