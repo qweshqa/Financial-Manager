@@ -34,15 +34,20 @@ public class Spending{
     @Column(name = "date")
     private LocalDate date;
 
+    @Transient
+    private String amountToDisplay;
+
     public Spending() {
     }
 
-    public Spending(int id, String name, BigDecimal amount, String currency, LocalDate date) {
+    public Spending(int id, String name, BigDecimal amount, String currency, LocalDate date,
+                    String amountToDisplay) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.currency = currency;
         this.date = date;
+        this.amountToDisplay = amountToDisplay;
     }
 
     public int getId() {
@@ -83,5 +88,13 @@ public class Spending{
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getAmountToDisplay() {
+        return amount + " " + currency;
+    }
+
+    public void setAmountToDisplay(String amountToDisplay) {
+        this.amountToDisplay = amountToDisplay;
     }
 }
