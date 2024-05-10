@@ -24,10 +24,6 @@ public class SpendingService {
         return spendingRepository.findAll();
     }
 
-    public List<Spending> index(short page){
-        return spendingRepository.findAll(PageRequest.of(page, 5)).getContent();
-    }
-
     @Transactional
     public void save(Spending spending){
         spendingRepository.save(spending);

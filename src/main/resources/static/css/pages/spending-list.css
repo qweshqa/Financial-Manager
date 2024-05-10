@@ -58,8 +58,3 @@
 .add-spending:hover{
     background-color: #80ff64;
 }
-.page-navigation{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}

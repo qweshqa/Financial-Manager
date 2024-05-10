@@ -20,19 +20,15 @@ public class SpendingController {
         this.spendingService = spendingService;
     }
 
-    @GetMapping("")
-    public String getSpending(@RequestParam(value = "page", defaultValue = "0") short page, Model model){
-        List<Spending> spendingList = spendingService.index(page);
+    @GetMapping()
+    public String getSpending(Model model){
+        List<Spending> spendingList = spendingService.index();
 
         // index
         model.addAttribute("spendingList", spendingList);
 
         // spending to create
         model.addAttribute("newSpending", new Spending());
-
-        // page navigation
-        model.addAttribute("page", page);
-        model.addAttribute("totalPages", spendingList.size() / 5);
 
         return "spendingList";
     }
