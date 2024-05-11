@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<div class="spending-list">
+<div class="spending-list" th:if="${!spendingList.isEmpty()}">
     <div class="spending" th:each="spending, iterStat: ${spendingList}">
 
         <h2 class="spending__number" th:text="${iterStat.index + 1}"></h2>
@@ -30,6 +30,9 @@
             </button>
         </form>
     </div>
+</div>
+<div th:if="${spendingList.isEmpty()}" style="margin: 25px;">
+    <h1 style="margin: auto;">You have no spending at this moment</h1>
 </div>
 
 <div class="new-spending spending">
