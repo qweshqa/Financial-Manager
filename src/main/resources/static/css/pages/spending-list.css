@@ -1,3 +1,16 @@
+.date-navigation{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+}
+.month-day{
+    padding: 1px 10px 1px 10px;
+    margin: 5px;
+    background-color: white;
+    border-style: solid;
+    border-radius: 5px;
+}
 .spending{
     border-radius: 10px;
     margin: 10px 0 10px 0;

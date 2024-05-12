@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -22,6 +23,10 @@ public class SpendingService {
 
     public List<Spending> index(){
         return spendingRepository.findAll();
+    }
+
+    public List<Spending> index(LocalDate date){
+        return spendingRepository.findAllByDate(date);
     }
 
     @Transactional
