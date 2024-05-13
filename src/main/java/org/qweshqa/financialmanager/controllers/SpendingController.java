@@ -25,9 +25,13 @@ public class SpendingController {
         this.dateService = dateService;
     }
 
-    @GetMapping()
+    @GetMapping("/today")
     public String getSpending(Model model){
-        List<Spending> spendingList = spendingService.index();
+        List<Spending> spendingList = spendingService.index(LocalDate.now());
+
+        // date navigation
+        model.addAttribute("month", LocalDate.now());
+        model.addAttribute("monthDays", dateService.getMonthDaysInList(LocalDate.now().getMonth()));
 
         // index
         model.addAttribute("spendingList", spendingList);
