@@ -11,6 +11,12 @@
     border-style: solid;
     border-radius: 5px;
 }
+.month-day__number-href{
+    text-decoration: none;
+}
+.month-day__number{
+    color: black;
+}
 .spending{
     border-radius: 10px;
     margin: 10px 0 10px 0;
