@@ -17,6 +17,15 @@
 .month-day__number{
     color: black;
 }
+.spending-total{
+    background-color: white;
+    border-radius: 20px;
+    
+}
+.spending-total h2{
+    color: black;
+    margin: auto;
+}
 .spending{
     border-radius: 10px;
     margin: 10px 0 10px 0;

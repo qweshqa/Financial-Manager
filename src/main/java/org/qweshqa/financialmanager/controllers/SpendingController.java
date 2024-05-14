@@ -33,6 +33,9 @@ public class SpendingController {
         model.addAttribute("month", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(LocalDate.now().getMonth()));
 
+        // spending total
+        model.addAttribute("spending_total", spendingService.getSpendingTotalByDate(LocalDate.now()));
+
         // index
         model.addAttribute("spendingList", spendingList);
 
@@ -53,6 +56,9 @@ public class SpendingController {
         // date navigation
         model.addAttribute("month", localDate);
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
+
+        // spending total
+        model.addAttribute("spending_total", spendingService.getSpendingTotalByDate(localDate));
 
         // index
         model.addAttribute("spendingList", spendingList);

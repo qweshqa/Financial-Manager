@@ -21,6 +21,10 @@
     </div>
 </div>
 
+<div class="spending-total">
+    <h2 th:text="${'Total: ' + spending_total}"></h2>
+</div>
+
 <div class="spending-list" th:if="${!spendingList.isEmpty()}">
     <div class="spending" th:each="spending, iterStat: ${spendingList}">
 
