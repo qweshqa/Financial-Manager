@@ -12,7 +12,14 @@
 </head>
 <body>
 
-<h3 th:text="${month.getMonth() + ', ' + month.getYear()}" style="margin: auto; padding: 10px"></h3>
+<div class="sidebar">
+    <ul>
+        <li><a href="/spending/today">Spending</a></li>
+    </ul>
+</div>
+
+<h3 th:text="${month.getMonth() + ', ' + month.getYear()}" style="margin: 0 591px 0 810px; padding: 10px;"></h3>
+
 <div class="date-navigation">
     <div class="month-day" th:each="day: ${monthDays}">
         <a class="month-day__number-href" th:href="@{/spending/2024-{month}-{day}(month=${day.getMonthValue()}, day=${day.getDayOfMonth()})}">
@@ -44,13 +51,13 @@
         </form>
     </div>
 </div>
-<div th:if="${spendingList.isEmpty()}" style="margin: 25px;">
+<div th:if="${spendingList.isEmpty()}" style="margin: 20px 10px 20px 220px;">
     <h1 style="margin: auto;">You have no spending at this moment</h1>
 </div>
 
 <div class="new-spending spending">
 
-    <form class="new-spending-form" th:method="POST" th:action="@{/spending}" th:object="${newSpending}">
+    <form class="new-spending-form" th:method="POST" th:action="@{/spending/today}" th:object="${newSpending}">
         <label for="new-spending-name"></label>
         <input class="new-spending__name" type="text" th:field="*{name}" id="new-spending-name" placeholder="name">
 

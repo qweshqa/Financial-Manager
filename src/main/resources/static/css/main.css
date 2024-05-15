@@ -3,4 +3,6 @@
 
 @import url('components/_buttons.css');
 
+@import url('layouts/_sidebar.css');
+
 @import url('pages/spending-list.css');

@@ -69,18 +69,18 @@ public class SpendingController {
         return "spendingList";
     }
 
-    @PostMapping()
+    @PostMapping("/today")
     public String addSpending(@ModelAttribute("newSpending") Spending spending){
         spending.setDate(LocalDate.now());
         spendingService.save(spending);
 
-        return "redirect:/spending";
+        return "redirect:/spending/today";
     }
 
     @PostMapping("/{id}")
     public String deleteSpending(@PathVariable("id") int id){
         spendingService.delete(id);
 
-        return "redirect:/spending";
+        return "redirect:/spendin/today";
     }
 }
