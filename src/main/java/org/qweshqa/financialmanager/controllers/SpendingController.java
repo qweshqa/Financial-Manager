@@ -81,6 +81,6 @@ public class SpendingController {
     public String deleteSpending(@PathVariable("id") int id){
         spendingService.delete(id);
 
-        return "redirect:/spendin/today";
+        return "redirect:/spending/today";
     }
 }

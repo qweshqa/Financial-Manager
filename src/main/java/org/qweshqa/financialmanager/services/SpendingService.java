@@ -3,7 +3,6 @@ package org.qweshqa.financialmanager.services;
 import org.qweshqa.financialmanager.models.Spending;
 import org.qweshqa.financialmanager.repositories.SpendingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +34,7 @@ public class SpendingService {
         List<Spending> spendingList = spendingRepository.findAllByDate(date);
 
         for(Spending spending: spendingList){
-            spending_total.add(spending.getAmount());
+            spending_total =  spending_total.add(spending.getAmount());
         }
 
         return spending_total;
