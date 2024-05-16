@@ -18,7 +18,9 @@
     </ul>
 </div>
 
-<h3 th:text="${month.getMonth() + ', ' + month.getYear()}" style="margin: 0 591px 0 810px; padding: 10px;"></h3>
+<div style="margin-left: 215px">
+    <h3 th:text="${month.getMonth() + ' ' + month.getDayOfMonth() + ', ' + month.getYear()}" style="margin: auto; padding: 10px;"></h3>
+</div>
 
 <div class="date-navigation">
     <div class="month-day" th:each="day: ${monthDays}">
@@ -29,7 +31,7 @@
 </div>
 
 <div class="spending-total">
-    <h2 th:text="${'Total: ' + spending_total}"></h2>
+    <h2 th:text="${'Total: ' + spending_total + ' грн.'}"></h2>
 </div>
 
 <div class="spending-list" th:if="${!spendingList.isEmpty()}">
@@ -66,8 +68,6 @@
 
         <select class="new-spending__currency" th:field="*{currency}" id="new-spending-currency">
             <option value="грн.">грн.</option>
-            <option value="руб.">руб.</option>
-            <option value="USD.">USD.</option>
         </select>
 
         <button class="add-spending button" type="submit">
