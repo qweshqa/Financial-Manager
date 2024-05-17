@@ -29,6 +29,10 @@ public class SpendingController {
     public String getSpending(Model model){
         List<Spending> spendingList = spendingService.index(LocalDate.now());
 
+        String monthNameLowerCase = LocalDate.now().getMonth().toString().substring(1).toLowerCase();
+        String monthNameFirstLetter = LocalDate.now().getMonth().toString().substring(0, 1).toUpperCase();
+
+        model.addAttribute("monthName", monthNameFirstLetter + monthNameLowerCase);
         // date navigation
         model.addAttribute("day", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(LocalDate.now().getMonth()));
@@ -53,6 +57,10 @@ public class SpendingController {
 
         List<Spending> spendingList = spendingService.index(localDate);
 
+        String monthNameLowerCase = localDate.getMonth().toString().substring(1).toLowerCase();
+        String monthNameFirstLetter = localDate.getMonth().toString().substring(0, 1).toUpperCase();
+
+        model.addAttribute("monthName", monthNameFirstLetter + monthNameLowerCase);
         // date navigation
         model.addAttribute("day", localDate);
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
