@@ -2,6 +2,7 @@ package org.qweshqa.financialmanager.services;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.MonthDay;
 import java.util.List;
@@ -34,6 +35,7 @@ public class DateService {
         int lastDayOfMonth = month.length(false);
         return IntStream.rangeClosed(1, lastDayOfMonth)
                 .mapToObj(dayOfMonth -> MonthDay.of(month, dayOfMonth))
+                .filter(monthDay -> !monthDay.atYear(LocalDate.now().getYear()).isAfter(LocalDate.now()))
                 .collect(Collectors.toList());
     }
 }

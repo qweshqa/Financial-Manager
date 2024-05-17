@@ -30,7 +30,7 @@ public class SpendingController {
         List<Spending> spendingList = spendingService.index(LocalDate.now());
 
         // date navigation
-        model.addAttribute("month", LocalDate.now());
+        model.addAttribute("day", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(LocalDate.now().getMonth()));
 
         // spending total
@@ -54,7 +54,7 @@ public class SpendingController {
         List<Spending> spendingList = spendingService.index(localDate);
 
         // date navigation
-        model.addAttribute("month", localDate);
+        model.addAttribute("day", localDate);
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
 
         // spending total
