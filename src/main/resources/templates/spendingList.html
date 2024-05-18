@@ -54,10 +54,10 @@
     </div>
 </div>
 <div th:if="${spendingList.isEmpty()}" style="margin: 20px 10px 20px 220px;">
-    <h1 style="margin: auto;">You have no spending at this moment</h1>
+    <h1 style="margin: auto;" th:text="${'You had got no spending in ' + monthName + ' ' + day.getDayOfMonth()}"></h1>
 </div>
 
-<div class="new-spending spending">
+<div class="new-spending spending" th:if="${day.isEqual(today)}">
 
     <form class="new-spending-form" th:method="POST" th:action="@{/spending/today}" th:object="${newSpending}">
         <label for="new-spending-name"></label>

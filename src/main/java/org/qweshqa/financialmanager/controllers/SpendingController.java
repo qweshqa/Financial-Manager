@@ -35,6 +35,7 @@ public class SpendingController {
         model.addAttribute("monthName", monthNameFirstLetter + monthNameLowerCase);
         // date navigation
         model.addAttribute("day", LocalDate.now());
+        model.addAttribute("today", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(LocalDate.now().getMonth()));
 
         // spending total
@@ -59,10 +60,11 @@ public class SpendingController {
 
         String monthNameLowerCase = localDate.getMonth().toString().substring(1).toLowerCase();
         String monthNameFirstLetter = localDate.getMonth().toString().substring(0, 1).toUpperCase();
-
         model.addAttribute("monthName", monthNameFirstLetter + monthNameLowerCase);
+
         // date navigation
         model.addAttribute("day", localDate);
+        model.addAttribute("today", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
 
         // spending total
