@@ -19,3 +19,6 @@ ul a{
 ul a:hover{
     background-color: #333333;
 }
+li{
+    margin-bottom: 10px;
+}

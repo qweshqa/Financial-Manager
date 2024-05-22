@@ -9,9 +9,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "spending")
-public class Spending{
-
+@Table(name = "earning")
+public class Earning {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -34,11 +33,10 @@ public class Spending{
     @Column(name = "date")
     private LocalDate date;
 
-
-    public Spending() {
+    public Earning() {
     }
 
-    public Spending(int id, String name, BigDecimal amount, String currency, LocalDate date) {
+    public Earning(int id, String name, BigDecimal amount, String currency, LocalDate date) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -54,38 +52,37 @@ public class Spending{
         this.id = id;
     }
 
-    public String getName() {
+    public @NotNull @Size(max = 50) String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotNull @Size(max = 50) String name) {
         this.name = name;
     }
 
-    public BigDecimal getAmount() {
+    public @NotNull BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal quantity) {
-        this.amount = quantity;
+    public void setAmount(@NotNull BigDecimal amount) {
+        this.amount = amount;
     }
 
-    public String getCurrency() {
+    public @NotBlank String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(@NotBlank String currency) {
         this.currency = currency;
     }
 
-    public LocalDate getDate() {
+    public @NotNull LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(@NotNull LocalDate date) {
         this.date = date;
     }
-
     public String getAmountToDisplay() {
         return amount + " " + currency;
     }

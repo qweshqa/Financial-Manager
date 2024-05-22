@@ -1,8 +1,9 @@
 package org.qweshqa.financialmanager.controllers;
 
+import org.qweshqa.financialmanager.models.Earning;
 import org.qweshqa.financialmanager.models.Spending;
 import org.qweshqa.financialmanager.services.DateService;
-import org.qweshqa.financialmanager.services.SpendingService;
+import org.qweshqa.financialmanager.services.EarningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,21 +14,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
-@RequestMapping("/spending")
-public class SpendingController {
-    private final SpendingService spendingService;
-
+@RequestMapping("/earning")
+public class EarningController {
     private final DateService dateService;
 
+    private final EarningService earningService;
+
     @Autowired
-    public SpendingController(SpendingService spendingService, DateService dateService) {
-        this.spendingService = spendingService;
+    public EarningController(EarningService earningService, DateService dateService) {
+        this.earningService = earningService;
         this.dateService = dateService;
     }
 
     @GetMapping("/today")
-    public String getSpending(Model model){
-        List<Spending> spendingList = spendingService.index(LocalDate.now());
+    public String getEarning(Model model){
+        List<Earning> earningList = earningService.index(LocalDate.now());
 
         String monthNameLowerCase = LocalDate.now().getMonth().toString().substring(1).toLowerCase();
         String monthNameFirstLetter = LocalDate.now().getMonth().toString().substring(0, 1).toUpperCase();
@@ -39,24 +40,24 @@ public class SpendingController {
         model.addAttribute("monthDays", dateService.getMonthDaysInList(LocalDate.now().getMonth()));
 
         // spending total
-        model.addAttribute("spending_total", spendingService.getSpendingTotalByDate(LocalDate.now()));
+        model.addAttribute("earning_total", earningService.getEarningTotalByDate(LocalDate.now()));
 
         // index
-        model.addAttribute("spendingList", spendingList);
+        model.addAttribute("earningList", earningList);
 
         // spending to create
-        model.addAttribute("newSpending", new Spending());
+        model.addAttribute("newEarning", new Earning());
 
-        return "spending/list";
+        return "earning/list";
     }
     @GetMapping("/{date}")
-    public String getSpendingByDate(@PathVariable("date") String date, Model model){
+    public String getEarningByDate(@PathVariable("date") String date, Model model){
         date = dateService.formatDate(date);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
 
-        List<Spending> spendingList = spendingService.index(localDate);
+        List<Earning> earningList = earningService.index(localDate);
 
         String monthNameLowerCase = localDate.getMonth().toString().substring(1).toLowerCase();
         String monthNameFirstLetter = localDate.getMonth().toString().substring(0, 1).toUpperCase();
@@ -68,29 +69,29 @@ public class SpendingController {
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
 
         // spending total
-        model.addAttribute("spending_total", spendingService.getSpendingTotalByDate(localDate));
+        model.addAttribute("earning_total", earningService.getEarningTotalByDate(LocalDate.now()));
 
         // index
-        model.addAttribute("spendingList", spendingList);
+        model.addAttribute("earningList", earningList);
 
         // spending to create
-        model.addAttribute("newSpending", new Spending());
+        model.addAttribute("newEarning", new Earning());
 
-        return "spending/list";
+        return "earning/list";
     }
 
     @PostMapping("/today")
-    public String addSpending(@ModelAttribute("newSpending") Spending spending){
-        spending.setDate(LocalDate.now());
-        spendingService.save(spending);
+    public String addEarning(@ModelAttribute("newEarning") Earning earning){
+        earning.setDate(LocalDate.now());
+        earningService.save(earning);
 
-        return "redirect:/spending/today";
+        return "redirect:/earning/today";
     }
 
     @PostMapping("/{id}")
-    public String deleteSpending(@PathVariable("id") int id){
-        spendingService.delete(id);
+    public String deleteEarning(@PathVariable("id") int id){
+        earningService.delete(id);
 
-        return "redirect:/spending/today";
+        return "redirect:/earning/today";
     }
 }
