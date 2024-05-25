@@ -1,0 +1,14 @@
+.input-field{
+    font-size: 20px;
+    border-style: groove;
+    border-color: white;
+    border-radius: 10px;
+}
+.select-field{
+    font-size: 20px;
+    border-style: groove;
+    border-color: #999999;
+    border-radius: 10px;
+    font-style: italic;
+    font-weight: bold;
+}

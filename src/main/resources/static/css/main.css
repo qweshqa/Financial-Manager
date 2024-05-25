@@ -2,7 +2,7 @@
 @import url('base/_typography.css');
 
 @import url('components/_buttons.css');
+@import url('components/_forms.css');
 
-@import url('layouts/_sidebar.css');
-
+@import url('pages/general-statistic.css');
 @import url('pages/spending-list.css');

@@ -1,7 +1,13 @@
-.button{
-    padding: 0;
-    height: 32px;
-    border: none;
-    border-radius: 5px;
-    background-color: #aeaeae;
+.btn{
+    font-size: 20px;
+    border-style: none;
+    border-radius: 10px;
+    width: 100px;
+    height: 30px;
+}
+.btn:hover{
+    opacity: 0.9;
+}
+.btn:active{
+    opacity: 1.1;
 }
