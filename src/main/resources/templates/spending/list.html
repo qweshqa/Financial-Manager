@@ -25,7 +25,7 @@
 </div>
 
 <div class="spending-total" th:if="${!spendingList.isEmpty()}">
-    <h2 th:text="${'Total: ' + spending_total + ' грн.'}"></h2>
+    <h2 th:text="${'Total: ' + spending_total + ' ₴'}"></h2>
 </div>
 
 <div class="spending-list" th:if="${!spendingList.isEmpty()}">
@@ -37,7 +37,7 @@
         <h2 class="spending__amount" th:text="${spending.getAmountToDisplay()}" th:title="${spending.getAmountToDisplay()}"></h2>
 
         <form class="delete-spending-form" th:method="POST" th:action="@{/spending/{id}(id=${spending.getId()})}" th:object="${spending}">
-            <button class="delete-spending btn" type="submit">Delete</button>
+            <button style="background-color: #ff7c7c;" class="delete-spending btn" type="submit">Delete</button>
         </form>
     </div>
 </div>
@@ -56,7 +56,7 @@
 
         <label for="new-spending-currency"></label>
         <select class="select-field new-spending__currency" th:field="*{currency}" id="new-spending-currency">
-            <option value="грн.">грн.</option>
+            <option value="₴">₴</option>
         </select>
 
         <button class="add-spending btn" type="submit">Add</button>

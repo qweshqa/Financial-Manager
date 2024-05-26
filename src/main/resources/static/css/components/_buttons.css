@@ -6,7 +6,7 @@
     height: 30px;
 }
 .btn:hover{
-    opacity: 0.9;
+    opacity: 0.8;
 }
 .btn:active{
     opacity: 1.1;

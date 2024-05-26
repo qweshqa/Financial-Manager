@@ -1,0 +1,37 @@
+.earning{
+    background-color: #727272;
+    border-radius: 10px;
+    width: fit-content;
+    height: 110px;
+    margin: 10px 10px 20px 10px;
+    padding: 10px;
+}
+.earning:hover{
+    opacity: 0.95;
+}
+.earning__name{
+    color: white;
+    font-weight: 500;
+}
+.earning__amount{
+    color: #7cc7ff;
+    font-weight: 500;
+}
+.delete-earning-form{
+    position: relative;
+    top: 10px;
+}
+.delete-earning{
+    background-color: #ff7c7c;
+}
+.new-earning-form{
+    background-color: #939393;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+.add-earning{
+    background-color: #86ff7c;
+    margin-left: 10px;
+}

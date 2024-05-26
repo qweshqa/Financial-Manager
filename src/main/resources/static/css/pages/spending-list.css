@@ -8,7 +8,7 @@
     margin-right: 10px;
     width: 40px;
     text-align: -webkit-center;
-    background-color: #86ff7c;
+    background-color: #cbcbcb;
     border-style: none;
     border-radius: 15px;
 }
@@ -23,7 +23,7 @@
     text-align: -webkit-center;
     background-color: #727272;
     border-radius: 20px;
-    margin: 10px 0 10px 0;
+    margin: 10px 10px 10px 10px;
 }
 .spending-total h2{
     color: white;
@@ -40,8 +40,12 @@
     height: 150px;
     margin: 10px 10px 20px 10px;
 }
+.spending:hover{
+    opacity: 0.95
+}
 .spending__name{
     color: white;
+    font-weight: 500;
     margin: 10px 0 10px 10px;
     max-width: 230px;
     overflow: hidden;
@@ -50,26 +54,24 @@
 }
 .spending__amount{
     color: #86ff7c;
+    font-weight: 500;
     margin: 10px 0 10px 10px;
     width: 230px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.delete-spending{
-    background-color: #ff7c7c;
+.delete-spending-form{
     position: relative;
-    left: 75px;
     bottom: 5px;
+    text-align: center;
 }
-.new-spending__name{
-    margin-left: 203px;
-}
-.new-spending__amount{
-    margin-left: 100px;
-}
-.new-spending__currency{
-    margin-left: 100px;
+.new-spending-form{
+    background-color: #939393;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: center;
 }
 .add-spending{
     background-color: #86ff7c;
