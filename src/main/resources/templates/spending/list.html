@@ -12,6 +12,17 @@
 </head>
 <body>
 
+<div style="height: 60px">
+    <header class="header">
+        <ul class="navbar">
+            <li><h4><a href="/spending/today">Spending</a></h4></li>
+
+            <li><h4><a href="/earning/today">Earning</a></h4></li>
+
+        </ul>
+    </header>
+</div>
+
 <div style="text-align: -webkit-center;">
     <h3 th:text="${monthName + ' ' + day.getDayOfMonth() + ', ' + day.getYear()}" style="padding: 10px; font-weight: 500;"></h3>
 </div>

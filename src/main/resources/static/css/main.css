@@ -3,6 +3,9 @@
 
 @import url('components/_buttons.css');
 @import url('components/_forms.css');
+@import url('components/_navigation.css');
+
+@import url('layouts/_headers.css');
 
 @import url('pages/earning-list.css');
 @import url('pages/general-statistic.css');
