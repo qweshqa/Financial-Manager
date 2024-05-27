@@ -69,7 +69,7 @@ public class EarningController {
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
 
         // spending total
-        model.addAttribute("earning_total", earningService.getEarningTotalByDate(LocalDate.now()));
+        model.addAttribute("earning_total", earningService.getEarningTotalByDate(localDate));
 
         // index
         model.addAttribute("earningList", earningList);
