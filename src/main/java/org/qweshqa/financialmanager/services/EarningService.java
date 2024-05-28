@@ -1,7 +1,6 @@
 package org.qweshqa.financialmanager.services;
 
 import org.qweshqa.financialmanager.models.Earning;
-import org.qweshqa.financialmanager.models.Spending;
 import org.qweshqa.financialmanager.repositories.EarningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

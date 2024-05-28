@@ -19,31 +19,31 @@
     color: black;
     text-decoration: none;
 }
-.spending-total{
+.expense-total{
     text-align: -webkit-center;
     background-color: #727272;
     border-radius: 20px;
     margin: 10px 10px 10px 10px;
 }
-.spending-total h2{
+.expense-total h2{
     color: white;
 }
-.spending-list{
+.expense-list{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
-.spending{
+.expense{
     background-color: #727272;
     border-radius: 10px;
     width: 250px;
     height: 150px;
     margin: 10px 10px 20px 10px;
 }
-.spending:hover{
+.expense:hover{
     opacity: 0.95
 }
-.spending__name{
+.expense__name{
     color: white;
     font-weight: 500;
     margin: 10px 0 10px 10px;
@@ -52,7 +52,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-.spending__amount{
+.expense__amount{
     color: #86ff7c;
     font-weight: 500;
     margin: 10px 0 10px 10px;
@@ -61,19 +61,19 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.delete-spending-form{
+.delete-expense-form{
     position: relative;
     bottom: 5px;
     text-align: center;
 }
-.new-spending-form{
+.new-expense-form{
     background-color: #939393;
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
     text-align: center;
 }
-.add-spending{
+.add-expense{
     background-color: #86ff7c;
     margin-left: 10px;
 }

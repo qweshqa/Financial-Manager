@@ -1,8 +1,6 @@
 package org.qweshqa.financialmanager.controllers;
 
-import org.qweshqa.financialmanager.services.DateService;
-import org.qweshqa.financialmanager.services.EarningService;
-import org.qweshqa.financialmanager.services.SpendingService;
+import org.qweshqa.financialmanager.services.ExpenseService;
 import org.qweshqa.financialmanager.services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,12 +14,12 @@ public class StatisticController {
 
     private final StatisticService statisticService;
 
-    private final SpendingService spendingService;
+    private final ExpenseService expenseService;
 
     @Autowired
-    public StatisticController(StatisticService statisticService, SpendingService spendingService) {
+    public StatisticController(StatisticService statisticService, ExpenseService expenseService) {
         this.statisticService = statisticService;
-        this.spendingService = spendingService;
+        this.expenseService = expenseService;
     }
 
     @GetMapping()
@@ -29,9 +27,9 @@ public class StatisticController {
 
         // statistic block
         model.addAttribute("general_spending_total", statisticService.getGeneralSpendingTotal());
-        model.addAttribute("total_amount_of_spending", spendingService.index().size());
-        if(spendingService.findBiggestExpense().isPresent()){
-            model.addAttribute("biggest_expense", spendingService.findBiggestExpense().get());
+        model.addAttribute("total_amount_of_spending", expenseService.index().size());
+        if(expenseService.findBiggestExpense().isPresent()){
+            model.addAttribute("biggest_expense", expenseService.findBiggestExpense().get());
         };
 
         return "statistic/general";

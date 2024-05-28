@@ -16,7 +16,7 @@
 <div style="height: 60px">
     <header class="header">
         <ul class="navbar">
-            <li><h4><a href="/spending/today">Spending</a></h4></li>
+            <li><h4><a href="/expense/today">Expense</a></h4></li>
 
             <li><h4><a href="/earning/today">Earning</a></h4></li>
 
@@ -26,8 +26,8 @@
 </div>
 
 <div class="statistic-block">
-    <h4 th:text="${'Total spending total: ' + general_spending_total + ' грн.'}"></h4>
-    <h4 th:text="${'Total amount of spending: ' + total_amount_of_spending}"></h4>
+    <h4 th:text="${'Expense total: ' + general_spending_total + ' грн.'}"></h4>
+    <h4 th:text="${'Total amount of expenses: ' + total_amount_of_spending}"></h4>
     <h4 th:if="${biggest_expense}" th:text="${'Your biggest expense: ' + biggest_expense.getName() + ', ' + biggest_expense.getAmountToDisplay()}"></h4>
 </div>
 

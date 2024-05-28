@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your expense list</title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div style="height: 60px">
+    <header class="header">
+        <ul class="navbar">
+            <li><h4><a href="/expense/today">Expense</a></h4></li>
+
+            <li><h4><a href="/earning/today">Earning</a></h4></li>
+
+            <li><h4><a href="/statistic">Statistic</a></h4></li>
+        </ul>
+    </header>
+</div>
+
+<div style="text-align: -webkit-center;">
+    <h3 th:text="${monthName + ' ' + day.getDayOfMonth() + ', ' + day.getYear()}" style="padding: 10px; font-weight: 500;"></h3>
+</div>
+
+<div class="date-navigation">
+    <div class="month-day" th:each="monthDay: ${monthDays}">
+        <a class="month-day__number-href" th:href="@{/expense/2024-{month}-{day}(month=${monthDay.getMonthValue()}, day=${monthDay.getDayOfMonth()})}">
+            <h2 class="month-day__number" th:text="${monthDay.getDayOfMonth()}"></h2>
+        </a>
+    </div>
+</div>
+
+<div class="expense-total" th:if="${!expenseList.isEmpty()}">
+    <h2 th:text="${'Total: ' + expense_total + ' ₴'}"></h2>
+</div>
+
+<div class="expense-list" th:if="${!expenseList.isEmpty()}">
+    <div class="expense" th:each="expense, iterStat: ${expenseList}">
+        <p style="color: white; margin: 10px 0 10px 10px;">Spending</p>
+
+        <h2 class="expense__name" th:text="${expense.getName()}" th:title="${expense.getName()}"></h2>
+
+        <h2 class="expense__amount" th:text="${expense.getAmountToDisplay()}" th:title="${expense.getAmountToDisplay()}"></h2>
+
+        <form class="delete-expense-form" th:method="POST" th:action="@{/expense/{id}(id=${expense.getId()})}" th:object="${expense}">
+            <button style="background-color: #ff7c7c;" class="delete-expense btn" type="submit">Delete</button>
+        </form>
+    </div>
+</div>
+
+<div th:if="${expenseList.isEmpty()}" style="text-align: -webkit-center; margin: 10px 0 20px 0;">
+    <h1 th:text="${'You didn''t have any expenses on ' + monthName + ' ' + day.getDayOfMonth()}"></h1>
+</div>
+
+<div class="new-expense" th:if="${day.isEqual(today)}">
+    <form class="new-expense-form" th:method="POST" th:action="@{/expense/today}" th:object="${newExpense}">
+        <label for="new-expense-name"></label>
+        <input class="input-field new-expense__name" type="text" th:field="*{name}" id="new-expense-name" placeholder="name">
+
+        <label for="new-expense-amount"></label>
+        <input class="input-field new-expense__amount" type="text" th:field="*{amount}" id="new-expense-amount" placeholder="amount">
+
+        <label for="new-expense-currency"></label>
+        <select class="select-field new-expense__currency" th:field="*{currency}" id="new-expense-currency">
+            <option value="₴">₴</option>
+        </select>
+
+        <button class="add-expense btn" type="submit">Add</button>
+    </form>
+</div>
+
+</body>
+</html>

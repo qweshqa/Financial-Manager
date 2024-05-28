@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Your spending list</title>
+    <title>Your expense list</title>
 
     <link rel="stylesheet" href="/css/main.css" type="text/css">
 
@@ -15,10 +15,11 @@
 <div style="height: 60px">
     <header class="header">
         <ul class="navbar">
-            <li><h4><a href="/spending/today">Spending</a></h4></li>
+            <li><h4><a href="/expense/today">Expense</a></h4></li>
 
             <li><h4><a href="/earning/today">Earning</a></h4></li>
 
+            <li><h4><a href="/statistic">Statistic</a></h4></li>
         </ul>
     </header>
 </div>
@@ -35,11 +36,11 @@
     </div>
 </div>
 
-<div class="spending-total" th:if="${!earningList.isEmpty()}">
+<div class="expense-total" th:if="${!earningList.isEmpty()}">
     <h2 th:text="${'Total: ' + earning_total + ' ₴'}"></h2>
 </div>
 
-<div class="spending-list" th:if="${!earningList.isEmpty()}">
+<div class="expense-list" th:if="${!earningList.isEmpty()}">
     <div class="earning" th:each="earning, iterStat: ${earningList}">
         <p style="color: white; margin: 10px 0 10px 0;">Earning</p>
 
@@ -56,7 +57,7 @@
 </div>
 
 <div th:if="${earningList.isEmpty()}" style="text-align: -webkit-center; margin: 10px 0 20px 0;">
-    <h1 th:text="${'You didn''t have any spending on ' + monthName + ' ' + day.getDayOfMonth()}"></h1>
+    <h1 th:text="${'You didn''t have any expense on ' + monthName + ' ' + day.getDayOfMonth()}"></h1>
 </div>
 
 <div class="new-earning" th:if="${day.isEqual(today)}">

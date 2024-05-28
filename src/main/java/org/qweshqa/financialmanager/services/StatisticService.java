@@ -1,7 +1,7 @@
 package org.qweshqa.financialmanager.services;
 
-import org.qweshqa.financialmanager.models.Spending;
-import org.qweshqa.financialmanager.repositories.SpendingRepository;
+import org.qweshqa.financialmanager.models.Expense;
+import org.qweshqa.financialmanager.repositories.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,20 +10,20 @@ import java.util.List;
 
 @Service
 public class StatisticService {
-    private final SpendingRepository spendingRepository;
+    private final ExpenseRepository expenseRepository;
 
     @Autowired
-    public StatisticService(SpendingRepository spendingRepository) {
-        this.spendingRepository = spendingRepository;
+    public StatisticService(ExpenseRepository expenseRepository) {
+        this.expenseRepository = expenseRepository;
     }
 
     public BigDecimal getGeneralSpendingTotal(){
         BigDecimal generalSpendingTotal = BigDecimal.ZERO;
 
-        List<Spending> spendingList = spendingRepository.findAll();
+        List<Expense> expenseList = expenseRepository.findAll();
 
-        for (Spending spending: spendingList){
-            generalSpendingTotal = generalSpendingTotal.add(spending.getAmount());
+        for (Expense expense : expenseList){
+            generalSpendingTotal = generalSpendingTotal.add(expense.getAmount());
         }
 
         return generalSpendingTotal;

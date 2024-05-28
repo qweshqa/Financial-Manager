@@ -11,7 +11,7 @@ import java.time.Month;
 
 @Entity
 @Table(name = "spending")
-public class Spending{
+public class Expense {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +37,10 @@ public class Spending{
 
     private Month month;
 
-    public Spending() {
+    public Expense() {
     }
 
-    public Spending(int id, String name, BigDecimal amount, String currency, LocalDate date) {
+    public Expense(int id, String name, BigDecimal amount, String currency, LocalDate date) {
         this.id = id;
         this.name = name;
         this.amount = amount;
