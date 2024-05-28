@@ -1,0 +1,11 @@
+.statistic-block{
+    border-radius: 10px;
+    background-color: #d5d5d5;
+    width: 400px;
+    margin: 10px;
+    padding: 10px;
+}
+.statistic-block h4{
+    color: #666666;
+    font-weight: 500;
+}

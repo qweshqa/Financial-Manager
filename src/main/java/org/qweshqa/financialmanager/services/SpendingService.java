@@ -8,7 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,8 +28,18 @@ public class SpendingService {
         return spendingRepository.findAll();
     }
 
+    public Optional<Spending> findBiggestExpense(){
+        List<Spending> spendingList = spendingRepository.findAll();
+
+        return spendingList.stream().max(Comparator.comparing(Spending::getAmount));
+    }
+
     public List<Spending> index(LocalDate date){
         return spendingRepository.findAllByDate(date);
+    }
+
+    public List<Spending> index(Month month){
+        return spendingRepository.findAllByMonth(month);
     }
 
     public BigDecimal getSpendingTotalByDate(LocalDate date){

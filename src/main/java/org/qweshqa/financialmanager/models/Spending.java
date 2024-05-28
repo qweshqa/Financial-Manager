@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
 
 @Entity
 @Table(name = "spending")
@@ -34,6 +35,7 @@ public class Spending{
     @Column(name = "date")
     private LocalDate date;
 
+    private Month month;
 
     public Spending() {
     }
@@ -44,6 +46,7 @@ public class Spending{
         this.amount = amount;
         this.currency = currency;
         this.date = date;
+        this.month = date.getMonth();
     }
 
     public int getId() {
@@ -84,6 +87,14 @@ public class Spending{
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Month getMonth() {
+        return month;
+    }
+
+    public void setMonth(Month month) {
+        this.month = month;
     }
 
     public String getAmountToDisplay() {
