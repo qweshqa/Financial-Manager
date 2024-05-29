@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "earning")
-public class Earning {
+public class Income {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -33,10 +33,10 @@ public class Earning {
     @Column(name = "date")
     private LocalDate date;
 
-    public Earning() {
+    public Income() {
     }
 
-    public Earning(int id, String name, BigDecimal amount, String currency, LocalDate date) {
+    public Income(int id, String name, BigDecimal amount, String currency, LocalDate date) {
         this.id = id;
         this.name = name;
         this.amount = amount;

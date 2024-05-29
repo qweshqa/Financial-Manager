@@ -1,4 +1,4 @@
-.earning{
+.income{
     background-color: #727272;
     border-radius: 10px;
     width: fit-content;
@@ -9,29 +9,29 @@
 .earning:hover{
     opacity: 0.95;
 }
-.earning__name{
+.income__name{
     color: white;
     font-weight: 500;
 }
-.earning__amount{
+.income__amount{
     color: #7cc7ff;
     font-weight: 500;
 }
-.delete-earning-form{
+.delete-income-form{
     position: relative;
     top: 10px;
 }
-.delete-earning{
+.delete-income{
     background-color: #ff7c7c;
 }
-.new-earning-form{
+.new-income-form{
     background-color: #939393;
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
     text-align: center;
 }
-.add-earning{
+.add-income{
     background-color: #86ff7c;
     margin-left: 10px;
 }

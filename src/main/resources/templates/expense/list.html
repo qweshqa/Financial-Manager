@@ -15,9 +15,9 @@
 <div style="height: 60px">
     <header class="header">
         <ul class="navbar">
-            <li><h4><a href="/expenses/today">Expense</a></h4></li>
+            <li><h4><a href="/expenses/today">Expenses</a></h4></li>
 
-            <li><h4><a href="/earning/today">Earning</a></h4></li>
+            <li><h4><a href="/incomes/today">Incomes</a></h4></li>
 
             <li><h4><a href="/statistic">Statistic</a></h4></li>
         </ul>
@@ -30,7 +30,7 @@
 
 <div class="date-navigation">
     <div class="month-day" th:each="monthDay: ${monthDays}">
-        <a class="month-day__number-href" th:href="@{/expense/2024-{month}-{day}(month=${monthDay.getMonthValue()}, day=${monthDay.getDayOfMonth()})}">
+        <a class="month-day__number-href" th:href="@{/expenses/2024-{month}-{day}(month=${monthDay.getMonthValue()}, day=${monthDay.getDayOfMonth()})}">
             <h2 class="month-day__number" th:text="${monthDay.getDayOfMonth()}"></h2>
         </a>
     </div>

@@ -85,13 +85,13 @@ public class ExpenseController {
         expense.setDate(LocalDate.now());
         expenseService.save(expense);
 
-        return "redirect:/expense/today";
+        return "redirect:/expenses/today";
     }
 
     @PostMapping("/{id}")
     public String deleteSpending(@PathVariable("id") int id){
         expenseService.delete(id);
 
-        return "redirect:/expense/today";
+        return "redirect:/expenses/today";
     }
 }
