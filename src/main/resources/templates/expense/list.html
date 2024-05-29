@@ -15,7 +15,7 @@
 <div style="height: 60px">
     <header class="header">
         <ul class="navbar">
-            <li><h4><a href="/expense/today">Expense</a></h4></li>
+            <li><h4><a href="/expenses/today">Expense</a></h4></li>
 
             <li><h4><a href="/earning/today">Earning</a></h4></li>
 
@@ -42,13 +42,13 @@
 
 <div class="expense-list" th:if="${!expenseList.isEmpty()}">
     <div class="expense" th:each="expense, iterStat: ${expenseList}">
-        <p style="color: white; margin: 10px 0 10px 10px;">Spending</p>
+        <p style="color: white; margin: 10px 0 10px 10px;">Expense</p>
 
         <h2 class="expense__name" th:text="${expense.getName()}" th:title="${expense.getName()}"></h2>
 
         <h2 class="expense__amount" th:text="${expense.getAmountToDisplay()}" th:title="${expense.getAmountToDisplay()}"></h2>
 
-        <form class="delete-expense-form" th:method="POST" th:action="@{/expense/{id}(id=${expense.getId()})}" th:object="${expense}">
+        <form class="delete-expense-form" th:method="POST" th:action="@{/expenses/{id}(id=${expense.getId()})}" th:object="${expense}">
             <button style="background-color: #ff7c7c;" class="delete-expense btn" type="submit">Delete</button>
         </form>
     </div>
@@ -59,7 +59,7 @@
 </div>
 
 <div class="new-expense" th:if="${day.isEqual(today)}">
-    <form class="new-expense-form" th:method="POST" th:action="@{/expense/today}" th:object="${newExpense}">
+    <form class="new-expense-form" th:method="POST" th:action="@{/expenses/today}" th:object="${newExpense}">
         <label for="new-expense-name"></label>
         <input class="input-field new-expense__name" type="text" th:field="*{name}" id="new-expense-name" placeholder="name">
 
