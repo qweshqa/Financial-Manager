@@ -28,24 +28,20 @@ public class ExpenseController {
 
     @GetMapping("/today")
     public String getExpense(Model model){
-        List<Expense> expenseList = expenseService.index(LocalDate.now());
-
-        String monthNameLowerCase = LocalDate.now().getMonth().toString().substring(1).toLowerCase();
-        String monthNameFirstLetter = LocalDate.now().getMonth().toString().substring(0, 1).toUpperCase();
-
-        model.addAttribute("monthName", monthNameFirstLetter + monthNameLowerCase);
         // date navigation
+        model.addAttribute("monthName", dateService.getMonthNameInCamelCase(LocalDate.now().getMonth().toString()));
         model.addAttribute("day", LocalDate.now());
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(LocalDate.now().getMonth()));
 
-        // spending total
+        // expense total
         model.addAttribute("expense_total", expenseService.getExpensesTotalByDate(LocalDate.now()));
 
         // index
+        List<Expense> expenseList = expenseService.index(LocalDate.now());
         model.addAttribute("expenseList", expenseList);
 
-        // spending to create
+        // expense to create
         model.addAttribute("newExpense", new Expense());
 
         return "expense/list";
@@ -57,31 +53,27 @@ public class ExpenseController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
 
-        List<Expense> expenseList = expenseService.index(localDate);
-
-        String monthNameLowerCase = localDate.getMonth().toString().substring(1).toLowerCase();
-        String monthNameFirstLetter = localDate.getMonth().toString().substring(0, 1).toUpperCase();
-        model.addAttribute("monthName", monthNameFirstLetter + monthNameLowerCase);
-
         // date navigation
+        model.addAttribute("monthName", dateService.getMonthNameInCamelCase(localDate.getMonth().toString()));
         model.addAttribute("day", localDate);
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
 
-        // spending total
+        // expense total
         model.addAttribute("expense_total", expenseService.getExpensesTotalByDate(localDate));
 
         // index
+        List<Expense> expenseList = expenseService.index(localDate);
         model.addAttribute("expenseList", expenseList);
 
-        // spending to create
+        // expense to create
         model.addAttribute("newExpense", new Expense());
 
         return "expense/list";
     }
 
     @PostMapping("/today")
-    public String addExpense(@ModelAttribute("newSpending") Expense expense){
+    public String addExpense(@ModelAttribute("newExpense") Expense expense){
         expense.setDate(LocalDate.now());
         expenseService.save(expense);
 

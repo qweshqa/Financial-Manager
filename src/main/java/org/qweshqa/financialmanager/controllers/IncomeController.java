@@ -26,54 +26,45 @@ public class IncomeController {
     }
 
     @GetMapping("/today")
-    public String getIncome(Model model){
-        List<Income> incomeList = incomeService.index(LocalDate.now());
-
-        String monthNameLowerCase = LocalDate.now().getMonth().toString().substring(1).toLowerCase();
-        String monthNameFirstLetter = LocalDate.now().getMonth().toString().substring(0, 1).toUpperCase();
-
-        model.addAttribute("monthName", monthNameFirstLetter + monthNameLowerCase);
+    public String getIncomes(Model model){
         // date navigation
+        model.addAttribute("monthName", dateService.getMonthNameInCamelCase(LocalDate.now().getMonth().toString()));
         model.addAttribute("day", LocalDate.now());
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(LocalDate.now().getMonth()));
 
-        // spending total
+        // income total
         model.addAttribute("income_total", incomeService.getIncomeTotalByDate(LocalDate.now()));
 
         // index
+        List<Income> incomeList = incomeService.index(LocalDate.now());
         model.addAttribute("incomeList", incomeList);
 
-        // spending to create
+        // income to create
         model.addAttribute("newIncome", new Income());
 
         return "income/list";
     }
     @GetMapping("/{date}")
-    public String getIncomeByDate(@PathVariable("date") String date, Model model){
+    public String getIncomesByDate(@PathVariable("date") String date, Model model){
         date = dateService.formatDate(date);
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
 
-        List<Income> incomeList = incomeService.index(localDate);
-
-        String monthNameLowerCase = localDate.getMonth().toString().substring(1).toLowerCase();
-        String monthNameFirstLetter = localDate.getMonth().toString().substring(0, 1).toUpperCase();
-        model.addAttribute("monthName", monthNameFirstLetter + monthNameLowerCase);
-
         // date navigation
+        model.addAttribute("monthName", dateService.getMonthNameInCamelCase(localDate.getMonth().toString()));
         model.addAttribute("day", localDate);
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
 
-        // spending total
+        // income total
         model.addAttribute("income_total", incomeService.getIncomeTotalByDate(localDate));
 
         // index
+        List<Income> incomeList = incomeService.index(localDate);
         model.addAttribute("incomeList", incomeList);
 
-        // spending to create
+        // income to create
         model.addAttribute("newIncome", new Income());
 
         return "income/list";

@@ -29,6 +29,9 @@ public class DateService {
             return date;
         }
     }
+    public String getMonthNameInCamelCase(String monthName){
+        return monthName.substring(0, 1).toUpperCase() + monthName.substring(1).toLowerCase();
+    }
 
     public List<MonthDay> getMonthDaysInList(Month month){
 
