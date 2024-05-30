@@ -9,3 +9,11 @@
     color: #666666;
     font-weight: 500;
 }
+.show_all_expenses{
+    background-color: #2163ff;
+    width: 200px;;
+}
+.show_all_expenses a{
+    color: white;
+    text-decoration: none;
+}

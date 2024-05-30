@@ -25,15 +25,14 @@
     </header>
 </div>
 
-<div class="statistic-block">
-    <h4 th:text="${'Expense total: ' + general_spending_total + ' грн.'}"></h4>
-    <h4 th:text="${'Total amount of expenses: ' + total_amount_of_spending}"></h4>
-    <h4 th:if="${biggest_expense}" th:text="${'Your biggest expense: ' + biggest_expense.getName() + ', ' + biggest_expense.getAmountToDisplay()}"></h4>
+<div class="expense-list">
+    <div class="expense" th:each="expense: ${expenses}">
+        <p style="color: white; margin: 10px 0 10px 10px;">Expense</p>
 
-    <div class="show_all_expenses btn">
-        <a href="/statistic/expenses_index">
-            <h3>Show all expenses</h3>
-        </a>
+        <h2 class="expense__name" th:text="${expense.getName()}" th:title="${expense.getName()}"></h2>
+
+        <h2 class="expense__amount" th:text="${expense.getAmountToDisplay()}" th:title="${expense.getAmountToDisplay()}"></h2>
+
     </div>
 </div>
 

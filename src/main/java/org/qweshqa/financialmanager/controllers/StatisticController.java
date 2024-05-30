@@ -1,5 +1,6 @@
 package org.qweshqa.financialmanager.controllers;
 
+import org.qweshqa.financialmanager.models.Expense;
 import org.qweshqa.financialmanager.services.ExpenseService;
 import org.qweshqa.financialmanager.services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.math.BigDecimal;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/statistic")
@@ -33,5 +39,16 @@ public class StatisticController {
         };
 
         return "statistic/general";
+    }
+    @GetMapping("/expenses_index")
+    public String getAllExpenses(Model model){
+        List<Expense> expenses = expenseService.index();
+
+        List<Expense> sortedExpenses = expenses.stream()
+                .sorted(Comparator.comparing(Expense::getAmount)).toList().reversed();
+
+        model.addAttribute("expenses", sortedExpenses);
+
+        return "statistic/expenses_index";
     }
 }
