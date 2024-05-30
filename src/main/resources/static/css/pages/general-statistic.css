@@ -11,9 +11,7 @@
 }
 .show_all_expenses{
     background-color: #2163ff;
-    width: 200px;;
-}
-.show_all_expenses a{
+    width: 200px;
     color: white;
     text-decoration: none;
 }
