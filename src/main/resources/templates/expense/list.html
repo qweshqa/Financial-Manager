@@ -15,9 +15,9 @@
 <div style="height: 60px">
     <header class="header">
         <ul class="navbar">
-            <li><h4><a href="/expenses/today">Expenses</a></h4></li>
+            <li><h4><a th:href="@{/expenses/{date}(date=${today})}">Expenses</a></h4></li>
 
-            <li><h4><a href="/incomes/today">Incomes</a></h4></li>
+            <li><h4><a th:href="@{/incomes/{date}(date=${today})}">Incomes</a></h4></li>
 
             <li><h4><a href="/statistic">Statistic</a></h4></li>
         </ul>
@@ -25,7 +25,7 @@
 </div>
 
 <div style="text-align: -webkit-center;">
-    <h3 th:text="${monthName + ' ' + day.getDayOfMonth() + ', ' + day.getYear()}" style="padding: 10px; font-weight: 500;"></h3>
+    <h3 th:text="${monthName + ' ' + date.getDayOfMonth() + ', ' + date.getYear()}" style="padding: 10px; font-weight: 500;"></h3>
 </div>
 
 <div class="date-navigation">
@@ -48,18 +48,18 @@
 
         <h2 class="expense__amount" th:text="${expense.getAmountToDisplay()}" th:title="${expense.getAmountToDisplay()}"></h2>
 
-        <form class="delete-expense-form" th:method="POST" th:action="@{/expenses/{id}(id=${expense.getId()})}" th:object="${expense}">
+        <form class="delete-expense-form" th:method="POST" th:action="@{/expenses/{date}/{id}(date=${date}, id=${expense.getId()})}" th:object="${expense}">
             <button style="background-color: #ff7c7c;" class="delete-expense btn" type="submit">Delete</button>
         </form>
     </div>
 </div>
 
 <div th:if="${expenseList.isEmpty()}" style="text-align: -webkit-center; margin: 10px 0 20px 0;">
-    <h1 th:text="${'You didn''t have any expenses on ' + monthName + ' ' + day.getDayOfMonth()}"></h1>
+    <h1 th:text="${'You didn''t have any expenses on ' + monthName + ' ' + date.getDayOfMonth()}"></h1>
 </div>
 
-<div class="new-expense" th:if="${day.isEqual(today)}">
-    <form class="new-expense-form" th:method="POST" th:action="@{/expenses/today}" th:object="${newExpense}">
+<div class="new-expense">
+    <form class="new-expense-form" th:method="POST" th:action="@{/expenses/{date}(date=${date})}" th:object="${newExpense}">
         <label for="new-expense-name"></label>
         <input class="input-field new-expense__name" type="text" th:field="*{name}" id="new-expense-name" placeholder="name">
 

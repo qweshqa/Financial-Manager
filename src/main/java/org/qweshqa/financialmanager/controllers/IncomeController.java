@@ -33,7 +33,7 @@ public class IncomeController {
 
         // date navigation
         model.addAttribute("monthName", dateService.getMonthNameInCamelCase(localDate.getMonth().toString()));
-        model.addAttribute("day", localDate);
+        model.addAttribute("date", localDate);
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
 
@@ -50,18 +50,21 @@ public class IncomeController {
         return "income/list";
     }
 
-    @PostMapping("/today")
-    public String addIncome(@ModelAttribute("newIncome") Income income){
-        income.setDate(LocalDate.now());
+    @PostMapping("/{date}")
+    public String addIncome(@ModelAttribute("newIncome") Income income, @PathVariable("date") String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+
+        income.setDate(localDate);
         incomeService.save(income);
 
-        return "redirect:/incomes/today";
+        return "redirect:/incomes/" + localDate;
     }
 
-    @PostMapping("/{id}")
-    public String deleteIncome(@PathVariable("id") int id){
+    @PostMapping("/{date}/{id}")
+    public String deleteIncome(@PathVariable("date") String date, @PathVariable("id") int id){
         incomeService.delete(id);
 
-        return "redirect:/incomes/today";
+        return "redirect:/incomes/" + date;
     }
 }

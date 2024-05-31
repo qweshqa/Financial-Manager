@@ -35,7 +35,7 @@ public class ExpenseController {
 
         // date navigation
         model.addAttribute("monthName", dateService.getMonthNameInCamelCase(localDate.getMonth().toString()));
-        model.addAttribute("day", localDate);
+        model.addAttribute("date", localDate);
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
 
@@ -52,18 +52,21 @@ public class ExpenseController {
         return "expense/list";
     }
 
-    @PostMapping("/today")
-    public String addExpense(@ModelAttribute("newExpense") Expense expense){
-        expense.setDate(LocalDate.now());
+    @PostMapping("/{date}")
+    public String addExpense(@ModelAttribute("newExpense") Expense expense, @PathVariable("date") String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+
+        expense.setDate(localDate);
         expenseService.save(expense);
 
-        return "redirect:/expenses/today";
+        return "redirect:/expenses/" + localDate;
     }
 
-    @PostMapping("/{id}")
-    public String deleteSpending(@PathVariable("id") int id){
+    @PostMapping("/{date}/{id}")
+    public String deleteSpending(@PathVariable("date") String date, @PathVariable("id") int id){
         expenseService.delete(id);
 
-        return "redirect:/expenses/today";
+        return "redirect:/expenses/" + date;
     }
 }

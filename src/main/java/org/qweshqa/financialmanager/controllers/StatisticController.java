@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,8 @@ public class StatisticController {
 
     @GetMapping()
     public String getGeneralStatistic(Model model){
+        // header
+        model.addAttribute("today", LocalDate.now());
 
         // statistic block
         model.addAttribute("general_spending_total", statisticService.getGeneralSpendingTotal());
@@ -42,6 +45,10 @@ public class StatisticController {
     }
     @GetMapping("/expenses_index")
     public String getAllExpenses(Model model){
+
+        // header
+        model.addAttribute("today", LocalDate.now());
+
         List<Expense> expenses = expenseService.index();
 
         List<Expense> sortedExpenses = expenses.stream()
