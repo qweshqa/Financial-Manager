@@ -26,26 +26,6 @@ public class ExpenseController {
         this.dateService = dateService;
     }
 
-    @GetMapping("/today")
-    public String getExpense(Model model){
-        // date navigation
-        model.addAttribute("monthName", dateService.getMonthNameInCamelCase(LocalDate.now().getMonth().toString()));
-        model.addAttribute("day", LocalDate.now());
-        model.addAttribute("today", LocalDate.now());
-        model.addAttribute("monthDays", dateService.getMonthDaysInList(LocalDate.now().getMonth()));
-
-        // expense total
-        model.addAttribute("expense_total", expenseService.getExpensesTotalByDate(LocalDate.now()));
-
-        // index
-        List<Expense> expenseList = expenseService.index(LocalDate.now());
-        model.addAttribute("expenseList", expenseList);
-
-        // expense to create
-        model.addAttribute("newExpense", new Expense());
-
-        return "expense/list";
-    }
     @GetMapping("/{date}")
     public String getSpendingByDate(@PathVariable("date") String date, Model model){
         date = dateService.formatDate(date);

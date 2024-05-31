@@ -25,26 +25,6 @@ public class IncomeController {
         this.dateService = dateService;
     }
 
-    @GetMapping("/today")
-    public String getIncomes(Model model){
-        // date navigation
-        model.addAttribute("monthName", dateService.getMonthNameInCamelCase(LocalDate.now().getMonth().toString()));
-        model.addAttribute("day", LocalDate.now());
-        model.addAttribute("today", LocalDate.now());
-        model.addAttribute("monthDays", dateService.getMonthDaysInList(LocalDate.now().getMonth()));
-
-        // income total
-        model.addAttribute("income_total", incomeService.getIncomeTotalByDate(LocalDate.now()));
-
-        // index
-        List<Income> incomeList = incomeService.index(LocalDate.now());
-        model.addAttribute("incomeList", incomeList);
-
-        // income to create
-        model.addAttribute("newIncome", new Income());
-
-        return "income/list";
-    }
     @GetMapping("/{date}")
     public String getIncomesByDate(@PathVariable("date") String date, Model model){
         date = dateService.formatDate(date);
