@@ -1,5 +1,6 @@
 package org.qweshqa.financialmanager.services;
 
+import org.qweshqa.financialmanager.models.Expense;
 import org.qweshqa.financialmanager.models.Income;
 import org.qweshqa.financialmanager.repositories.IncomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IncomeService {
@@ -24,6 +27,10 @@ public class IncomeService {
 
     public List<Income> index(LocalDate date){
         return incomeRepository.findAllByDate(date);
+    }
+
+    public Optional<Income> findBiggestIncome(){
+        return incomeRepository.findAll().stream().max(Comparator.comparing(Income::getAmount));
     }
 
     public BigDecimal getIncomeTotalByDate(LocalDate date){
