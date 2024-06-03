@@ -24,8 +24,8 @@
     </header>
 </div>
 
-<div style="text-align: -webkit-center;">
-    <h3 th:text="${monthName + ' ' + date.getDayOfMonth() + ', ' + date.getYear()}" style="padding: 10px; font-weight: 500;"></h3>
+<div th:with="monthClass=${T(java.time.Month)}" style="text-align: -webkit-center;">
+    <h3 th:text="${date.getMonth().getDisplayName(T(java.time.format.TextStyle).FULL, T(java.util.Locale).ENGLISH) + ' ' + date.getDayOfMonth() + ', ' + date.getYear()}" style="padding: 10px; font-weight: 500;"></h3>
 </div>
 
 <div class="date-navigation">
@@ -56,8 +56,8 @@
     </div>
 </div>
 
-<div th:if="${incomeList.isEmpty()}" style="text-align: -webkit-center; margin: 10px 0 20px 0;">
-    <h1 th:text="${'You didn''t have any incomes on ' + monthName + ' ' + date.getDayOfMonth()}"></h1>
+<div th:with="monthClass=${T(java.time.Month)}" th:if="${incomeList.isEmpty()}" style="text-align: -webkit-center; margin: 10px 0 20px 0;">
+    <h1 th:text="${'You didn''t have any incomes on ' + date.getMonth().getDisplayName(T(java.time.format.TextStyle).FULL, T(java.util.Locale).ENGLISH) + ' ' + date.getDayOfMonth()}"></h1>
 </div>
 
 <div class="new-income">

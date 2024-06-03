@@ -32,7 +32,6 @@ public class IncomeController {
         LocalDate localDate = LocalDate.parse(date, formatter);
 
         // date navigation
-        model.addAttribute("monthName", dateService.getMonthNameInCamelCase(localDate.getMonth().toString()));
         model.addAttribute("date", localDate);
         model.addAttribute("today", LocalDate.now());
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
