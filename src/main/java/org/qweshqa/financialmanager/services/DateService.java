@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.MonthDay;
+import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,5 +42,17 @@ public class DateService {
                 .mapToObj(dayOfMonth -> MonthDay.of(month, dayOfMonth))
                 .filter(monthDay -> !monthDay.atYear(LocalDate.now().getYear()).isAfter(LocalDate.now()))
                 .collect(Collectors.toList());
+    }
+
+    public List<LocalDate> getMonthsAsList(int yearValue){
+        List<LocalDate> yearMonths = new ArrayList<>();
+
+        Year year = Year.of(yearValue);
+        for(int m = 1; m <= 12; m++){
+            LocalDate date = year.atMonth(m).atEndOfMonth();
+            yearMonths.add(date);
+        }
+
+        return yearMonths;
     }
 }

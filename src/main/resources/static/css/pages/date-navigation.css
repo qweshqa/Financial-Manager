@@ -1,0 +1,10 @@
+.month{
+    text-align: -webkit-center;
+    border-radius: 20px;
+    background-color: #727272;
+    margin: 10px;
+}
+.month__name{
+    color: white;
+    text-decoration: none;
+}

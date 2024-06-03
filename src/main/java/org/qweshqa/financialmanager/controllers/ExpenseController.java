@@ -51,6 +51,16 @@ public class ExpenseController {
 
         return "expense/list";
     }
+    @GetMapping("/date-navigation/{year}")
+    public String getAllMonths(@PathVariable("year") int year, Model model){
+
+        // header
+        model.addAttribute("today", LocalDate.now());
+
+        model.addAttribute("months", dateService.getMonthsAsList(year));
+
+        return "date/navigation";
+    }
 
     @PostMapping("/{date}")
     public String addExpense(@ModelAttribute("newExpense") Expense expense, @PathVariable("date") String date){
