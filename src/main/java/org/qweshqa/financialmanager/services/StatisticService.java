@@ -1,9 +1,8 @@
 package org.qweshqa.financialmanager.services;
 
-import org.qweshqa.financialmanager.models.Expense;
-import org.qweshqa.financialmanager.models.Income;
-import org.qweshqa.financialmanager.repositories.ExpenseRepository;
-import org.qweshqa.financialmanager.repositories.IncomeRepository;
+import org.qweshqa.financialmanager.models.Finance;
+import org.qweshqa.financialmanager.repositories.FinanceRepository;
+import org.qweshqa.financialmanager.utils.FinanceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,22 +12,19 @@ import java.util.List;
 @Service
 public class StatisticService {
 
-    private final ExpenseRepository expenseRepository;
-
-    private final IncomeRepository incomeRepository;
+    private final FinanceRepository financeRepository;
 
     @Autowired
-    public StatisticService(ExpenseRepository expenseRepository, IncomeRepository incomeRepository) {
-        this.incomeRepository = incomeRepository;
-        this.expenseRepository = expenseRepository;
+    public StatisticService(FinanceRepository financeRepository) {
+        this.financeRepository = financeRepository;
     }
 
     public BigDecimal getGeneralSpendingTotal(){
         BigDecimal generalSpendingTotal = BigDecimal.ZERO;
 
-        List<Expense> expenseList = expenseRepository.findAll();
+        List<Finance> expenseList = financeRepository.findAllByType(FinanceType.EXPENSE);
 
-        for (Expense expense : expenseList){
+        for (Finance expense : expenseList){
             generalSpendingTotal = generalSpendingTotal.add(expense.getAmount());
         }
 
@@ -38,9 +34,9 @@ public class StatisticService {
     public BigDecimal getGeneralIncomeTotal(){
         BigDecimal generalIncomeTotal = BigDecimal.ZERO;
 
-        List<Income> incomeList = incomeRepository.findAll();
+        List<Finance> incomeList = financeRepository.findAllByType(FinanceType.INCOME);
 
-        for (Income income : incomeList){
+        for (Finance income : incomeList){
             generalIncomeTotal = generalIncomeTotal.add(income.getAmount());
         }
 

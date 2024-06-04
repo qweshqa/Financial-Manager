@@ -19,16 +19,16 @@
     color: black;
     text-decoration: none;
 }
-.expense-total{
+.finance-amount-total{
     text-align: -webkit-center;
     background-color: #727272;
     border-radius: 20px;
     margin: 10px 10px 10px 10px;
 }
-.expense-total h2{
+.finance-amount-total h2{
     color: white;
 }
-.expense-list{
+.finances{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -66,14 +66,40 @@
     bottom: 5px;
     text-align: center;
 }
-.new-expense-form{
+.income{
+    background-color: #727272;
+    border-radius: 10px;
+    width: fit-content;
+    height: 110px;
+    margin: 10px 10px 20px 10px;
+    padding: 10px;
+}
+.income:hover{
+    opacity: 0.95;
+}
+.income__name{
+    color: white;
+    font-weight: 500;
+}
+.income__amount{
+    color: #7cc7ff;
+    font-weight: 500;
+}
+.delete-income-form{
+    position: relative;
+    top: 10px;
+}
+.delete-income{
+    background-color: #ff7c7c;
+}
+.new-finance-form{
     background-color: #939393;
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
     text-align: center;
 }
-.add-expense{
+.add-finance{
     background-color: #86ff7c;
     margin-left: 10px;
 }

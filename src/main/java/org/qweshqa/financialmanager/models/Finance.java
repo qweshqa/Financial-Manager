@@ -4,13 +4,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.qweshqa.financialmanager.utils.FinanceType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
 
 @Entity
-@Table(name = "earning")
-public class Income {
+@Table(name = "finances")
+public class Finance {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -33,15 +36,24 @@ public class Income {
     @Column(name = "date")
     private LocalDate date;
 
-    public Income() {
+    private Month month;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private FinanceType type;
+
+    public Finance() {
     }
 
-    public Income(int id, String name, BigDecimal amount, String currency, LocalDate date) {
+    public Finance(int id, String name, BigDecimal amount, String currency, LocalDate date, FinanceType type) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.currency = currency;
         this.date = date;
+        this.month = date.getMonth();
+        this.type = type;
     }
 
     public int getId() {
@@ -68,6 +80,10 @@ public class Income {
         this.amount = amount;
     }
 
+    public String getAmountToDisplay() {
+        return amount + " " + currency;
+    }
+
     public @NotBlank String getCurrency() {
         return currency;
     }
@@ -83,7 +99,16 @@ public class Income {
     public void setDate(@NotNull LocalDate date) {
         this.date = date;
     }
-    public String getAmountToDisplay() {
-        return amount + " " + currency;
+
+    public Month getMonth() {
+        return month;
+    }
+
+    public @NotNull FinanceType getType() {
+        return type;
+    }
+
+    public void setType(@NotNull FinanceType type) {
+        this.type = type;
     }
 }

@@ -7,7 +7,6 @@
 
 @import url('layouts/_headers.css');
 
+@import url('pages/finance-list.css');
 @import url('pages/date-navigation.css');
-@import url('pages/income-list.css');
 @import url('pages/general-statistic.css');
-@import url('pages/expense-list.css');

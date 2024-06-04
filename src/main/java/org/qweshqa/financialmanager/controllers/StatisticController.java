@@ -1,21 +1,18 @@
 package org.qweshqa.financialmanager.controllers;
 
-import org.qweshqa.financialmanager.models.Expense;
-import org.qweshqa.financialmanager.models.Income;
-import org.qweshqa.financialmanager.services.ExpenseService;
-import org.qweshqa.financialmanager.services.IncomeService;
+import org.qweshqa.financialmanager.models.Finance;
+import org.qweshqa.financialmanager.services.FinanceService;
 import org.qweshqa.financialmanager.services.StatisticService;
+import org.qweshqa.financialmanager.utils.FinanceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/statistic")
@@ -23,16 +20,12 @@ public class StatisticController {
 
     private final StatisticService statisticService;
 
-    private final ExpenseService expenseService;
-
-    private final IncomeService incomeService;
+    private final FinanceService financeService;
 
     @Autowired
-    public StatisticController(StatisticService statisticService, ExpenseService expenseService,
-                               IncomeService incomeService) {
+    public StatisticController(StatisticService statisticService, FinanceService financeService) {
         this.statisticService = statisticService;
-        this.expenseService = expenseService;
-        this.incomeService = incomeService;
+        this.financeService = financeService;
     }
 
     @GetMapping()
@@ -42,16 +35,16 @@ public class StatisticController {
 
         // expense statistic block
         model.addAttribute("general_spending_total", statisticService.getGeneralSpendingTotal());
-        model.addAttribute("total_amount_of_spending", expenseService.index().size());
-        if(expenseService.findBiggestExpense().isPresent()){
-            model.addAttribute("biggest_expense", expenseService.findBiggestExpense().get());
+        model.addAttribute("total_amount_of_spending", financeService.findAll().size());
+        if(financeService.findBiggestExpenseOrIncome(FinanceType.EXPENSE).isPresent()){
+            model.addAttribute("biggest_expense", financeService.findBiggestExpenseOrIncome(FinanceType.EXPENSE).get());
         }
 
         // income statistic block
         model.addAttribute("general_income_total", statisticService.getGeneralIncomeTotal());
-        model.addAttribute("total_amount_of_incomes", incomeService.index().size());
-        if(incomeService.findBiggestIncome().isPresent()){
-            model.addAttribute("biggest_income", incomeService.findBiggestIncome().get());
+        model.addAttribute("total_amount_of_incomes", financeService.findAll().size());
+        if(financeService.findBiggestExpenseOrIncome(FinanceType.INCOME).isPresent()){
+            model.addAttribute("biggest_income", financeService.findBiggestExpenseOrIncome(FinanceType.INCOME).get());
         }
 
         return "statistic/general";
@@ -62,10 +55,10 @@ public class StatisticController {
         // header
         model.addAttribute("today", LocalDate.now());
 
-        List<Expense> expenses = expenseService.index();
+        List<Finance> expenses = financeService.findAllByType(FinanceType.EXPENSE);
 
-        List<Expense> sortedExpenses = expenses.stream()
-                .sorted(Comparator.comparing(Expense::getAmount)).toList().reversed();
+        List<Finance> sortedExpenses = expenses.stream()
+                .sorted(Comparator.comparing(Finance::getAmount)).toList().reversed();
 
         model.addAttribute("expenses", sortedExpenses);
 
@@ -78,10 +71,10 @@ public class StatisticController {
         // header
         model.addAttribute("today", LocalDate.now());
 
-        List<Income> incomes = incomeService.index();
+        List<Finance> incomes = financeService.findAllByType(FinanceType.INCOME);
 
-        List<Income> sortedIncomes = incomes.stream()
-                .sorted(Comparator.comparing(Income::getAmount)).toList().reversed();
+        List<Finance> sortedIncomes = incomes.stream()
+                .sorted(Comparator.comparing(Finance::getAmount)).toList().reversed();
 
         model.addAttribute("incomes", sortedIncomes);
 
