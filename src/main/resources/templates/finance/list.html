@@ -58,18 +58,21 @@
 <div class="finances">
     <div class="finance-container" th:each="finance, iterStat: ${finances}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.FinanceType)}">
         <div th:if="${finance.getType() == T(org.qweshqa.financialmanager.utils.FinanceType).EXPENSE}" class="expense">
-            <p style="color: white; margin: 0 10px 10px 10px;">Expense</p>
+            <p style="color: white; margin: 0 0 10px 0;">Expense</p>
 
-            <h2 class="expense__name" th:text="${finance.getName()}" th:title="${finance.getName()}"></h2>
-
-            <h2 class="expense__amount" th:text="${finance.getAmountToDisplay()}" th:title="${finance.getAmountToDisplay()}"></h2>
+            <h2 class="expense__n-a">
+                <span class="expense__name" th:text="${finance.getName()}" th:title="${finance.getName()}"></span>
+                (
+                <span class="expense__amount" th:text="${'-' +  finance.getAmountToDisplay()}" th:title="${finance.getAmountToDisplay()}"></span>
+                )
+            </h2>
 
             <form class="delete-expense-form" th:method="POST" th:action="@{/finances/{date}/{id}(date=${date}, id=${finance.getId()})}" th:object="${finance}">
                 <button style="background-color: #ff7c7c;" class="delete-expense btn" type="submit">Delete</button>
             </form>
         </div>
         <div class="income" th:if="${finance.getType() == T(org.qweshqa.financialmanager.utils.FinanceType).INCOME}">
-            <p style="color: white; margin: 10px 0 10px 0;">Income</p>
+            <p style="color: white; margin: 0 0 10px 0;">Income</p>
 
             <h2 class="income-name-and-amount">
                 <span class="income__name" th:text="${finance.getName()}" th:title="${finance.getName()}"></span>

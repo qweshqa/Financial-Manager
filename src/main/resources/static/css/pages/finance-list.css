@@ -49,35 +49,28 @@
 .expense{
     background-color: #727272;
     border-radius: 10px;
-    width: 250px;
-    height: 150px;
+    height: 110px;
     margin: 10px 10px 20px 10px;
+    padding: 10px
 }
 .expense:hover{
     opacity: 0.95
 }
+.expense__n-a{
+    margin-bottom: 10px;
+    color: white;
+    max-width: 600px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 .expense__name{
     color: white;
     font-weight: 500;
-    margin: 10px 0 10px 10px;
-    max-width: 230px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
 .expense__amount{
-    color: #86ff7c;
+    color: #ff7c7c;
     font-weight: 500;
-    margin: 10px 0 10px 10px;
-    width: 230px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.delete-expense-form{
-    position: relative;
-    bottom: 5px;
-    text-align: center;
 }
 .income{
     background-color: #727272;
