@@ -3,6 +3,7 @@ package org.qweshqa.financialmanager.controllers;
 import org.qweshqa.financialmanager.models.Finance;
 import org.qweshqa.financialmanager.services.DateService;
 import org.qweshqa.financialmanager.services.FinanceService;
+import org.qweshqa.financialmanager.utils.FinanceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,7 @@ public class FinanceController {
     }
 
     @GetMapping("/{date}")
-    public String getFinancesByDate(@PathVariable("date") String date, Model model){
+    public String getFinancesByDate(@RequestParam(value = "show_only", defaultValue = "all") String showOnly, @PathVariable("date") String date, Model model){
         date = dateService.formatDate(date);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -38,10 +39,18 @@ public class FinanceController {
         model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
 
         // finances amount total
-        model.addAttribute("finances_amount_total", financeService.getFinanceAmountTotalByDate(localDate));
+        switch(showOnly){
+            case "all": model.addAttribute("finances_amount_total", financeService.getFinanceAmountTotalByDate(localDate)); break;
+            case "expenses": model.addAttribute("finances_amount_total", financeService.getFinanceAmountTotalByDateAndType(localDate, FinanceType.EXPENSE)); break;
+            case "incomes": model.addAttribute("finances_amount_total", financeService.getFinanceAmountTotalByDateAndType(localDate, FinanceType.INCOME)); break;
+        }
 
         // index
-        model.addAttribute("finances", financeService.findAllByDate(localDate));
+        switch (showOnly){
+            case "all": model.addAttribute("finances", financeService.findAllByDate(localDate)); break;
+            case "expenses": model.addAttribute("finances", financeService.findAllByDateAndType(localDate, FinanceType.EXPENSE)); break;
+            case "incomes": model.addAttribute("finances", financeService.findAllByDateAndType(localDate, FinanceType.INCOME)); break;
+        }
 
         // empty finance for creating a new one
         model.addAttribute("new_finance", new Finance());

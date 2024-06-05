@@ -44,10 +44,21 @@
     <h2 th:text="${'Total: ' + finances_amount_total + ' ₴'}"></h2>
 </div>
 
+<form class="filter-finances-form" th:method="GET" th:action="@{/finances/{date}(date=${date})}">
+    <label for="show_only">Show</label>
+    <select name="show_only" class="select-field finance-show-only" id="show_only">
+        <option value="all">All</option>
+        <option value="expenses">Only expenses</option>
+        <option value="incomes">Only incomes</option>
+    </select>
+
+    <button class="btn show_only_button" type="submit">Submit</button>
+</form>
+
 <div class="finances">
     <div class="finance-container" th:each="finance, iterStat: ${finances}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.FinanceType)}">
         <div th:if="${finance.getType() == T(org.qweshqa.financialmanager.utils.FinanceType).EXPENSE}" class="expense">
-            <p style="color: white; margin: 10px 0 10px 10px;">Expense</p>
+            <p style="color: white; margin: 0 10px 10px 10px;">Expense</p>
 
             <h2 class="expense__name" th:text="${finance.getName()}" th:title="${finance.getName()}"></h2>
 

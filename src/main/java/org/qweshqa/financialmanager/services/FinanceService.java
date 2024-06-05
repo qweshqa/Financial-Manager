@@ -37,6 +37,10 @@ public class FinanceService {
         return financeRepository.findAllByDate(date);
     }
 
+    public List<Finance> findAllByDateAndType(LocalDate date, FinanceType type){
+        return financeRepository.findAllByDateAndType(date, type);
+    }
+
     public List<Finance> findAllByMonth(Month month){
         return financeRepository.findAllByMonth(month);
     }
@@ -44,6 +48,11 @@ public class FinanceService {
     public Optional<Finance> findBiggestExpenseOrIncome(FinanceType type){
         return financeRepository.findAllByType(type).stream()
                 .max(Comparator.comparing(Finance::getAmount));
+    }
+
+    public BigDecimal getFinanceAmountTotalByDateAndType(LocalDate date, FinanceType type){
+        return financeRepository.findAllByDateAndType(date, type)
+                .stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public BigDecimal getFinanceAmountTotalByDate(LocalDate date){

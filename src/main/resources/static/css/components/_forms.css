@@ -2,13 +2,13 @@
     font-size: 22px;
     border-style: none;
     border-color: white;
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 0 10px;
 }
 .select-field{
     font-size: 20px;
     border-style: groove;
     border-color: #999999;
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 0 10px;
 }
