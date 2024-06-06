@@ -58,6 +58,14 @@ public class FinanceController {
         return "finance/list";
     }
 
+    @GetMapping("{date}/create")
+    public String createFinance(@PathVariable("date") String date, Model model){
+        model.addAttribute("new_finance", new Finance());
+        model.addAttribute("date", date);
+
+        return "finance/create";
+    }
+
     @PostMapping("/{date}")
     public String addFinance(@ModelAttribute("new_finance") Finance finance, @PathVariable("date") String date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
