@@ -23,13 +23,16 @@
     </header>
 </div>
 
-<div class="expense-list">
+<div class="finances">
     <div class="expense" th:each="expense: ${expenses}">
-        <p style="color: white; margin: 10px 0 10px 10px;">Expense</p>
+        <p style="color: white; margin: 0 0 10px 0;">Expense</p>
 
-        <h2 class="expense__name" th:text="${expense.getName()}" th:title="${expense.getName()}"></h2>
-
-        <h2 class="expense__amount" th:text="${expense.getAmountToDisplay()}" th:title="${expense.getAmountToDisplay()}"></h2>
+        <h2 class="expense__n-a">
+            <span class="expense__name" th:text="${expense.getName()}" th:title="${expense.getName()}"></span>
+            (
+            <span class="expense__amount" th:text="${'-' +  expense.getAmountToDisplay()}" th:title="${expense.getAmountToDisplay()}"></span>
+            )
+        </h2>
 
     </div>
 </div>

@@ -8,11 +8,12 @@
     margin: 10px;
 }
 .navbar li a{
-    color: #9a9a9a;
+    color: white;
+    font-weight: 100;
     text-decoration: none;
     padding: 3px 15px 3px 15px;
     border-radius: 20px;
 }
 .navbar li a:hover{
-    background-color: #e7e7e7;
+    background-color: #747474;
 }

@@ -8,7 +8,7 @@
     margin: 0 10px 10px 0;
     width: 40px;
     text-align: -webkit-center;
-    background-color: #cbcbcb;
+    background-color: #ffffff;
     border-style: none;
     border-radius: 15px;
 }
@@ -49,6 +49,7 @@
 .expense{
     background-color: #727272;
     border-radius: 10px;
+    width: fit-content;
     height: 110px;
     margin: 10px 10px 20px 10px;
     padding: 10px

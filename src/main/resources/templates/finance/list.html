@@ -22,12 +22,6 @@
     </header>
 </div>
 
-<div style="text-align: -webkit-center; padding: 5px">
-    <h4>
-        <a style="color: black; text-decoration: underline" href="/expenses/date-navigation/2024">Date navigation</a>
-    </h4>
-</div>
-
 <div style="text-align: -webkit-center;"  th:with="monthClass=${T(java.time.Month)}">
     <h3 th:text="${date.getMonth().getDisplayName(T(java.time.format.TextStyle).FULL, T(java.util.Locale).ENGLISH) + ' ' + date.getDayOfMonth() + ', ' + date.getYear()}" style="padding: 10px; font-weight: 500;"></h3>
 </div>
