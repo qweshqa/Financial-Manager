@@ -72,6 +72,7 @@ public class FinanceController {
         LocalDate localDate = LocalDate.parse(date, formatter);
 
         finance.setDate(localDate);
+        finance.setCurrency("₴");
         financeService.save(finance);
 
         return "redirect:/finances/" + localDate;
