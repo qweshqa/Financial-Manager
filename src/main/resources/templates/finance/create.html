@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create finance action</title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div style="height: 60px">
+    <header class="header">
+        <ul class="navbar">
+            <li><h4><a th:href="@{/finances/{date}(date=${today})}">Finances</a></h4></li>
+
+            <li><h4><a href="/statistic">Statistic</a></h4></li>
+        </ul>
+    </header>
+</div>
+
+<div class="new-finance">
+    <form class="new-finance-form" th:method="POST" th:action="@{/finances/{date}(date=${date})}" th:object="${new_finance}">
+
+        <label for="new-finance-name">Name</label>
+        <br/>
+        <input class="input-field new-finance__name" type="text" th:field="*{name}" id="new-finance-name">
+        <br/>
+
+        <label for="new-finance-amount">Amount</label>
+        <br/>
+        <input class="input-field new-finance__amount" type="text" th:field="*{amount}" id="new-finance-amount">
+        <br/>
+
+        <label for="new-finance-type">Action type</label>
+        <br/>
+        <select th:with="typeClass=${T(org.qweshqa.financialmanager.utils.FinanceType)}" class="select-field new-finance__type" th:field="*{type}" id="new-finance-type">
+            <option th:value="${T(org.qweshqa.financialmanager.utils.FinanceType).INCOME}">Income</option>
+            <option th:value="${T(org.qweshqa.financialmanager.utils.FinanceType).EXPENSE}">Expense</option>
+        </select>
+        <br/>
+
+        <button class="add-finance btn" type="submit">Create a new finance action</button>
+
+    </form>
+</div>
+
+</body>
+</html>

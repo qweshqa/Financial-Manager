@@ -43,6 +43,10 @@ public class Finance {
     @Column(name = "type")
     private FinanceType type;
 
+    @ManyToOne
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
+
     public Finance() {
     }
 
