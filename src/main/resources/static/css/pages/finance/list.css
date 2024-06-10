@@ -8,7 +8,7 @@
     margin: 0 10px 10px 0;
     width: 40px;
     text-align: -webkit-center;
-    background-color: #ffffff;
+    background-color: #3838386e;
     border-style: none;
     border-radius: 15px;
 }
@@ -21,7 +21,7 @@
 }
 .finance-amount-total{
     text-align: -webkit-center;
-    background-color: #727272;
+    background-color: #363a3ec2;
     border-radius: 20px;
     margin: 10px 10px 10px 10px;
 }
@@ -47,10 +47,10 @@
     justify-content: center;
 }
 .expense{
-    background-color: #727272;
+    background-color: #0000004f;
     border-radius: 10px;
     width: fit-content;
-    height: 110px;
+    height: 100px;
     margin: 10px 10px 20px 10px;
     padding: 10px
 }
@@ -74,10 +74,10 @@
     font-weight: 500;
 }
 .income{
-    background-color: #727272;
+    background-color: #0000004f;
     border-radius: 10px;
     width: fit-content;
-    height: 110px;
+    height: 100px;
     margin: 10px 10px 20px 10px;
     padding: 10px;
 }
@@ -99,22 +99,11 @@
 .delete-income{
     background-color: #ff7c7c;
 }
-.new-finance-form{
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-    text-align: center;
-    position: relative;
-    top: 120px;
-}
-.new-finance-form label{
-    font-family: "Roboto", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    color: #585858;
-}
 .add-finance{
     background-color: #55bb4d;
-    margin-left: 10px;
     color: white;
+    font-size: 13px;
+    font-weight: 600;
+    width: 300px;
+    padding: 5px;
 }

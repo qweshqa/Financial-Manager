@@ -1,0 +1,17 @@
+.new-finance-form{
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    top: 120px;
+}
+.new-finance-form label{
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    color: #585858;
+}
+.new-finance-form input{
+    width: 280px;
+}

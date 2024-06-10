@@ -34,23 +34,14 @@
     </div>
 </div>
 
+<div style="text-align: center; margin: 10px">
+    <a class="btn add-finance" style="display: inline-block" th:href="@{/finances/{date}/create(date=${date})}">Create a new expense/income</a>
+</div>
+
 <div class="finance-amount-total" th:if="${!finances.isEmpty()}">
     <h2 th:text="${'Total: ' + finances_amount_total + ' ₴'}"></h2>
 </div>
 
-<form class="filter-finances-form" th:method="GET" th:action="@{/finances/{date}(date=${date})}">
-    <label for="show_only">Show</label>
-    <select name="show_only" class="select-field finance-show-only" id="show_only">
-        <option value="all">All</option>
-        <option value="expenses">Only expenses</option>
-        <option value="incomes">Only incomes</option>
-    </select>
-
-    <button class="btn show_only_button" type="submit">Submit</button>
-</form>
-<form class="create-new-finance-form" th:method="GET" th:action="@{/finances/{date}/create(date=${date})}">
-    <button class="btn add-finance">Create</button>
-</form>
 
 <div class="finances">
     <div class="finance-container" th:each="finance, iterStat: ${finances}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.FinanceType)}">
@@ -82,10 +73,6 @@
             </form>
         </div>
     </div>
-</div>
-
-<div th:with="monthClass=${T(java.time.Month)}" th:if="${finances.isEmpty()}" style="text-align: -webkit-center; margin: 10px 0 20px 0;">
-    <h1 th:text="${'You didn''t have any finance actions on ' + date.getMonth().getDisplayName(T(java.time.format.TextStyle).FULL, T(java.util.Locale).ENGLISH) + ' ' + date.getDayOfMonth()}"></h1>
 </div>
 
 
