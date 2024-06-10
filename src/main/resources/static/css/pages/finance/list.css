@@ -41,16 +41,10 @@
     background-color: #2163ff;
     color: white;
 }
-.finances{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
 .expense{
     background-color: #0000004f;
     border-radius: 10px;
-    width: fit-content;
-    height: 100px;
+    height: 60px;
     margin: 10px 10px 20px 10px;
     padding: 10px
 }
@@ -76,8 +70,7 @@
 .income{
     background-color: #0000004f;
     border-radius: 10px;
-    width: fit-content;
-    height: 100px;
+    height: 60px;
     margin: 10px 10px 20px 10px;
     padding: 10px;
 }
@@ -94,7 +87,9 @@
 }
 .delete-income-form{
     position: relative;
-    top: 10px;
+    bottom: 45px;
+    left: 1220px;
+    display: inline-block
 }
 .delete-income{
     background-color: #ff7c7c;

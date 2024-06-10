@@ -55,7 +55,7 @@
                 )
             </h2>
 
-            <form class="delete-expense-form" th:method="POST" th:action="@{/finances/{date}/{id}(date=${date}, id=${finance.getId()})}" th:object="${finance}">
+            <form class="delete-income-form" th:method="POST" th:action="@{/finances/{date}/{id}(date=${date}, id=${finance.getId()})}" th:object="${finance}">
                 <button style="background-color: #ff7c7c;" class="delete-expense btn" type="submit">Delete</button>
             </form>
         </div>
