@@ -1,6 +1,7 @@
 package org.qweshqa.financialmanager.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -15,13 +16,13 @@ public class User {
     @Column(name = "id")
     private int id;
 
-    @NotBlank
-    @Size(min = 3, max = 30)
-    @Column(name = "username")
-    private String username;
+    @Email
+    @NotBlank(message = "Email field is required to fill")
+    @Column(name = "email")
+    private String email;
 
     @Size(max = 50)
-    @Column(name = "userDisplayName")
+    @Column(name = "user_display_name")
     private String userDisplayName;
 
     @NotBlank(message = "Password field is required to fill")
@@ -36,9 +37,9 @@ public class User {
 
     }
 
-    public User(int id, String username, String userDisplayName, String password, List<Finance> userFinances) {
+    public User(int id, String email, String userDisplayName, String password, List<Finance> userFinances) {
         this.id = id;
-        this.username = username;
+        this.email = email;
         this.userDisplayName = userDisplayName;
         this.password = password;
         this.userFinances = userFinances;
@@ -52,12 +53,12 @@ public class User {
         this.id = id;
     }
 
-    public @NotBlank @Size(min = 3, max = 30) String getUsername() {
-        return username;
+    public @Email @NotBlank(message = "Email field is required to fill") String getEmail() {
+        return email;
     }
 
-    public void setUsername(@NotBlank @Size(min = 3, max = 30) String username) {
-        this.username = username;
+    public void setEmail(@Email @NotBlank(message = "Email field is required to fill") String email) {
+        this.email = email;
     }
 
     public @Size(max = 50) String getUserDisplayName() {
