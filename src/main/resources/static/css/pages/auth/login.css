@@ -1,0 +1,20 @@
+.auth-form{
+    text-align: center;
+    position: relative;
+    top: 150px;
+}
+.auth-form-header{
+    margin: 0 0 20px 0;
+}
+.auth-form-header h1{
+    font-size: 24px;
+    font-weight: 300;
+}
+.login-form .input-field{
+    width: 280px;
+}
+.login-button{
+    width: 300px;
+    background-color: white;
+    margin: 10px 0 10px 0;
+}
