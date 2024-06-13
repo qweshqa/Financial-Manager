@@ -28,73 +28,37 @@
 .finance-amount-total h2{
     color: white;
 }
-.filter-finances-form{
-    margin-left: 10px;
-}
-.filter-finances-form label{
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 20px;
-}
-.show_only_button{
-    background-color: #2163ff;
-    color: white;
-}
-.expense{
+.finance-item{
     background-color: #0000004f;
     border-radius: 10px;
-    height: 60px;
+    height: 50px;
     margin: 10px 10px 20px 10px;
     padding: 10px
 }
-.expense:hover{
+.finance-item:hover{
     opacity: 0.95
 }
-.expense__n-a{
-    margin-bottom: 10px;
-    color: white;
-    max-width: 600px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-.expense__name{
+.finance-item__name{
     color: white;
     font-weight: 500;
+    font-size: 20px;
 }
-.expense__amount{
-    color: #ff7c7c;
+.finance-item__amount{
     font-weight: 500;
+    font-size: 20px;
 }
-.income{
-    background-color: #0000004f;
-    border-radius: 10px;
-    height: 60px;
-    margin: 10px 10px 20px 10px;
-    padding: 10px;
-}
-.income:hover{
-    opacity: 0.95;
-}
-.income__name{
-    color: white;
-    font-weight: 500;
-}
-.income__amount{
-    color: #7cc7ff;
-    font-weight: 500;
-}
-.delete-income-form{
+.delete-finance-item-form{
     position: relative;
-    bottom: 45px;
-    left: 1220px;
-    display: inline-block
+    left: 1280px;
+    bottom: 44px;
+    display: inline-block;
 }
-.delete-income{
+.delete-finance-item{
     background-color: #ff7c7c;
+    color: white;
+    padding: 3px 1px 0 1px;
 }
-.add-finance{
+.add-finance-item{
     background-color: #55bb4d;
     color: white;
     font-size: 13px;
