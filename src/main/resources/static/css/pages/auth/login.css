@@ -10,11 +10,30 @@
     font-size: 24px;
     font-weight: 300;
 }
-.login-form .input-field{
+.auth-form-body{
+    display: inline-block;
+    text-align: left;
+    padding: 15px;
+    background-color: #2b2e36;
+    border-radius: 10px;
+}
+.auth-form-body .input-field{
     width: 280px;
 }
-.login-button{
-    width: 300px;
+.auth-error-block{
+    width: 282px;
+    display: inline-block;
+    background-color: #ff000054;
+    padding: 10px;
+    margin: 0 0 10px 0;
+    border-radius: 5px;
+}
+.auth-error-block h1{
+    color: #ff7b7b;
+    font-size: 16px;
+}
+.auth-button{
+    width: 302px;
     background-color: white;
-    margin: 10px 0 10px 0;
+    margin: 0 0 10px 0;
 }

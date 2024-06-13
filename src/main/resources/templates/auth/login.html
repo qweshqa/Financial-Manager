@@ -16,7 +16,7 @@
     <div class="auth-form-header">
         <h1>Sign in to fLanaer</h1>
     </div>
-    <form class="login-form" name="form" th:method="POST" action="/login/process">
+    <form class="auth-form-body" name="form" th:method="POST" action="/login/process">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
         <div th:if="${param.error}" style="color: red">
@@ -33,7 +33,7 @@
         <input class="input-field" type="password" id="password" name="password"/>
         <br/>
 
-        <input class="btn login-button" type="submit" value="Sign in">
+        <input class="btn auth-button" type="submit" value="Sign in">
     </form>
 
 </div>
