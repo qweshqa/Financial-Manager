@@ -31,7 +31,7 @@
 .finance-item{
     background-color: #0000004f;
     border-radius: 10px;
-    height: 50px;
+    height: 70px;
     margin: 10px 10px 20px 10px;
     padding: 10px
 }
@@ -47,10 +47,15 @@
     font-weight: 500;
     font-size: 20px;
 }
+.finance-item__comment{
+    font-size: 15px;
+    color: #787878;
+    margin-top: 7px;
+}
 .delete-finance-item-form{
     position: relative;
-    left: 1280px;
-    bottom: 44px;
+    left: 1260px;
+    bottom: 60px;
     display: inline-block;
 }
 .delete-finance-item{

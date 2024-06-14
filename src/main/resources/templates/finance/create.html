@@ -35,6 +35,11 @@
         <input class="input-field new-finance__amount" type="text" th:field="*{amount}" id="new-finance-amount">
         <br/>
 
+        <label for="new-finance-comment">Comment(Optional)</label>
+        <br/>
+        <input class="input-field new-finance__comment" type="text" th:field="*{comment}" id="new-finance-comment" placeholder="No comment.">
+        <br/>
+
         <label for="new-finance-type">Action type</label>
         <br/>
         <select th:with="typeClass=${T(org.qweshqa.financialmanager.utils.FinanceType)}" class="select-field new-finance__type" th:field="*{type}" id="new-finance-type">

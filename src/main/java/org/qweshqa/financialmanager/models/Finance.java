@@ -32,6 +32,9 @@ public class Finance {
     @Column(name = "currency")
     private String currency;
 
+    @Column(name = "comment")
+    private String comment;
+
     @NotNull
     @Column(name = "date")
     private LocalDate date;
@@ -50,11 +53,12 @@ public class Finance {
     public Finance() {
     }
 
-    public Finance(int id, String name, BigDecimal amount, String currency, LocalDate date, FinanceType type) {
+    public Finance(int id, String name, BigDecimal amount, String currency, String comment, LocalDate date, FinanceType type) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.currency = currency;
+        this.comment = comment;
         this.date = date;
         this.month = date.getMonth();
         this.type = type;
@@ -95,6 +99,10 @@ public class Finance {
     public void setCurrency(@NotBlank String currency) {
         this.currency = currency;
     }
+
+    public String getComment() { return comment; }
+
+    public void setComment(String comment) { this.comment = comment; }
 
     public @NotNull LocalDate getDate() {
         return date;

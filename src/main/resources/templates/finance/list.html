@@ -51,6 +51,8 @@
 
             <h1 class="finance-item__amount" style="color:#ff7c7c;" th:text="${finance.getAmount()}"></h1>
 
+            <h1 class="finance-item__comment" th:text="${finance.getComment()}"></h1>
+
             <form class="delete-finance-item-form" th:method="POST" th:action="@{/finances/{date}/{id}(date=${date}, id=${finance.getId()})}" th:object="${finance}">
                 <button class="delete-finance-item btn" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
@@ -65,6 +67,8 @@
             <h1 class="finance-item__name" th:text="${finance.getName()}"></h1>
 
             <h1 class="finance-item__amount" style="color: #7cffb2;" th:text="${finance.getAmount()}"></h1>
+
+            <h1 class="finance-item__comment" th:text="${finance.getComment()}"></h1>
 
             <form class="delete-finance-item-form" th:method="POST" th:action="@{/finances/{date}/{id}(date=${date}, id=${finance.getId()})}" th:object="${finance}">
                 <button class="delete-finance-item btn" type="submit">
