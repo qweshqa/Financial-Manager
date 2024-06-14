@@ -44,29 +44,12 @@
 
 
 <div class="finances">
-    <div class="finance-container" th:each="finance, iterStat: ${finances}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.FinanceType)}">
-        <div th:if="${finance.getType() == T(org.qweshqa.financialmanager.utils.FinanceType).EXPENSE}" class="finance-item">
+    <div class="finance-container" th:each="finance, iterStat: ${finances}">
+        <div class="finance-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.FinanceType)}">
 
             <h1 class="finance-item__name" th:text="${finance.getName()}"></h1>
 
-            <h1 class="finance-item__amount" style="color:#ff7c7c;" th:text="${finance.getAmount()}"></h1>
-
-            <h1 class="finance-item__comment" th:text="${finance.getComment()}"></h1>
-
-            <form class="delete-finance-item-form" th:method="POST" th:action="@{/finances/{date}/{id}(date=${date}, id=${finance.getId()})}" th:object="${finance}">
-                <button class="delete-finance-item btn" type="submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
-                        <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"></path>
-                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"></path>
-                    </svg>
-                </button>
-            </form>
-        </div>
-        <div class="finance-item" th:if="${finance.getType() == T(org.qweshqa.financialmanager.utils.FinanceType).INCOME}">
-
-            <h1 class="finance-item__name" th:text="${finance.getName()}"></h1>
-
-            <h1 class="finance-item__amount" style="color: #7cffb2;" th:text="${finance.getAmount()}"></h1>
+            <h1 class="finance-item__amount"  th:style="${finance.getType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2'}" th:text="${finance.getAmount()}"></h1>
 
             <h1 class="finance-item__comment" th:text="${finance.getComment()}"></h1>
 
