@@ -33,16 +33,20 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Finance> userFinances;
 
+    @OneToOne(mappedBy = "user")
+    private Setting setting;
+
     public User(){
 
     }
 
-    public User(int id, String email, String userDisplayName, String password, List<Finance> userFinances) {
+    public User(int id, String email, String userDisplayName, String password, List<Finance> userFinances, Setting setting) {
         this.id = id;
         this.email = email;
         this.userDisplayName = userDisplayName;
         this.password = password;
         this.userFinances = userFinances;
+        this.setting = setting;
     }
 
     public int getId() {
@@ -83,5 +87,13 @@ public class User {
 
     public void setUserFinances(List<Finance> userFinances) {
         this.userFinances = userFinances;
+    }
+
+    public Setting getSetting() {
+        return setting;
+    }
+
+    public void setSetting(Setting setting) {
+        this.setting = setting;
     }
 }

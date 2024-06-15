@@ -20,6 +20,9 @@
 .auth-form-body .input-field{
     width: 280px;
 }
+.auth-form-body .select-field{
+    width: 300px;
+}
 .auth-error-block{
     width: 282px;
     display: inline-block;

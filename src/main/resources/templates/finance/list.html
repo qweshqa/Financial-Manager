@@ -49,7 +49,7 @@
 
             <h1 class="finance-item__name" th:text="${finance.getName()}"></h1>
 
-            <h1 class="finance-item__amount"  th:style="${finance.getType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2'}" th:text="${finance.getAmount()}"></h1>
+            <h1 class="finance-item__amount"  th:style="${finance.getType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2'}" th:text="${finance.getAmount() + ' ' + finance.getCurrency()}"></h1>
 
             <h1 class="finance-item__comment" th:text="${finance.getComment()}"></h1>
 

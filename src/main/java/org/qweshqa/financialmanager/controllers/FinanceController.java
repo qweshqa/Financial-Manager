@@ -3,8 +3,12 @@ package org.qweshqa.financialmanager.controllers;
 import org.qweshqa.financialmanager.models.Finance;
 import org.qweshqa.financialmanager.services.DateService;
 import org.qweshqa.financialmanager.services.FinanceService;
+import org.qweshqa.financialmanager.services.SettingService;
+import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.FinanceType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +24,16 @@ public class FinanceController {
 
     private final DateService dateService;
 
+    private final UserService userService;
+
+    private final SettingService settingService;
+
     @Autowired
-    public FinanceController(FinanceService financeService, DateService dateService) {
+    public FinanceController(FinanceService financeService, DateService dateService, UserService userService, SettingService settingService) {
         this.financeService = financeService;
         this.dateService = dateService;
+        this.userService = userService;
+        this.settingService = settingService;
     }
 
     @GetMapping("/{date}")
@@ -75,7 +85,8 @@ public class FinanceController {
             finance.setComment("No comment.");
         }
         finance.setDate(localDate);
-        finance.setCurrency("₴");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        finance.setCurrency(settingService.findSettingByUser(userService.findUserByEmail(authentication.getName()).get()).get().getCurrencyUnit());
         financeService.save(finance);
 
         return "redirect:/finances/" + localDate;

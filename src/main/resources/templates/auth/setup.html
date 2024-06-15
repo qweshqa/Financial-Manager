@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>One step left!</title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="auth-form">
+    <div class="auth-form-header">
+        <h1>Almost there! Set up an important parameters and start!</h1>
+    </div>
+    <form class="auth-form-body" th:method="POST" th:action="@{/registration/setup}">
+
+        <label for="currency">General currency</label>
+        <br/>
+        <select class="select-field" required id="currency" name="currency">
+            <option value="USD">USD.</option>
+            <option value="EURO">EURO.</option>
+            <option value="UAH">грн.</option>
+            <option value="RUB">руб.</option>
+        </select>
+        <br/>
+
+        <label for="display-name">Your display name(Optional)</label>
+        <br/>
+        <input class="input-field" type="text" id="display-name" name="display-name">
+        <br/>
+
+        <input type="submit" value="Setup"/>
+    </form>
+</div>
+
+</body>
+</html>
