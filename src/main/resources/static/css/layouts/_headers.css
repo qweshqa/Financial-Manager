@@ -1,6 +1,12 @@
 .header{
     position: fixed;
     width: -webkit-fill-available;
+    height: 40px;
     padding: 10px;
     background-color: #26282c;
+}
+.header__user-balance{
+    text-align: center;
+    position: relative;
+    bottom: 45px;
 }

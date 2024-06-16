@@ -25,6 +25,10 @@ public class FinanceService {
         this.financeRepository = financeRepository;
     }
 
+    public Optional<Finance> findById(int id){
+        return financeRepository.findById(id);
+    }
+
     public List<Finance> findAll(){
         return financeRepository.findAll();
     }

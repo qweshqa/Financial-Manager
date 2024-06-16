@@ -18,11 +18,16 @@
     </div>
     <form class="auth-form-body" th:method="POST" th:action="@{/registration/setup}">
 
+        <label for="general-balance">Your current balance</label>
+        <br/>
+        <input class="input-field" type="text" id="general-balance" name="general-balance"/>
+        <br/>
+
         <label for="currency">General currency</label>
         <br/>
         <select class="select-field" required id="currency" name="currency">
             <option value="USD">USD.</option>
-            <option value="EURO">EURO.</option>
+            <option value="EUR">EUR.</option>
             <option value="UAH">грн.</option>
             <option value="RUB">руб.</option>
         </select>

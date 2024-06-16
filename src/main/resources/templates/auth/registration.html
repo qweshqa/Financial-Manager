@@ -17,7 +17,7 @@
         <h1>Sign up on fLanaer</h1>
     </div>
 
-    <form class="auth-form-body" th:method="GET" th:action="@{/registration}" th:object="${user}">
+    <form class="auth-form-body" th:method="POST" th:action="@{/registration}" th:object="${user}">
 
         <label for="email">Email</label>
         <br/>
