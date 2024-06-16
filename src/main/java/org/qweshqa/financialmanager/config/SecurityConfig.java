@@ -47,6 +47,11 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/finances/" + LocalDate.now(), true)
                         .failureUrl("/login?error")
                         .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll()
                 );
 
         return http.build();

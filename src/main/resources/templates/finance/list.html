@@ -24,6 +24,10 @@
             <h5>General balance</h5>
             <h2 th:text="${user.getBalance() + ' ' + user.getSetting().getCurrencyUnit()}"></h2>
         </div>
+
+        <div class="header__logout">
+            <h4><a href="/logout">Logout</a></h4>
+        </div>
     </header>
 </div>
 

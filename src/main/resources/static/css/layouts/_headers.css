@@ -10,3 +10,11 @@
     position: relative;
     bottom: 45px;
 }
+.header__logout{
+    text-align: right;
+    position: relative;
+    bottom: 75px;
+}
+.header__logout a:hover{
+    text-decoration: underline;
+}
