@@ -47,35 +47,4 @@ public class StatisticController {
 
         return "statistic/general";
     }
-    @GetMapping("/expenses_index")
-    public String getAllExpenses(Model model){
-
-        // header
-        model.addAttribute("today", LocalDate.now());
-
-        List<Finance> expenses = financeService.findAllByType(FinanceType.EXPENSE);
-
-        List<Finance> sortedExpenses = expenses.stream()
-                .sorted(Comparator.comparing(Finance::getAmount)).toList().reversed();
-
-        model.addAttribute("expenses", sortedExpenses);
-
-        return "statistic/expenses_index";
-    }
-
-    @GetMapping("/incomes_index")
-    public String getAllIncomes(Model model){
-
-        // header
-        model.addAttribute("today", LocalDate.now());
-
-        List<Finance> incomes = financeService.findAllByType(FinanceType.INCOME);
-
-        List<Finance> sortedIncomes = incomes.stream()
-                .sorted(Comparator.comparing(Finance::getAmount)).toList().reversed();
-
-        model.addAttribute("incomes", sortedIncomes);
-
-        return "statistic/incomes_index";
-    }
 }
