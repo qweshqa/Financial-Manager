@@ -60,7 +60,6 @@ public class Finance {
         this.currency = currency;
         this.comment = comment;
         this.date = date;
-        this.month = date.getMonth();
         this.type = type;
     }
 
@@ -115,6 +114,8 @@ public class Finance {
     public Month getMonth() {
         return month;
     }
+
+    public void setMonth(Month month) { this.month = month; }
 
     public @NotNull FinanceType getType() {
         return type;

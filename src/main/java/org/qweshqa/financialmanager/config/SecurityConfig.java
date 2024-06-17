@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.time.LocalDate;
 
 @Configuration
 @EnableWebSecurity
@@ -44,7 +43,7 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/login/process")
-                        .defaultSuccessUrl("/finances/" + LocalDate.now(), true)
+                        .defaultSuccessUrl("/finances/show", true)
                         .failureUrl("/login?error")
                         .permitAll()
                 )

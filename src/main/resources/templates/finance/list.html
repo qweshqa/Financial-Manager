@@ -15,7 +15,7 @@
 <div style="height: 60px">
     <header class="header">
         <ul class="navbar">
-            <li><h4><a th:href="@{/finances/{date}(date=${today})}">Finances</a></h4></li>
+            <li><h4><a th:href="@{/finances/show}">Finances</a></h4></li>
 
             <li><h4><a href="/statistic">Statistic</a></h4></li>
         </ul>
@@ -31,26 +31,25 @@
     </header>
 </div>
 
-<div style="text-align: -webkit-center;"  th:with="monthClass=${T(java.time.Month)}">
-    <h3 th:text="${date.getMonth().getDisplayName(T(java.time.format.TextStyle).FULL, T(java.util.Locale).ENGLISH) + ' ' + date.getDayOfMonth() + ', ' + date.getYear()}" style="padding: 10px; font-weight: 500;"></h3>
-</div>
+<div class="date-navigation" style="text-align: center;">
+    <form class="finance-display-period-form" th:method="GET" th:action="@{/finances/show}">
 
-<div class="date-navigation">
-    <div class="month-day" th:each="monthDay: ${monthDays}">
-        <a class="month-day__number-href" th:href="@{/finances/2024-{month}-{day}(month=${monthDay.getMonthValue()}, day=${monthDay.getDayOfMonth()})}">
-            <h2 class="month-day__number" th:text="${monthDay.getDayOfMonth()}"></h2>
-        </a>
-    </div>
+        <label for="display-period">Choose display period</label>
+        <select class="select-field" id="display-period" name="displayPeriod">
+            <option value="all-time">All time</option>
+            <option value="month">Month</option>
+            <option value="week">Week</option>
+            <option value="day">day</option>
+        </select>
+        <br/>
+
+        <input style="width: 260px;" type="submit" class="btn " value="Show">
+    </form>
 </div>
 
 <div style="text-align: center; margin: 10px">
-    <a class="btn add-finance-item" style="display: inline-block" th:href="@{/finances/{date}/create(date=${date})}">Create a new expense/income</a>
+    <a class="btn add-finance-item" style="display: inline-block" th:href="@{/finances/create}">Create a new expense/income</a>
 </div>
-
-<div class="finance-amount-total" th:if="${!finances.isEmpty()}">
-    <h2 th:text="${'Total: ' + finances_amount_total + ' ₴'}"></h2>
-</div>
-
 
 <div class="finances">
     <div class="finance-container" th:each="finance, iterStat: ${finances}">
@@ -62,7 +61,7 @@
 
             <h1 class="finance-item__comment" th:text="${finance.getComment()}"></h1>
 
-            <form class="delete-finance-item-form" th:method="POST" th:action="@{/finances/{date}/{id}(date=${date}, id=${finance.getId()})}" th:object="${finance}">
+            <form class="delete-finance-item-form" th:method="POST" th:action="@{/finances/delete/{id}(id=${finance.getId()})}" th:object="${finance}">
                 <button class="delete-finance-item btn" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
                         <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"></path>

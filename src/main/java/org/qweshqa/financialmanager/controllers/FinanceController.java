@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Controller
@@ -36,51 +37,52 @@ public class FinanceController {
         this.settingService = settingService;
     }
 
-    @GetMapping("/{date}")
-    public String getFinancesByDate(@RequestParam(value = "show_only", defaultValue = "all") String showOnly, @PathVariable("date") String date, Model model){
-        date = dateService.formatDate(date);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(date, formatter);
-
-        // date navbar
-        model.addAttribute("date", localDate);
-        model.addAttribute("today", LocalDate.now());
-        model.addAttribute("monthDays", dateService.getMonthDaysInList(localDate.getMonth()));
-
+    @GetMapping("/show")
+    public String showFinances(@RequestParam(value = "displayPeriod", defaultValue = "day") String displayPeriod, Model model){
         // user info
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
 
-        // finances amount total
-        model.addAttribute("finances_amount_total", financeService.getFinanceAmountTotalByDate(localDate));
-
         // index
-        model.addAttribute("finances", financeService.findAllByDate(localDate));
+        switch(displayPeriod){
+            case "all-time":
+                model.addAttribute("finances", financeService.findAll());;
+                break;
+            case "month":
+                model.addAttribute("finances", financeService.findAllByMonth(LocalDate.now().getMonth()));
+                break;
+            case "week":
+                model.addAttribute("finances", financeService.findAllByWeek(LocalDate.now()));
+                break;
+            case "day":
+                model.addAttribute("finances", financeService.findAllByDate(LocalDate.now()));
+                break;
+        }
 
         // empty finance for creating a new one
         model.addAttribute("new_finance", new Finance());
 
+        model.addAttribute("displayPeriod", displayPeriod);
+
         return "finance/list";
     }
 
-    @GetMapping("{date}/create")
-    public String createFinance(@PathVariable("date") String date, Model model){
+    @GetMapping("/create")
+    public String createFinance(Model model){
         model.addAttribute("new_finance", new Finance());
-        model.addAttribute("date", date);
 
         return "finance/create";
     }
 
-    @PostMapping("/{date}")
-    public String addFinance(@ModelAttribute("new_finance") Finance finance, @PathVariable("date") String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(date, formatter);
+    @PostMapping("/add")
+    public String addFinance(@ModelAttribute("new_finance") Finance finance){
 
         if(finance.getComment().isEmpty()){
             finance.setComment("No comment.");
         }
-        finance.setDate(localDate);
+        finance.setDate(LocalDate.now());
+        finance.setMonth(LocalDate.now().getMonth());
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         finance.setCurrency(settingService.findSettingByUser(userService.findUserByEmail(authentication.getName()).get()).get().getCurrencyUnit());
         if(finance.getType() == FinanceType.INCOME){
@@ -89,12 +91,14 @@ public class FinanceController {
 
         financeService.save(finance);
 
-        return "redirect:/finances/" + localDate;
+        return "redirect:/finances/show";
     }
 
-    @PostMapping("/{date}/{id}")
-    public String deleteFinance(@PathVariable("date") String date, @PathVariable("id") int id){
+    @PostMapping("/delete/{id}")
+    public String deleteFinance(@PathVariable("id") int id){
+
         Finance finance = financeService.findById(id).get();
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(finance.getType() == FinanceType.INCOME){
             userService.findUserByEmail(authentication.getName()).get().minusBalance(Float.parseFloat(finance.getAmount().toString()));
@@ -102,6 +106,6 @@ public class FinanceController {
 
         financeService.delete(id);
 
-        return "redirect:/finances/" + date;
+        return "redirect:/finances/show";
     }
 }

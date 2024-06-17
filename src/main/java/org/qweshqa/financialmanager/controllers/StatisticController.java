@@ -30,8 +30,6 @@ public class StatisticController {
 
     @GetMapping()
     public String getGeneralStatistic(Model model){
-        // header
-        model.addAttribute("today", LocalDate.now());
 
         // expense statistic block
         model.addAttribute("general_spending_total", statisticService.getGeneralSpendingTotal());

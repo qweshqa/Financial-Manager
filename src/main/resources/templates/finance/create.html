@@ -15,7 +15,7 @@
 <div style="height: 60px">
     <header class="header">
         <ul class="navbar">
-            <li><h4><a th:href="@{/finances/{date}(date=${today})}">Finances</a></h4></li>
+            <li><h4><a th:href="@{/finances/show}">Finances</a></h4></li>
 
             <li><h4><a href="/statistic">Statistic</a></h4></li>
         </ul>
@@ -27,7 +27,7 @@
 </div>
 
 <div class="new-finance">
-    <form class="new-finance-form" th:method="POST" th:action="@{/finances/{date}(date=${date})}" th:object="${new_finance}">
+    <form class="new-finance-form" th:method="POST" th:action="@{/finances/add}" th:object="${new_finance}">
 
         <label for="new-finance-name">Name</label>
         <br/>

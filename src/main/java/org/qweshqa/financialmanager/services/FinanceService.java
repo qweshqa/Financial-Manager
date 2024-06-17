@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -41,12 +43,24 @@ public class FinanceService {
         return financeRepository.findAllByDate(date);
     }
 
-    public List<Finance> findAllByDateAndType(LocalDate date, FinanceType type){
-        return financeRepository.findAllByDateAndType(date, type);
-    }
-
     public List<Finance> findAllByMonth(Month month){
         return financeRepository.findAllByMonth(month);
+    }
+
+    public List<Finance> findAllByWeek(LocalDate date){
+        LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
+
+        List<Finance> finances = new ArrayList<>();
+        for(int i = 0; i < 7; i++){
+            List<Finance> financesInDay = financeRepository.findAllByDate(startOfWeek.plusDays(i));
+            finances.addAll(financesInDay);
+        }
+
+        return finances;
+    }
+
+    public List<Finance> findAllByDateAndType(LocalDate date, FinanceType type){
+        return financeRepository.findAllByDateAndType(date, type);
     }
 
     public Optional<Finance> findBiggestExpenseOrIncome(FinanceType type){
