@@ -26,7 +26,9 @@
         </div>
 
         <div class="header__logout">
-            <h4><a href="/logout">Logout</a></h4>
+            <form th:action="@{/logout}" method="post">
+                <button class="logout-button" type="submit">Logout</button>
+            </form>
         </div>
     </header>
 </div>

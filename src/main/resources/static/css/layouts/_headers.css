@@ -19,6 +19,13 @@
     width: 83%;
     margin-left: 17%;
 }
-.header__logout a:hover{
+.logout-button{
+    color: white;
+    background-color: #26282c;
+    padding: 0;
+    border-style: none;
+    font-size: 16px;
+}
+.logout-button:hover{
     text-decoration: underline;
 }
