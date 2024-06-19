@@ -39,20 +39,16 @@ public class FinanceService {
         return financeRepository.findAllByType(type);
     }
 
-    public List<Finance> findAllByDate(LocalDate date){
-        return financeRepository.findAllByDate(date);
+    public List<Finance> findAllByMonthAndType(Month month, FinanceType financeType){
+        return financeRepository.findAllByMonthAndType(month, financeType);
     }
 
-    public List<Finance> findAllByMonth(Month month){
-        return financeRepository.findAllByMonth(month);
-    }
-
-    public List<Finance> findAllByWeek(LocalDate date){
+    public List<Finance> findAllByWeekAndType(LocalDate date, FinanceType financeType){
         LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
 
         List<Finance> finances = new ArrayList<>();
         for(int i = 0; i < 7; i++){
-            List<Finance> financesInDay = financeRepository.findAllByDate(startOfWeek.plusDays(i));
+            List<Finance> financesInDay = financeRepository.findAllByDateAndType(startOfWeek.plusDays(i), financeType);
             finances.addAll(financesInDay);
         }
 

@@ -15,5 +15,5 @@ public interface FinanceRepository extends JpaRepository<Finance, Integer> {
 
     List<Finance> findAllByDateAndType(LocalDate date, FinanceType type);
 
-    List<Finance> findAllByMonth(Month month);
+    List<Finance> findAllByMonthAndType(Month month, FinanceType type);
 }

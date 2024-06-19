@@ -1,11 +1,15 @@
-.finance-amount-total{
-    text-align: -webkit-center;
-    background-color: #363a3ec2;
-    border-radius: 20px;
-    margin: 10px 10px 10px 10px;
+.finance-type-navigation{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #00000054;
+    margin: 0 10px 20px 10px;
+    border-radius: 10px;
 }
-.finance-amount-total h2{
-    color: white;
+.finance-type{
+    background-color: #00000063;
+    padding: 10px;
+    margin: 30px;
 }
 .finance-item{
     background-color: #0000004f;

@@ -33,7 +33,7 @@
     </header>
 </div>
 
-<div class="date-navigation" style="text-align: center;">
+<div class="date-navigation" style="text-align: center; margin: 10px">
     <form class="finance-display-period-form" th:method="GET" th:action="@{/finances/show}">
 
         <label for="display-period">Choose display period</label>
@@ -49,8 +49,13 @@
     </form>
 </div>
 
-<div style="text-align: center; margin: 10px">
-    <a class="btn add-finance-item" style="display: inline-block" th:href="@{/finances/create}">Create a new expense/income</a>
+<div class="finance-type-navigation">
+    <div class="expense-type">
+        <a class="finance-type btn" href="/finances/show?display=expense&displayPeriod=day">Expenses</a>
+    </div>
+    <div class="income-type">
+        <a class="finance-type btn" href="/finances/show?display=income&displayPeriod=day">Incomes</a>
+    </div>
 </div>
 
 <div class="finances">
@@ -75,6 +80,9 @@
     </div>
 </div>
 
+<div style="text-align: center; margin: 0 0 10px 0">
+    <a class="btn add-finance-item" style="display: inline-block" th:href="@{/finances/create}">Create a new expense/income</a>
+</div>
 
 </body>
 </html>

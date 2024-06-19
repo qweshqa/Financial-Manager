@@ -14,8 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/finances")
@@ -38,7 +36,8 @@ public class FinanceController {
     }
 
     @GetMapping("/show")
-    public String showFinances(@RequestParam(value = "displayPeriod", defaultValue = "day") String displayPeriod, Model model){
+    public String showFinances(@RequestParam(value = "display", defaultValue = "expense") String financeType,
+            @RequestParam(value = "displayPeriod", defaultValue = "day") String displayPeriod, Model model){
         // user info
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
@@ -46,16 +45,16 @@ public class FinanceController {
         // index
         switch(displayPeriod){
             case "all-time":
-                model.addAttribute("finances", financeService.findAll());;
+                model.addAttribute("finances", financeService.findAllByType(FinanceType.valueOf(financeType.toUpperCase())));;
                 break;
             case "month":
-                model.addAttribute("finances", financeService.findAllByMonth(LocalDate.now().getMonth()));
+                model.addAttribute("finances", financeService.findAllByMonthAndType(LocalDate.now().getMonth(), FinanceType.valueOf(financeType.toUpperCase())));
                 break;
             case "week":
-                model.addAttribute("finances", financeService.findAllByWeek(LocalDate.now()));
+                model.addAttribute("finances", financeService.findAllByWeekAndType(LocalDate.now(), FinanceType.valueOf(financeType.toUpperCase())));
                 break;
             case "day":
-                model.addAttribute("finances", financeService.findAllByDate(LocalDate.now()));
+                model.addAttribute("finances", financeService.findAllByDateAndType(LocalDate.now(), FinanceType.valueOf(financeType.toUpperCase())));
                 break;
         }
 
