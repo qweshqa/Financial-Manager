@@ -61,7 +61,9 @@ public class FinanceController {
         // empty finance for creating a new one
         model.addAttribute("new_finance", new Finance());
 
+        // add request params
         model.addAttribute("displayPeriod", displayPeriod);
+        model.addAttribute("financeType", financeType);
 
         return "finance/list";
     }

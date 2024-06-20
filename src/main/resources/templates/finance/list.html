@@ -34,10 +34,27 @@
 </div>
 
 <div class="date-navigation" style="text-align: center; margin: 10px">
-    <form class="finance-display-period-form" th:method="GET" th:action="@{/finances/show}">
+    <form th:if="${financeType.equals('expense')}" class="finance-display-period-form" th:method="GET" th:action="@{/finances/show}">
 
-        <label for="display-period">Choose display period</label>
-        <select class="select-field" id="display-period" name="displayPeriod">
+        <input type="hidden" name="display" value="expense"/>
+
+        <label for="expense-display-period">Choose display period</label>
+        <select class="select-field" id="expense-display-period" name="displayPeriod">
+            <option value="all-time">All time</option>
+            <option value="month">Month</option>
+            <option value="week">Week</option>
+            <option value="day">day</option>
+        </select>
+        <br/>
+
+        <input style="width: 260px;" type="submit" class="btn " value="Show">
+    </form>
+    <form th:if="${financeType.equals('income')}" class="finance-display-period-form" th:method="GET" th:action="@{/finances/show}">
+
+        <input type="hidden" name="display" value="income"/>
+
+        <label for="income-display-period">Choose display period</label>
+        <select class="select-field" id="income-display-period" name="displayPeriod">
             <option value="all-time">All time</option>
             <option value="month">Month</option>
             <option value="week">Week</option>
