@@ -8,7 +8,11 @@
 @import url('layouts/_headers.css');
 
 @import url('pages/auth/login.css');
+
 @import url('pages/finance/create.css');
 @import url('pages/finance/list.css');
+
+@import url('pages/settings/currency.css');
+
 @import url('pages/date-navigation.css');
 @import url('pages/general-statistic.css');

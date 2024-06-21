@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Currency settings</title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="notify-success-block" th:if="${param.success}">
+    <h1>Update was successful</h1>
+</div>
+
+<div class="settings">
+
+    <form class="currency-setting" th:method="PATCH" th:action="@{/settings/{id}(id=${settingsId})}" th:object="${settings}">
+
+        <label for="currency-select">Select currency</label>
+        <select class="select-field" id="currency-select" th:field="*{currencyUnit}">
+            <option th:value="${user_currency}" th:text="${user_currency}" selected></option>
+            <option th:each="currency: ${currencies}" th:value="${currency}" th:text="${currency}"></option>
+        </select>
+        <br/>
+
+        <button class="btn" type="submit">Save</button>
+    </form>
+
+</div>
+
+</body>
+</html>
