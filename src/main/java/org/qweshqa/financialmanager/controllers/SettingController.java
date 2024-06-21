@@ -43,6 +43,9 @@ public class SettingController {
 
         currencies.remove(user.getSetting().getCurrencyUnit());
 
+        // header
+        model.addAttribute("user", user);
+
         model.addAttribute("user_currency", user.getSetting().getCurrencyUnit());
         model.addAttribute("currencies", currencies);
         model.addAttribute("settings", new Setting());

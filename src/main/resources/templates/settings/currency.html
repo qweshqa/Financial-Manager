@@ -12,23 +12,54 @@
 </head>
 <body>
 
-<div class="notify-success-block" th:if="${param.success}">
-    <h1>Update was successful</h1>
+
+<div id="header-space" style="height: 60px"></div>
+<div class="header">
+
+    <div class="header__user-balance">
+        <h5>General balance</h5>
+        <h2 th:text="${user.getBalance() + ' ' + user.getSetting().getCurrencyUnit()}"></h2>
+    </div>
+
+    <div class="header__logout">
+        <form th:action="@{/logout}" method="post">
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
 </div>
 
-<div class="settings">
+<div class="sidebar">
+    <header>Flanaer</header>
+    <ul class="navbar">
+        <li><a href="/finances/show">Dashboard</a></li>
 
-    <form class="currency-setting" th:method="PATCH" th:action="@{/settings/{id}(id=${settingsId})}" th:object="${settings}">
+        <li><a href="/statistic">Statistic</a></li>
 
-        <label for="currency-select">Select currency</label>
-        <select class="select-field" id="currency-select" th:field="*{currencyUnit}">
-            <option th:value="${user_currency}" th:text="${user_currency}" selected></option>
-            <option th:each="currency: ${currencies}" th:value="${currency}" th:text="${currency}"></option>
-        </select>
-        <br/>
+        <li><a href="/settings">Settings</a></li>
+    </ul>
+</div>
 
-        <button class="btn" type="submit">Save</button>
-    </form>
+<div class="content">
+
+    <div class="notify-success-block" th:if="${param.success}">
+        <h1>Update was successful</h1>
+    </div>
+
+    <div class="settings">
+
+        <form class="currency-setting" th:method="PATCH" th:action="@{/settings/{id}(id=${settingsId})}" th:object="${settings}">
+
+            <label for="currency-select">Select currency</label>
+            <select class="select-field" id="currency-select" th:field="*{currencyUnit}">
+                <option th:value="${user_currency}" th:text="${user_currency}" selected></option>
+                <option th:each="currency: ${currencies}" th:value="${currency}" th:text="${currency}"></option>
+            </select>
+            <br/>
+
+            <button class="btn" type="submit">Save</button>
+        </form>
+
+    </div>
 
 </div>
 

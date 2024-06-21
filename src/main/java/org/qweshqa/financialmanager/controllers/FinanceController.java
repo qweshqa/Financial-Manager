@@ -71,6 +71,8 @@ public class FinanceController {
     @GetMapping("/create")
     public String createFinance(Model model){
         model.addAttribute("new_finance", new Finance());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
 
         return "finance/create";
     }

@@ -2,17 +2,17 @@
     overflow: hidden;
 }
 .navbar li{
-    float: left;
-}
-.navbar h4{
-    margin: 10px;
+    width: 100%;
 }
 .navbar li a{
+    display: block;
+    height: 100%;
     color: white;
-    font-weight: 100;
+    font-weight: 500;
     text-decoration: none;
-    padding: 3px 15px 3px 15px;
-    border-radius: 20px;
+    border-radius: 10px;
+    padding: 10px 55px 10px 45px;
+    margin: 0 10px 10px 10px;
 }
 .navbar li a:hover{
     background-color: #6a6a6a29;

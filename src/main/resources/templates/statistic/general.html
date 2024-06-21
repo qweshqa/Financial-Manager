@@ -13,32 +13,43 @@
 </head>
 <body>
 
-<div style="height: 60px">
-    <header class="header">
-        <ul class="navbar">
-            <li><h4><a th:href="@{/finances/show}">Finances</a></h4></li>
+<div id="header-space" style="height: 60px"></div>
+<div class="header">
 
-            <li><h4><a href="/statistic">Statistic</a></h4></li>
-        </ul>
-
-        <div class="header__logout">
-            <h4><a href="/logout">Logout</a></h4>
-        </div>
-    </header>
+    <div class="header__logout">
+        <form th:action="@{/logout}" method="post">
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
 </div>
 
-<div id="statistic" style="display: flex;">
-    <div class="expenses statistic-block">
-        <h4 th:text="${'Expense total: ' + general_spending_total + ' грн.'}"></h4>
-        <h4 th:text="${'Total amount of expenses: ' + total_amount_of_spending}"></h4>
-        <h4 th:if="${biggest_expense}" th:text="${'Your biggest expense: ' + biggest_expense.getName() + ', ' + biggest_expense.getAmountToDisplay()}"></h4>
+<div class="sidebar">
+    <header>Flanaer</header>
+    <ul class="navbar">
+        <li><a href="/finances/show">Dashboard</a></li>
+
+        <li><a href="/statistic">Statistic</a></li>
+
+        <li><a href="/settings">Settings</a></li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <div id="statistic" style="display: flex;">
+        <div class="expenses statistic-block">
+            <h4 th:text="${'Expense total: ' + general_spending_total + ' грн.'}"></h4>
+            <h4 th:text="${'Total amount of expenses: ' + total_amount_of_spending}"></h4>
+            <h4 th:if="${biggest_expense}" th:text="${'Your biggest expense: ' + biggest_expense.getName() + ', ' + biggest_expense.getAmountToDisplay()}"></h4>
+        </div>
+
+        <div class="incomes statistic-block">
+            <h4 th:text="${'Income total: ' + general_income_total + ' грн.'}"></h4>
+            <h4 th:text="${'Total amount of incomes: ' + total_amount_of_incomes}"></h4>
+            <h4 th:if="${biggest_income}" th:text="${'Your biggest income: ' + biggest_income.getName() + ', ' + biggest_income.getAmountToDisplay()}"></h4>
+        </div>
     </div>
 
-    <div class="incomes statistic-block">
-        <h4 th:text="${'Income total: ' + general_income_total + ' грн.'}"></h4>
-        <h4 th:text="${'Total amount of incomes: ' + total_amount_of_incomes}"></h4>
-        <h4 th:if="${biggest_income}" th:text="${'Your biggest income: ' + biggest_income.getName() + ', ' + biggest_income.getAmountToDisplay()}"></h4>
-    </div>
 </div>
 
 </body>

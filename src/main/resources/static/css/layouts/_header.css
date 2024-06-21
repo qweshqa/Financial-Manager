@@ -1,21 +1,19 @@
 .header{
     position: fixed;
+    top: 0;
     width: -webkit-fill-available;
     height: 40px;
     padding: 10px;
     background-color: #26282c;
 }
 .header__user-balance{
-    position: relative;
-    bottom: 45px;
-    max-width: 66%;
-    margin-left: 220px;
+    margin-left: 190px;
     text-align: center;
 }
 .header__logout{
     text-align: right;
     position: relative;
-    bottom: 75px;
+    bottom: 35px;
     width: 83%;
     margin-left: 17%;
 }

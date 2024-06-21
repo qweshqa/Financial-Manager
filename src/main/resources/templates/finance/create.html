@@ -12,49 +12,65 @@
 </head>
 <body>
 
-<div style="height: 60px">
-    <header class="header">
-        <ul class="navbar">
-            <li><h4><a th:href="@{/finances/show}">Finances</a></h4></li>
+<div id="header-space" style="height: 60px"></div>
+<div class="header">
 
-            <li><h4><a href="/statistic">Statistic</a></h4></li>
-        </ul>
+    <div class="header__user-balance">
+        <h5>General balance</h5>
+        <h2 th:text="${user.getBalance() + ' ' + user.getSetting().getCurrencyUnit()}"></h2>
+    </div>
 
-        <div class="header__logout">
-            <h4><a href="/logout">Logout</a></h4>
-        </div>
-    </header>
+    <div class="header__logout">
+        <form th:action="@{/logout}" method="post">
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
 </div>
 
-<div class="new-finance">
-    <form class="new-finance-form" th:method="POST" th:action="@{/finances/add}" th:object="${new_finance}">
+<div class="sidebar">
+    <header>Flanaer</header>
+    <ul class="navbar">
+        <li><a href="/finances/show">Dashboard</a></li>
 
-        <label for="new-finance-name">Name</label>
-        <br/>
-        <input class="input-field new-finance__name" type="text" th:field="*{name}" id="new-finance-name">
-        <br/>
+        <li><a href="/statistic">Statistic</a></li>
 
-        <label for="new-finance-amount">Amount</label>
-        <br/>
-        <input class="input-field new-finance__amount" type="text" th:field="*{amount}" id="new-finance-amount">
-        <br/>
+        <li><a href="/settings">Settings</a></li>
+    </ul>
+</div>
 
-        <label for="new-finance-comment">Comment(Optional)</label>
-        <br/>
-        <input class="input-field new-finance__comment" type="text" th:field="*{comment}" id="new-finance-comment" placeholder="No comment.">
-        <br/>
+<div class="content">
 
-        <label for="new-finance-type">Action type</label>
-        <br/>
-        <select th:with="typeClass=${T(org.qweshqa.financialmanager.utils.FinanceType)}" class="select-field new-finance__type" th:field="*{type}" id="new-finance-type">
-            <option th:value="${T(org.qweshqa.financialmanager.utils.FinanceType).INCOME}">Income</option>
-            <option th:value="${T(org.qweshqa.financialmanager.utils.FinanceType).EXPENSE}">Expense</option>
-        </select>
-        <br/>
+    <div class="new-finance">
+        <form class="new-finance-form" th:method="POST" th:action="@{/finances/add}" th:object="${new_finance}">
 
-        <button class="add-finance-item btn" type="submit">Create a new expense/income</button>
+            <label for="new-finance-name">Name</label>
+            <br/>
+            <input class="input-field new-finance__name" type="text" th:field="*{name}" id="new-finance-name">
+            <br/>
 
-    </form>
+            <label for="new-finance-amount">Amount</label>
+            <br/>
+            <input class="input-field new-finance__amount" type="text" th:field="*{amount}" id="new-finance-amount">
+            <br/>
+
+            <label for="new-finance-comment">Comment(Optional)</label>
+            <br/>
+            <input class="input-field new-finance__comment" type="text" th:field="*{comment}" id="new-finance-comment" placeholder="No comment.">
+            <br/>
+
+            <label for="new-finance-type">Action type</label>
+            <br/>
+            <select th:with="typeClass=${T(org.qweshqa.financialmanager.utils.FinanceType)}" class="select-field new-finance__type" th:field="*{type}" id="new-finance-type">
+                <option th:value="${T(org.qweshqa.financialmanager.utils.FinanceType).INCOME}">Income</option>
+                <option th:value="${T(org.qweshqa.financialmanager.utils.FinanceType).EXPENSE}">Expense</option>
+            </select>
+            <br/>
+
+            <button class="add-finance-item btn" type="submit">Create a new expense/income</button>
+
+        </form>
+    </div>
+
 </div>
 
 </body>
