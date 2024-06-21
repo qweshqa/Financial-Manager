@@ -35,7 +35,7 @@ public class FinanceController {
         this.settingService = settingService;
     }
 
-    @GetMapping("/show")
+    @RequestMapping(value = "/show", method = RequestMethod.GET)
     public String showFinances(@RequestParam(value = "display", defaultValue = "expense") String financeType,
             @RequestParam(value = "displayPeriod", defaultValue = "day") String displayPeriod, Model model){
         // user info
@@ -68,7 +68,7 @@ public class FinanceController {
         return "finance/list";
     }
 
-    @GetMapping("/create")
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createFinance(Model model){
         model.addAttribute("new_finance", new Finance());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -77,7 +77,7 @@ public class FinanceController {
         return "finance/create";
     }
 
-    @PostMapping("/add")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addFinance(@ModelAttribute("new_finance") Finance finance){
 
         if(finance.getComment().isEmpty()){
@@ -97,7 +97,7 @@ public class FinanceController {
         return "redirect:/finances/show";
     }
 
-    @PostMapping("/delete/{id}")
+    @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
     public String deleteFinance(@PathVariable("id") int id){
 
         Finance finance = financeService.findById(id).get();

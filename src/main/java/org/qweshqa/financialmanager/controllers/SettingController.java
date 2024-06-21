@@ -29,7 +29,7 @@ public class SettingController {
         this.userService = userService;
     }
 
-    @GetMapping("/currency")
+    @RequestMapping(value = "/currency", method = RequestMethod.GET)
     public String getCurrencySettings(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName()).get();

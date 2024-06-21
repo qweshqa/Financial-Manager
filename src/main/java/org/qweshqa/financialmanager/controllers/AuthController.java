@@ -13,10 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
@@ -40,7 +37,7 @@ public class AuthController {
         this.settingService = settingService;
     }
 
-    @GetMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
@@ -50,7 +47,7 @@ public class AuthController {
         return "auth/login";
     }
 
-    @GetMapping("/registration")
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
@@ -62,7 +59,7 @@ public class AuthController {
         return "auth/registration";
     }
 
-    @PostMapping("/registration")
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String register(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model){
         userValidator.validate(user, bindingResult);
 
@@ -75,7 +72,7 @@ public class AuthController {
         return "redirect:/registration/setup";
     }
 
-    @GetMapping("/registration/setup")
+    @RequestMapping(value = "/registration/setup", method = RequestMethod.GET)
     public String userSetup(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
@@ -85,7 +82,7 @@ public class AuthController {
         return "auth/setup";
     }
 
-    @PostMapping("/registration/setup")
+    @RequestMapping(value = "/registration/setuo", method = RequestMethod.POST)
     public String performUserSetup(@RequestParam("currency") String currency,
                                    @RequestParam(value = "general-balance", defaultValue = "0" ) int balance,
                                    @RequestParam(value = "display-name", defaultValue = "", required = false) String displayName) {
