@@ -46,10 +46,10 @@
 
             <label for="expense-display-period">Choose display period</label>
             <select class="select-field" id="expense-display-period" name="displayPeriod">
-                <option value="all-time">All time</option>
-                <option value="month">Month</option>
+                <option value="day">Day</option>
                 <option value="week">Week</option>
-                <option value="day">day</option>
+                <option value="month">Month</option>
+                <option value="all-time">All time</option>
             </select>
             <br/>
 
@@ -61,10 +61,10 @@
 
             <label for="income-display-period">Choose display period</label>
             <select class="select-field" id="income-display-period" name="displayPeriod">
-                <option value="all-time">All time</option>
-                <option value="month">Month</option>
+                <option value="day">Day</option>
                 <option value="week">Week</option>
-                <option value="day">day</option>
+                <option value="month">Month</option>
+                <option value="all-time">All time</option>
             </select>
             <br/>
 
@@ -104,7 +104,7 @@
     </div>
 
     <div style="text-align: center; margin: 0 0 10px 0">
-        <a class="btn add-finance-item" style="display: inline-block" th:href="@{/finances/create}">Create a new expense/income</a>
+        <a class="btn add-finance-item" style="display: inline-block" th:href="@{/finances/create(type=${financeType})}">Create</a>
     </div>
 
 </div>

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;
-import java.time.LocalDate;
 
 @Controller
 public class AuthController {
@@ -41,7 +40,7 @@ public class AuthController {
     public String login(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
-            return "redirect:/finances/" + LocalDate.now();
+            return "redirect:/finances/show";
         }
 
         return "auth/login";
@@ -51,7 +50,7 @@ public class AuthController {
     public String registration(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
-            return "redirect:/finances/" + LocalDate.now();
+            return "redirect:/finances/show";
         }
 
         model.addAttribute("user", new User());
@@ -76,13 +75,13 @@ public class AuthController {
     public String userSetup(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
-            return "redirect:/finances/" + LocalDate.now();
+            return "redirect:/finances/show";
         }
 
         return "auth/setup";
     }
 
-    @RequestMapping(value = "/registration/setuo", method = RequestMethod.POST)
+    @RequestMapping(value = "/registration/setup", method = RequestMethod.POST)
     public String performUserSetup(@RequestParam("currency") String currency,
                                    @RequestParam(value = "general-balance", defaultValue = "0" ) int balance,
                                    @RequestParam(value = "display-name", defaultValue = "", required = false) String displayName) {

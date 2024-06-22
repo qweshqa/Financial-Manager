@@ -6,6 +6,7 @@ import org.qweshqa.financialmanager.services.FinanceService;
 import org.qweshqa.financialmanager.services.SettingService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.FinanceType;
+import org.qweshqa.financialmanager.utils.FinanceTypeStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,13 +27,15 @@ public class FinanceController {
     private final UserService userService;
 
     private final SettingService settingService;
+    private final FinanceTypeStringConverter financeTypeStringConverter;
 
     @Autowired
-    public FinanceController(FinanceService financeService, DateService dateService, UserService userService, SettingService settingService) {
+    public FinanceController(FinanceService financeService, DateService dateService, UserService userService, SettingService settingService, FinanceTypeStringConverter financeTypeStringConverter) {
         this.financeService = financeService;
         this.dateService = dateService;
         this.userService = userService;
         this.settingService = settingService;
+        this.financeTypeStringConverter = financeTypeStringConverter;
     }
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -69,17 +72,19 @@ public class FinanceController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String createFinance(Model model){
+    public String createFinance(@RequestParam("type") String type, Model model){
         model.addAttribute("new_finance", new Finance());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
+        model.addAttribute("financeType", type);
 
         return "finance/create";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addFinance(@ModelAttribute("new_finance") Finance finance){
+    public String addFinance(@RequestParam("type") String type, @ModelAttribute("new_finance") Finance finance){
 
+        finance.setType(financeTypeStringConverter.convert(type));
         if(finance.getComment().isEmpty()){
             finance.setComment("No comment.");
         }
@@ -94,7 +99,7 @@ public class FinanceController {
 
         financeService.save(finance);
 
-        return "redirect:/finances/show";
+        return "redirect:/finances/show?display=" + type;
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
