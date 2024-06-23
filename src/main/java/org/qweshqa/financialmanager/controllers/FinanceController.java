@@ -1,7 +1,6 @@
 package org.qweshqa.financialmanager.controllers;
 
 import org.qweshqa.financialmanager.models.Finance;
-import org.qweshqa.financialmanager.services.DateService;
 import org.qweshqa.financialmanager.services.FinanceService;
 import org.qweshqa.financialmanager.services.SettingService;
 import org.qweshqa.financialmanager.services.UserService;
@@ -22,17 +21,14 @@ public class FinanceController {
 
     private final FinanceService financeService;
 
-    private final DateService dateService;
-
     private final UserService userService;
 
     private final SettingService settingService;
     private final FinanceTypeStringConverter financeTypeStringConverter;
 
     @Autowired
-    public FinanceController(FinanceService financeService, DateService dateService, UserService userService, SettingService settingService, FinanceTypeStringConverter financeTypeStringConverter) {
+    public FinanceController(FinanceService financeService, UserService userService, SettingService settingService, FinanceTypeStringConverter financeTypeStringConverter) {
         this.financeService = financeService;
-        this.dateService = dateService;
         this.userService = userService;
         this.settingService = settingService;
         this.financeTypeStringConverter = financeTypeStringConverter;

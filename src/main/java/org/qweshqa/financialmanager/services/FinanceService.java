@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
@@ -63,22 +62,6 @@ public class FinanceService {
         return financeRepository.findAllByType(type).stream()
                 .max(Comparator.comparing(Finance::getAmount));
     }
-
-    public BigDecimal getFinanceAmountTotalByDateAndType(LocalDate date, FinanceType type){
-        return financeRepository.findAllByDateAndType(date, type)
-                .stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    public BigDecimal getFinanceAmountTotalByDate(LocalDate date){
-        return financeRepository.findAllByDateAndType(date, FinanceType.INCOME)
-                .stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add)
-
-                .subtract(financeRepository.findAllByDateAndType(date, FinanceType.EXPENSE)
-                        .stream().map(Finance::getAmount)
-                        .reduce(BigDecimal.ZERO, BigDecimal::add));
-    }
-
-
 
     @Transactional
     public void save(Finance finance){
