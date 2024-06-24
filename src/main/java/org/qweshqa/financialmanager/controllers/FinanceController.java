@@ -1,5 +1,6 @@
 package org.qweshqa.financialmanager.controllers;
 
+import jakarta.validation.Valid;
 import org.qweshqa.financialmanager.models.Finance;
 import org.qweshqa.financialmanager.services.FinanceService;
 import org.qweshqa.financialmanager.services.SettingService;
@@ -11,9 +12,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/finances")
@@ -104,6 +107,34 @@ public class FinanceController {
         financeService.save(finance);
 
         return "redirect:/finances/show?display=" + type;
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String editFinance(@PathVariable("id") int id, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Optional<Finance> finance = financeService.findById(id);
+        if(finance.isEmpty()){
+            model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
+            model.addAttribute("errorTitle", "Page not found");
+            model.addAttribute("errorMessage", "404. Nothing was found.");
+            return "/error";
+        }
+
+        model.addAttribute("finance", finance.get());
+        model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
+
+        return "/finance/edit";
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
+    public String updateFinance(@PathVariable("id") int id, @ModelAttribute("finance") Finance finance){
+
+        Finance financeToUpdate = financeService.findById(id).get();
+
+        financeService.update(financeToUpdate, finance);
+
+        return "redirect:/finances/show?display=" + financeToUpdate.getType().toString().toLowerCase();
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})

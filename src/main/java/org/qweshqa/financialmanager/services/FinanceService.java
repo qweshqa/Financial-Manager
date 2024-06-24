@@ -100,6 +100,13 @@ public class FinanceService {
     }
 
     @Transactional
+    public void update(Finance financeToUpdate, Finance updatedFinance){
+        financeToUpdate.setName(updatedFinance.getName());
+        financeToUpdate.setAmount(updatedFinance.getAmount());
+        financeToUpdate.setComment(updatedFinance.getComment());
+    }
+
+    @Transactional
     public void delete(int id){
         financeRepository.deleteById(id);
     }

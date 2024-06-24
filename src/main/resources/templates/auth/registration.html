@@ -25,7 +25,7 @@
         <input class="input-field" type="email" id="email" th:field="*{email}"/>
         <br/>
 
-        <div class="auth-error-block" th:if="${#fields.hasErrors('email')}">
+        <div class="error-block" th:if="${#fields.hasErrors('email')}">
             <h1 th:errors="*{email}"></h1>
         </div>
         <br th:if="${#fields.hasErrors('email')}"/>
@@ -36,7 +36,7 @@
         <input class="input-field" type="password" id="password" th:field="*{password}"/>
         <br/>
 
-        <div class="auth-error-block" th:if="${#fields.hasErrors('password')}">
+        <div class="error-block" th:if="${#fields.hasErrors('password')}">
             <h1 th:errors="*{password}"></h1>
         </div>
         <br/>
