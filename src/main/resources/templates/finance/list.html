@@ -73,11 +73,13 @@
     </div>
 
     <div class="finance-type-navigation">
-        <div class="expense-type">
-            <a class="finance-type btn" href="/finances/show?display=expense&displayPeriod=day">Expenses</a>
+        <div class="finance-type-block">
+            <a class="finance-type btn" href="/finances/show?display=expense&displayPeriod=day">Expenses
+                <h1 th:text="${expense_total + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#ff7c7c;"></h1></a>
         </div>
-        <div class="income-type">
-            <a class="finance-type btn" href="/finances/show?display=income&displayPeriod=day">Incomes</a>
+        <div class="finance-type-block">
+            <a class="finance-type btn" href="/finances/show?display=income&displayPeriod=day">Incomes
+                <h1 th:text="${income_total + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#7cffb2"></h1></a>
         </div>
     </div>
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
@@ -38,6 +39,10 @@ public class FinanceService {
         return financeRepository.findAllByType(type);
     }
 
+    public List<Finance> findAllByDateAndType(LocalDate date, FinanceType type){
+        return financeRepository.findAllByDateAndType(date, type);
+    }
+
     public List<Finance> findAllByMonthAndType(Month month, FinanceType financeType){
         return financeRepository.findAllByMonthAndType(month, financeType);
     }
@@ -54,8 +59,34 @@ public class FinanceService {
         return finances;
     }
 
-    public List<Finance> findAllByDateAndType(LocalDate date, FinanceType type){
-        return financeRepository.findAllByDateAndType(date, type);
+    public BigDecimal getDailyFinanceTotalByType(FinanceType type){
+        List<Finance> finances = financeRepository.findAllByDateAndType(LocalDate.now(), type);
+
+        return finances.stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getWeeklyFinanceTotalByType(FinanceType type){
+        LocalDate startOfWeek = LocalDate.now().with(DayOfWeek.MONDAY);
+
+        List<Finance> finances = new ArrayList<>();
+        for(int i = 0; i < 7; i++){
+            List<Finance> financesInDay = financeRepository.findAllByDateAndType(startOfWeek.plusDays(i), type);
+            finances.addAll(financesInDay);
+        }
+
+        return finances.stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getMonthlyFinanceTotalByType(FinanceType type){
+        List<Finance> finances = financeRepository.findAllByMonthAndType(LocalDate.now().getMonth(), type);
+
+        return finances.stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getAllTimeFinanceTotalByType(FinanceType type){
+        List<Finance> finances = financeRepository.findAllByType(type);
+
+        return finances.stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Optional<Finance> findBiggestExpenseOrIncome(FinanceType type){
