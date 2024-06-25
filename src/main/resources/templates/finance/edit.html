@@ -67,6 +67,8 @@
             </div>
             <br th:if="${#fields.hasErrors('comment')}"/>
 
+            <input type="hidden" th:field="*{type}" th:value="${financeType}"/>
+
             <button class="add-finance-item btn" type="submit">Update</button>
 
         </form>

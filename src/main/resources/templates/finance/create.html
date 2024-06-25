@@ -47,16 +47,28 @@
             <br/>
             <input class="input-field new-finance__name" type="text" th:field="*{name}" id="new-finance-name">
             <br/>
+            <div class="error-block" th:if="${#fields.hasErrors('name')}">
+                <h1 th:errors="*{name}"></h1>
+            </div>
+            <br th:if="${#fields.hasErrors('name')}"/>
 
             <label for="new-finance-amount">Amount</label>
             <br/>
             <input class="input-field new-finance__amount" type="text" th:field="*{amount}" id="new-finance-amount">
             <br/>
+            <div class="error-block" th:if="${#fields.hasErrors('amount')}">
+                <h1 th:errors="*{amount}"></h1>
+            </div>
+            <br th:if="${#fields.hasErrors('amount')}"/>
 
             <label for="new-finance-comment">Comment(Optional)</label>
             <br/>
             <input class="input-field new-finance__comment" type="text" th:field="*{comment}" id="new-finance-comment" placeholder="No comment.">
             <br/>
+            <div class="error-block" th:if="${#fields.hasErrors('name')}">
+                <h1 th:errors="*{name}"></h1>
+            </div>
+            <br th:if="${#fields.hasErrors('name')}"/>
 
             <button class="add-finance-item btn" type="submit">Create</button>
 

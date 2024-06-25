@@ -20,12 +20,12 @@ public class Finance {
     @Column(name = "id")
     private int id;
 
-    @NotNull
-    @Size(max = 50)
+    @NotNull(message = "Name must not be blank")
+    @Size(max = 50, message = "Name length must be smaller than 50")
     @Column(name = "name")
     private String name;
 
-    @NotNull
+    @NotNull(message = "Amount must not be blank")
     @Column(name = "amount")
     private BigDecimal amount;
 
@@ -83,10 +83,6 @@ public class Finance {
 
     public void setAmount(@NotNull BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public String getAmountToDisplay() {
-        return amount + " asdasd";
     }
 
     public String getComment() { return comment; }

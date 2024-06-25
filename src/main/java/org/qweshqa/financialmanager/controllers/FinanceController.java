@@ -92,14 +92,15 @@ public class FinanceController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addFinance(@RequestParam("type") String type, @ModelAttribute("new_finance") Finance finance){
+    public String addFinance(@RequestParam("type") String type, @ModelAttribute("new_finance") @Valid Finance finance, BindingResult bindingResult){
 
+        if(bindingResult.hasErrors()){
+            return "finance/create";
+        }
         finance.setType(financeTypeStringConverter.convert(type));
         if(finance.getComment().isEmpty()){
             finance.setComment("No comment.");
         }
-        finance.setDate(LocalDate.now());
-        finance.setMonth(LocalDate.now().getMonth());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(finance.getType() == FinanceType.INCOME){
@@ -124,14 +125,18 @@ public class FinanceController {
         }
 
         model.addAttribute("finance", finance.get());
+        model.addAttribute("financeType", finance.get().getType());
         model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
 
         return "/finance/edit";
     }
 
     @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
-    public String updateFinance(@PathVariable("id") int id, @ModelAttribute("finance") Finance finance){
+    public String updateFinance(@PathVariable("id") int id, @ModelAttribute("finance") @Valid Finance finance, BindingResult bindingResult){
 
+        if(bindingResult.hasErrors()){
+            return "/finance/edit";
+        }
         Finance financeToUpdate = financeService.findById(id).get();
 
         financeService.update(financeToUpdate, finance);
