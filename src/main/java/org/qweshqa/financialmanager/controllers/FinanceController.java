@@ -2,6 +2,7 @@ package org.qweshqa.financialmanager.controllers;
 
 import jakarta.validation.Valid;
 import org.qweshqa.financialmanager.models.Finance;
+import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.FinanceService;
 import org.qweshqa.financialmanager.services.SettingService;
 import org.qweshqa.financialmanager.services.UserService;
@@ -42,7 +43,9 @@ public class FinanceController {
             @RequestParam(value = "displayPeriod", defaultValue = "day") String displayPeriod, Model model){
         // user info
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
+        User user = userService.findUserByEmail(authentication.getName()).get();
+        model.addAttribute("user", user);
+        model.addAttribute("settings", settingService.findSettingByUser(user).get());
 
         // index
         switch(displayPeriod){
@@ -99,7 +102,6 @@ public class FinanceController {
         finance.setMonth(LocalDate.now().getMonth());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        finance.setCurrency(settingService.findSettingByUser(userService.findUserByEmail(authentication.getName()).get()).get().getCurrencyUnit());
         if(finance.getType() == FinanceType.INCOME){
             userService.findUserByEmail(authentication.getName()).get().plusBalance(Float.parseFloat(finance.getAmount().toString()));
         } else userService.findUserByEmail(authentication.getName()).get().minusBalance((Float.parseFloat(finance.getAmount().toString())));

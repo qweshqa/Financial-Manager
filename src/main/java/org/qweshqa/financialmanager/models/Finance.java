@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.ColumnDefault;
 import org.qweshqa.financialmanager.utils.FinanceType;
 
 import java.math.BigDecimal;
@@ -28,18 +29,16 @@ public class Finance {
     @Column(name = "amount")
     private BigDecimal amount;
 
-    @NotBlank
-    @Column(name = "currency")
-    private String currency;
-
     @Column(name = "comment")
     private String comment;
 
     @NotNull
     @Column(name = "date")
-    private LocalDate date;
+    // set date by default
+    private LocalDate date = LocalDate.now();
 
-    private Month month;
+    // set month by default
+    private Month month = LocalDate.now().getMonth();;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -57,7 +56,6 @@ public class Finance {
         this.id = id;
         this.name = name;
         this.amount = amount;
-        this.currency = currency;
         this.comment = comment;
         this.date = date;
         this.type = type;
@@ -88,15 +86,7 @@ public class Finance {
     }
 
     public String getAmountToDisplay() {
-        return amount + " " + currency;
-    }
-
-    public @NotBlank String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(@NotBlank String currency) {
-        this.currency = currency;
+        return amount + " asdasd";
     }
 
     public String getComment() { return comment; }
