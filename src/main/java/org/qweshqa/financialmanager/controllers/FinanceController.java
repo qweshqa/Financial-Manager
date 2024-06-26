@@ -6,6 +6,7 @@ import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.FinanceService;
 import org.qweshqa.financialmanager.services.SettingService;
 import org.qweshqa.financialmanager.services.UserService;
+import org.qweshqa.financialmanager.utils.AmountFormatter;
 import org.qweshqa.financialmanager.utils.FinanceType;
 import org.qweshqa.financialmanager.utils.FinanceTypeStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,15 @@ public class FinanceController {
 
     private final FinanceTypeStringConverter financeTypeStringConverter;
 
+    private final AmountFormatter amountFormatter;
+
     @Autowired
-    public FinanceController(FinanceService financeService, UserService userService, SettingService settingService, FinanceTypeStringConverter financeTypeStringConverter) {
+    public FinanceController(FinanceService financeService, UserService userService, SettingService settingService, FinanceTypeStringConverter financeTypeStringConverter, AmountFormatter amountFormatter) {
         this.financeService = financeService;
         this.userService = userService;
         this.settingService = settingService;
         this.financeTypeStringConverter = financeTypeStringConverter;
+        this.amountFormatter = amountFormatter;
     }
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -71,6 +75,7 @@ public class FinanceController {
                 model.addAttribute("income_total", financeService.getDailyFinanceTotalByType(FinanceType.INCOME));
                 break;
         }
+        model.addAttribute("amountFormatter", amountFormatter);
 
         // empty finance for creating a new one
         model.addAttribute("new_finance", new Finance());
@@ -85,9 +90,13 @@ public class FinanceController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createFinance(@RequestParam("type") String type, Model model){
         model.addAttribute("new_finance", new Finance());
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
+
         model.addAttribute("financeType", type);
+
+        model.addAttribute("amountFormatter", amountFormatter);
 
         return "finance/create";
     }

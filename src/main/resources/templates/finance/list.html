@@ -17,7 +17,7 @@
 
     <div class="header__user-balance">
         <h5>General balance</h5>
-        <h2 th:text="${user.getBalance() + ' ' + user.getSetting().getCurrencyUnit()}"></h2>
+        <h2 th:text="${amountFormatter.formatAmount(user.getBalance()) + ' ' + user.getSetting().getCurrencyUnit()}"></h2>
     </div>
 
     <div class="header__logout">
@@ -75,11 +75,11 @@
     <div class="finance-type-navigation">
         <div class="finance-type-block">
             <a class="finance-type btn" href="/finances/show?display=expense&displayPeriod=day">Expenses
-                <h1 th:text="${expense_total + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#ff7c7c;"></h1></a>
+                <h1 th:text="${amountFormatter.formatAmount(expense_total) + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#ff7c7c;"></h1></a>
         </div>
         <div class="finance-type-block">
             <a class="finance-type btn" href="/finances/show?display=income&displayPeriod=day">Incomes
-                <h1 th:text="${income_total + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#7cffb2"></h1></a>
+                <h1 th:text="${amountFormatter.formatAmount(income_total) + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#7cffb2"></h1></a>
         </div>
     </div>
 
@@ -100,7 +100,7 @@
                     </button>
                 </form>
 
-                <h1 class="finance-item__amount"  th:style="${finance.getType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2'}" th:text="${finance.getAmount() + ' ' + settings.getCurrencyUnit()}"></h1>
+                <h1 class="finance-item__amount"  th:style="${finance.getType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2'}" th:text="${amountFormatter.formatAmount(finance.getAmount()) + ' ' + settings.getCurrencyUnit()}"></h1>
 
                 <h1 class="finance-item__comment" th:text="${finance.getComment()}"></h1>
 
