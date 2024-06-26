@@ -140,6 +140,18 @@ public class FinanceController {
         }
         Finance financeToUpdate = financeService.findById(id).get();
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName()).get();
+
+        if(finance.getType() == FinanceType.EXPENSE){
+            user.plusBalance(financeToUpdate.getAmount());
+            user.minusBalance(finance.getAmount());
+        }
+        else {
+            user.plusBalance(finance.getAmount());
+            user.minusBalance(financeToUpdate.getAmount());
+        }
+
         financeService.update(financeToUpdate, finance);
 
         return "redirect:/finances/show?display=" + financeToUpdate.getType().toString().toLowerCase();
