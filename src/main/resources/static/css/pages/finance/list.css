@@ -34,6 +34,15 @@
     font-weight: 500;
     font-size: 20px;
 }
+.edit-form-url{
+    padding: 0;
+    background-color: transparent;
+    border-style: none;
+    color: white;
+}
+.edit-form-url:hover{
+    color: #b6bdf3;
+}
 .finance-item__amount{
     font-weight: 500;
     font-size: 20px;

@@ -114,7 +114,8 @@ public class FinanceController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String editFinance(@PathVariable("id") int id, Model model){
+    public String editFinance(@PathVariable("id") int id, @RequestParam("displayPeriod") String displayPeriod,
+                              Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Optional<Finance> finance = financeService.findById(id);
@@ -126,14 +127,18 @@ public class FinanceController {
         }
 
         model.addAttribute("finance", finance.get());
+
         model.addAttribute("financeType", finance.get().getType());
+        model.addAttribute("displayPeriod", displayPeriod);
+
         model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
 
         return "/finance/edit";
     }
 
     @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
-    public String updateFinance(@PathVariable("id") int id, @ModelAttribute("finance") @Valid Finance finance, BindingResult bindingResult){
+    public String updateFinance(@PathVariable("id") int id, @ModelAttribute("finance") @Valid Finance finance, BindingResult bindingResult,
+                                @RequestParam("displayPeriod") String displayPeriod){
 
         if(bindingResult.hasErrors()){
             return "/finance/edit";
@@ -154,11 +159,12 @@ public class FinanceController {
 
         financeService.update(financeToUpdate, finance);
 
-        return "redirect:/finances/show?display=" + financeToUpdate.getType().toString().toLowerCase();
+        return "redirect:/finances/show?display=" + financeToUpdate.getType().toString().toLowerCase() +
+                "&displayPeriod=" + displayPeriod;
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
-    public String deleteFinance(@PathVariable("id") int id){
+    public String deleteFinance(@PathVariable("id") int id, @RequestParam("display") String display, @RequestParam("displayPeriod") String displayPeriod){
 
         Finance finance = financeService.findById(id).get();
 
@@ -169,6 +175,7 @@ public class FinanceController {
 
         financeService.delete(id);
 
-        return "redirect:/finances/show";
+        return "redirect:/finances/show?display=" + display +
+                "&displayPeriod=" + displayPeriod ;
     }
 }
