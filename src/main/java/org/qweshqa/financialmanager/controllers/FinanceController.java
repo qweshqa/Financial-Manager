@@ -28,6 +28,7 @@ public class FinanceController {
     private final UserService userService;
 
     private final SettingService settingService;
+
     private final FinanceTypeStringConverter financeTypeStringConverter;
 
     @Autowired
@@ -104,8 +105,8 @@ public class FinanceController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(finance.getType() == FinanceType.INCOME){
-            userService.findUserByEmail(authentication.getName()).get().plusBalance(Float.parseFloat(finance.getAmount().toString()));
-        } else userService.findUserByEmail(authentication.getName()).get().minusBalance((Float.parseFloat(finance.getAmount().toString())));
+            userService.findUserByEmail(authentication.getName()).get().plusBalance(finance.getAmount());
+        } else userService.findUserByEmail(authentication.getName()).get().minusBalance(finance.getAmount());
 
         financeService.save(finance);
 
@@ -151,8 +152,8 @@ public class FinanceController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(finance.getType() == FinanceType.INCOME){
-            userService.findUserByEmail(authentication.getName()).get().minusBalance(Float.parseFloat(finance.getAmount().toString()));
-        } else userService.findUserByEmail(authentication.getName()).get().plusBalance((Float.parseFloat(finance.getAmount().toString())));
+            userService.findUserByEmail(authentication.getName()).get().minusBalance(finance.getAmount());
+        } else userService.findUserByEmail(authentication.getName()).get().plusBalance(finance.getAmount());
 
         financeService.delete(id);
 

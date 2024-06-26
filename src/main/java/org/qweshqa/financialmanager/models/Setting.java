@@ -3,8 +3,6 @@ package org.qweshqa.financialmanager.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import javax.money.CurrencyUnit;
-
 @Entity
 @Table(name = "settings")
 public class Setting {

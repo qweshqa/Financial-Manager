@@ -1,13 +1,10 @@
 package org.qweshqa.financialmanager.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.ColumnDefault;
 import org.qweshqa.financialmanager.utils.FinanceType;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -27,7 +24,7 @@ public class Finance {
 
     @NotNull(message = "Amount must not be blank")
     @Column(name = "amount")
-    private BigDecimal amount;
+    private float amount;
 
     @Column(name = "comment")
     private String comment;
@@ -52,7 +49,7 @@ public class Finance {
     public Finance() {
     }
 
-    public Finance(int id, String name, BigDecimal amount, String currency, String comment, LocalDate date, FinanceType type) {
+    public Finance(int id, String name, float amount, String comment, LocalDate date, FinanceType type) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -77,11 +74,11 @@ public class Finance {
         this.name = name;
     }
 
-    public @NotNull BigDecimal getAmount() {
+    public @NotNull float getAmount() {
         return amount;
     }
 
-    public void setAmount(@NotNull BigDecimal amount) {
+    public void setAmount(@NotNull float amount) {
         this.amount = amount;
     }
 

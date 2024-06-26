@@ -19,27 +19,15 @@ public class StatisticService {
         this.financeRepository = financeRepository;
     }
 
-    public BigDecimal getGeneralSpendingTotal(){
-        BigDecimal generalSpendingTotal = BigDecimal.ZERO;
-
+    public float getGeneralSpendingTotal(){
         List<Finance> expenseList = financeRepository.findAllByType(FinanceType.EXPENSE);
 
-        for (Finance expense : expenseList){
-            generalSpendingTotal = generalSpendingTotal.add(expense.getAmount());
-        }
-
-        return generalSpendingTotal;
+        return (float) expenseList.stream().mapToDouble(Finance::getAmount).sum();
     }
 
-    public BigDecimal getGeneralIncomeTotal(){
-        BigDecimal generalIncomeTotal = BigDecimal.ZERO;
-
+    public float getGeneralIncomeTotal(){
         List<Finance> incomeList = financeRepository.findAllByType(FinanceType.INCOME);
 
-        for (Finance income : incomeList){
-            generalIncomeTotal = generalIncomeTotal.add(income.getAmount());
-        }
-
-        return generalIncomeTotal;
+        return (float) incomeList.stream().mapToDouble(Finance::getAmount).sum();
     }
 }

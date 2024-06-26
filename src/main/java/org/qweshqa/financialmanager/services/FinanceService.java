@@ -59,13 +59,13 @@ public class FinanceService {
         return finances;
     }
 
-    public BigDecimal getDailyFinanceTotalByType(FinanceType type){
+    public float getDailyFinanceTotalByType(FinanceType type){
         List<Finance> finances = financeRepository.findAllByDateAndType(LocalDate.now(), type);
 
-        return finances.stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return (float) finances.stream().mapToDouble(Finance::getAmount).sum();
     }
 
-    public BigDecimal getWeeklyFinanceTotalByType(FinanceType type){
+    public float getWeeklyFinanceTotalByType(FinanceType type){
         LocalDate startOfWeek = LocalDate.now().with(DayOfWeek.MONDAY);
 
         List<Finance> finances = new ArrayList<>();
@@ -74,19 +74,19 @@ public class FinanceService {
             finances.addAll(financesInDay);
         }
 
-        return finances.stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return (float) finances.stream().mapToDouble(Finance::getAmount).sum();
     }
 
-    public BigDecimal getMonthlyFinanceTotalByType(FinanceType type){
+    public float getMonthlyFinanceTotalByType(FinanceType type){
         List<Finance> finances = financeRepository.findAllByMonthAndType(LocalDate.now().getMonth(), type);
 
-        return finances.stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return (float) finances.stream().mapToDouble(Finance::getAmount).sum();
     }
 
-    public BigDecimal getAllTimeFinanceTotalByType(FinanceType type){
+    public float getAllTimeFinanceTotalByType(FinanceType type){
         List<Finance> finances = financeRepository.findAllByType(type);
 
-        return finances.stream().map(Finance::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return (float) finances.stream().mapToDouble(Finance::getAmount).sum();
     }
 
     public Optional<Finance> findBiggestExpenseOrIncome(FinanceType type){
