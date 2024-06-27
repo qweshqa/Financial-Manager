@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${errorTitle}"></title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<div id="header-space" style="height: 60px"></div>
+<div class="header">
+
+
+
+    <div class="header__logout" style="bottom: -10px;">
+        <form th:action="@{/logout}" method="post">
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+<div class="sidebar">
+    <header>Flanaer</header>
+    <ul class="navbar">
+        <li><a href="/finances/show">Dashboard</a></li>
+
+        <li><a href="/statistic">Statistic</a></li>
+
+        <li><a href="/settings/currency">Settings</a></li>
+    </ul>
+</div>
+
+
+<div class="content">
+
+    <h1 style="text-align: center; font-weight: 500" th:text="${errorMessage}"></h1>
+
+</div>
+</body>
+</html>
