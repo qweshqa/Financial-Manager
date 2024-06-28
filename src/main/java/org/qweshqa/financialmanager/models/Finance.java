@@ -46,16 +46,21 @@ public class Finance {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "involved_account", referencedColumnName = "id")
+    private Account involvedAccount;
+
     public Finance() {
     }
 
-    public Finance(int id, String name, float amount, String comment, LocalDate date, FinanceType type) {
+    public Finance(int id, String name, float amount, String comment, LocalDate date, FinanceType type, Account involvedAccount) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.comment = comment;
         this.date = date;
         this.type = type;
+        this.involvedAccount = involvedAccount;
     }
 
     public int getId() {
@@ -106,5 +111,13 @@ public class Finance {
 
     public void setType(@NotNull FinanceType type) {
         this.type = type;
+    }
+
+    public Account getInvolvedAccount() {
+        return involvedAccount;
+    }
+
+    public void setInvolvedAccount(Account involvedAccount) {
+        this.involvedAccount = involvedAccount;
     }
 }

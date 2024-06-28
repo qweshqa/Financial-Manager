@@ -93,6 +93,7 @@ public class FinanceController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
+        model.addAttribute("userAccounts", userService.findUserByEmail(authentication.getName()).get().getUserAccounts());
 
         model.addAttribute("financeType", type);
 
@@ -112,10 +113,9 @@ public class FinanceController {
             finance.setComment("No comment.");
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(finance.getType() == FinanceType.INCOME){
-            userService.findUserByEmail(authentication.getName()).get().plusBalance(finance.getAmount());
-        } else userService.findUserByEmail(authentication.getName()).get().minusBalance(finance.getAmount());
+            finance.getInvolvedAccount().plusBalance(finance.getAmount());
+        } else finance.getInvolvedAccount().minusBalance(finance.getAmount());
 
         financeService.save(finance);
 
@@ -154,16 +154,13 @@ public class FinanceController {
         }
         Finance financeToUpdate = financeService.findById(id).get();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
-
         if(finance.getType() == FinanceType.EXPENSE){
-            user.plusBalance(financeToUpdate.getAmount());
-            user.minusBalance(finance.getAmount());
+            financeToUpdate.getInvolvedAccount().plusBalance(financeToUpdate.getAmount());
+            financeToUpdate.getInvolvedAccount().minusBalance(finance.getAmount());
         }
         else {
-            user.plusBalance(finance.getAmount());
-            user.minusBalance(financeToUpdate.getAmount());
+            financeToUpdate.getInvolvedAccount().plusBalance(finance.getAmount());
+            financeToUpdate.getInvolvedAccount().minusBalance(financeToUpdate.getAmount());
         }
 
         financeService.update(financeToUpdate, finance);
@@ -177,10 +174,9 @@ public class FinanceController {
 
         Finance finance = financeService.findById(id).get();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(finance.getType() == FinanceType.INCOME){
-            userService.findUserByEmail(authentication.getName()).get().minusBalance(finance.getAmount());
-        } else userService.findUserByEmail(authentication.getName()).get().plusBalance(finance.getAmount());
+            finance.getInvolvedAccount().minusBalance(finance.getAmount());
+        } else finance.getInvolvedAccount().plusBalance(finance.getAmount());
 
         financeService.delete(id);
 

@@ -3,6 +3,7 @@ package org.qweshqa.financialmanager.controllers;
 import jakarta.validation.Valid;
 import org.qweshqa.financialmanager.models.Setting;
 import org.qweshqa.financialmanager.models.User;
+import org.qweshqa.financialmanager.services.AccountService;
 import org.qweshqa.financialmanager.services.SettingService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.UserValidator;
@@ -27,13 +28,17 @@ public class AuthController {
 
     private final SettingService settingService;
 
+    private final AccountService accountService;
+
     private int user_id;
 
     @Autowired
-    public AuthController(UserValidator userValidator, UserService userService, SettingService settingService) {
+    public AuthController(UserValidator userValidator, UserService userService, SettingService settingService,
+                          AccountService accountService) {
         this.userValidator = userValidator;
         this.userService = userService;
         this.settingService = settingService;
+        this.accountService = accountService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -66,6 +71,8 @@ public class AuthController {
             return "auth/registration";
         }
         userService.save(user);
+        user.setUserAccounts(accountService.createAccountsSetsByDefault(user));
+
         this.user_id = user.getId();
 
         return "redirect:/registration/setup";
@@ -83,12 +90,10 @@ public class AuthController {
 
     @RequestMapping(value = "/registration/setup", method = RequestMethod.POST)
     public String performUserSetup(@RequestParam("currency") String currency,
-                                   @RequestParam(value = "general-balance", defaultValue = "0" ) int balance,
                                    @RequestParam(value = "display-name", defaultValue = "", required = false) String displayName) {
 
         CurrencyUnit currencyUnit = Monetary.getCurrency(currency);
         settingService.saveSettingSetup(new Setting(), userService.findUserById(user_id).get(), currencyUnit);
-        userService.findUserById(user_id).get().setBalance(balance);
 
         return "redirect:/login";
     }

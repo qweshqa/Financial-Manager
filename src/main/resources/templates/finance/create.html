@@ -43,6 +43,13 @@
     <div class="new-finance">
         <form class="new-finance-form" th:method="POST" th:action="@{/finances/add(type=${financeType})}" th:object="${new_finance}">
 
+            <label for="user-account">Account</label>
+            <br/>
+            <select class="select-field user-account-for-finance" id="user-account" th:field="*{involvedAccount}">
+                <option th:each="account: ${userAccounts}" th:value="${account.getId()}" th:text="${account.getName()}"></option>
+            </select>
+            <br/>
+
             <label for="new-finance-name">Name</label>
             <br/>
             <input class="input-field new-finance__name" type="text" th:field="*{name}" id="new-finance-name">

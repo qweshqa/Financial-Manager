@@ -34,8 +34,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Finance> userFinances;
 
-    @NotNull
-    @Column(name = "balance")
+    @OneToMany(mappedBy = "owner")
+    private List<Account> userAccounts;
+
+    @Transient
     private float balance;
 
     @OneToOne(mappedBy = "user")
@@ -46,12 +48,13 @@ public class User {
     }
 
     public User(int id, String email, String userDisplayName, String password,
-                List<Finance> userFinances, float balance, Setting setting) {
+                List<Finance> userFinances, List<Account> userAccounts, float balance, Setting setting) {
         this.id = id;
         this.email = email;
         this.userDisplayName = userDisplayName;
         this.password = password;
         this.userFinances = userFinances;
+        this.userAccounts = userAccounts;
         this.balance = balance;
         this.setting = setting;
     }
@@ -96,18 +99,17 @@ public class User {
         this.userFinances = userFinances;
     }
 
-    @NotNull
+    public List<Account> getUserAccounts() {
+        return userAccounts;
+    }
+
+    public void setUserAccounts(List<Account> userAccounts) {
+        this.userAccounts = userAccounts;
+    }
+
     public float getBalance() {
-        return balance;
+        return (float) userAccounts.stream().mapToDouble(Account::getBalance).sum();
     }
-
-    public void setBalance(@NotNull int balance) {
-        this.balance = balance;
-    }
-
-    public void plusBalance(float amount){ this.balance += amount; }
-
-    public void minusBalance(float amount) { this.balance -= amount; }
 
     public Setting getSetting() {
         return setting;
