@@ -1,13 +1,16 @@
 package org.qweshqa.financialmanager.services;
 
 import org.qweshqa.financialmanager.models.Finance;
+import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.FinanceRepository;
+import org.qweshqa.financialmanager.repositories.UserRepository;
 import org.qweshqa.financialmanager.utils.FinanceType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
@@ -35,62 +38,62 @@ public class FinanceService {
         return financeRepository.findAll();
     }
 
-    public List<Finance> findAllByType(FinanceType type){
-        return financeRepository.findAllByType(type);
+    public List<Finance> findAllByType(FinanceType type, User user){
+        return financeRepository.findAllByTypeAndUser(type, user);
     }
 
-    public List<Finance> findAllByDateAndType(LocalDate date, FinanceType type){
-        return financeRepository.findAllByDateAndType(date, type);
+    public List<Finance> findAllByDateAndType(LocalDate date, FinanceType type, User user){
+        return financeRepository.findAllByDateAndTypeAndUser(date, type, user);
     }
 
-    public List<Finance> findAllByMonthAndType(Month month, FinanceType financeType){
-        return financeRepository.findAllByMonthAndType(month, financeType);
+    public List<Finance> findAllByMonthAndType(Month month, FinanceType financeType, User user){
+        return financeRepository.findAllByMonthAndTypeAndUser(month, financeType, user);
     }
 
-    public List<Finance> findAllByWeekAndType(LocalDate date, FinanceType financeType){
+    public List<Finance> findAllByWeekAndType(LocalDate date, FinanceType financeType, User user){
         LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
 
         List<Finance> finances = new ArrayList<>();
         for(int i = 0; i < 7; i++){
-            List<Finance> financesInDay = financeRepository.findAllByDateAndType(startOfWeek.plusDays(i), financeType);
+            List<Finance> financesInDay = financeRepository.findAllByDateAndTypeAndUser(startOfWeek.plusDays(i), financeType, user);
             finances.addAll(financesInDay);
         }
 
         return finances;
     }
 
-    public float getDailyFinanceTotalByType(FinanceType type){
-        List<Finance> finances = financeRepository.findAllByDateAndType(LocalDate.now(), type);
+    public float getDailyFinanceTotalByType(FinanceType type, User user){
+        List<Finance> finances = financeRepository.findAllByDateAndTypeAndUser(LocalDate.now(), type, user);
 
         return (float) finances.stream().mapToDouble(Finance::getAmount).sum();
     }
 
-    public float getWeeklyFinanceTotalByType(FinanceType type){
+    public float getWeeklyFinanceTotalByType(FinanceType type, User user){
         LocalDate startOfWeek = LocalDate.now().with(DayOfWeek.MONDAY);
 
         List<Finance> finances = new ArrayList<>();
         for(int i = 0; i < 7; i++){
-            List<Finance> financesInDay = financeRepository.findAllByDateAndType(startOfWeek.plusDays(i), type);
+            List<Finance> financesInDay = financeRepository.findAllByDateAndTypeAndUser(startOfWeek.plusDays(i), type, user);
             finances.addAll(financesInDay);
         }
 
         return (float) finances.stream().mapToDouble(Finance::getAmount).sum();
     }
 
-    public float getMonthlyFinanceTotalByType(FinanceType type){
-        List<Finance> finances = financeRepository.findAllByMonthAndType(LocalDate.now().getMonth(), type);
+    public float getMonthlyFinanceTotalByType(FinanceType type, User user){
+        List<Finance> finances = financeRepository.findAllByMonthAndTypeAndUser(LocalDate.now().getMonth(), type, user);
 
         return (float) finances.stream().mapToDouble(Finance::getAmount).sum();
     }
 
-    public float getAllTimeFinanceTotalByType(FinanceType type){
-        List<Finance> finances = financeRepository.findAllByType(type);
+    public float getAllTimeFinanceTotalByType(FinanceType type, User user){
+        List<Finance> finances = financeRepository.findAllByTypeAndUser(type, user);
 
         return (float) finances.stream().mapToDouble(Finance::getAmount).sum();
     }
 
-    public Optional<Finance> findBiggestExpenseOrIncome(FinanceType type){
-        return financeRepository.findAllByType(type).stream()
+    public Optional<Finance> findBiggestExpenseOrIncome(FinanceType type, User user){
+        return financeRepository.findAllByTypeAndUser(type, user).stream()
                 .max(Comparator.comparing(Finance::getAmount));
     }
 

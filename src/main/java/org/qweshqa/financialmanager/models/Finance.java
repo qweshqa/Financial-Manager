@@ -43,7 +43,7 @@ public class Finance {
     private FinanceType type;
 
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne
@@ -111,6 +111,14 @@ public class Finance {
 
     public void setType(@NotNull FinanceType type) {
         this.type = type;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Account getInvolvedAccount() {

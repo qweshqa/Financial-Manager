@@ -55,24 +55,24 @@ public class FinanceController {
         // index
         switch(displayPeriod){
             case "all-time":
-                model.addAttribute("finances", financeService.findAllByType(FinanceType.valueOf(financeType.toUpperCase())));;
-                model.addAttribute("expense_total", financeService.getAllTimeFinanceTotalByType(FinanceType.EXPENSE));
-                model.addAttribute("income_total", financeService.getAllTimeFinanceTotalByType(FinanceType.INCOME));
+                model.addAttribute("finances", financeService.findAllByType(FinanceType.valueOf(financeType.toUpperCase()), user));;
+                model.addAttribute("expense_total", financeService.getAllTimeFinanceTotalByType(FinanceType.EXPENSE, user));
+                model.addAttribute("income_total", financeService.getAllTimeFinanceTotalByType(FinanceType.INCOME, user));
                 break;
             case "month":
-                model.addAttribute("finances", financeService.findAllByMonthAndType(LocalDate.now().getMonth(), FinanceType.valueOf(financeType.toUpperCase())));
-                model.addAttribute("expense_total", financeService.getMonthlyFinanceTotalByType(FinanceType.EXPENSE));
-                model.addAttribute("income_total", financeService.getMonthlyFinanceTotalByType(FinanceType.INCOME));
+                model.addAttribute("finances", financeService.findAllByMonthAndType(LocalDate.now().getMonth(), FinanceType.valueOf(financeType.toUpperCase()), user));
+                model.addAttribute("expense_total", financeService.getMonthlyFinanceTotalByType(FinanceType.EXPENSE, user));
+                model.addAttribute("income_total", financeService.getMonthlyFinanceTotalByType(FinanceType.INCOME, user));
                 break;
             case "week":
-                model.addAttribute("finances", financeService.findAllByWeekAndType(LocalDate.now(), FinanceType.valueOf(financeType.toUpperCase())));
-                model.addAttribute("expense_total", financeService.getWeeklyFinanceTotalByType(FinanceType.EXPENSE));
-                model.addAttribute("income_total", financeService.getWeeklyFinanceTotalByType(FinanceType.INCOME));
+                model.addAttribute("finances", financeService.findAllByWeekAndType(LocalDate.now(), FinanceType.valueOf(financeType.toUpperCase()), user));
+                model.addAttribute("expense_total", financeService.getWeeklyFinanceTotalByType(FinanceType.EXPENSE, user));
+                model.addAttribute("income_total", financeService.getWeeklyFinanceTotalByType(FinanceType.INCOME, user));
                 break;
             case "day":
-                model.addAttribute("finances", financeService.findAllByDateAndType(LocalDate.now(), FinanceType.valueOf(financeType.toUpperCase())));
-                model.addAttribute("expense_total", financeService.getDailyFinanceTotalByType(FinanceType.EXPENSE));
-                model.addAttribute("income_total", financeService.getDailyFinanceTotalByType(FinanceType.INCOME));
+                model.addAttribute("finances", financeService.findAllByDateAndType(LocalDate.now(), FinanceType.valueOf(financeType.toUpperCase()), user));
+                model.addAttribute("expense_total", financeService.getDailyFinanceTotalByType(FinanceType.EXPENSE, user));
+                model.addAttribute("income_total", financeService.getDailyFinanceTotalByType(FinanceType.INCOME, user));
                 break;
         }
         model.addAttribute("amountFormatter", amountFormatter);
@@ -108,6 +108,10 @@ public class FinanceController {
         if(bindingResult.hasErrors()){
             return "finance/create";
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName()).get();
+
+        finance.setUser(user);
         finance.setType(financeTypeStringConverter.convert(type));
         if(finance.getComment().isEmpty()){
             finance.setComment("No comment.");

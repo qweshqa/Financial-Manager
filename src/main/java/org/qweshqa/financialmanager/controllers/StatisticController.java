@@ -1,5 +1,6 @@
 package org.qweshqa.financialmanager.controllers;
 
+import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.FinanceService;
 import org.qweshqa.financialmanager.services.StatisticService;
 import org.qweshqa.financialmanager.utils.FinanceType;
@@ -30,15 +31,15 @@ public class StatisticController {
         // expense statistic block
         model.addAttribute("general_spending_total", statisticService.getGeneralSpendingTotal());
         model.addAttribute("total_amount_of_spending", financeService.findAll().size());
-        if(financeService.findBiggestExpenseOrIncome(FinanceType.EXPENSE).isPresent()){
-            model.addAttribute("biggest_expense", financeService.findBiggestExpenseOrIncome(FinanceType.EXPENSE).get());
+        if(financeService.findBiggestExpenseOrIncome(FinanceType.EXPENSE, new User()).isPresent()){
+            model.addAttribute("biggest_expense", financeService.findBiggestExpenseOrIncome(FinanceType.EXPENSE, new User()).get());
         }
 
         // income statistic block
         model.addAttribute("general_income_total", statisticService.getGeneralIncomeTotal());
         model.addAttribute("total_amount_of_incomes", financeService.findAll().size());
-        if(financeService.findBiggestExpenseOrIncome(FinanceType.INCOME).isPresent()){
-            model.addAttribute("biggest_income", financeService.findBiggestExpenseOrIncome(FinanceType.INCOME).get());
+        if(financeService.findBiggestExpenseOrIncome(FinanceType.INCOME, new User()).isPresent()){
+            model.addAttribute("biggest_income", financeService.findBiggestExpenseOrIncome(FinanceType.INCOME, new User()).get());
         }
 
         return "statistic/general";

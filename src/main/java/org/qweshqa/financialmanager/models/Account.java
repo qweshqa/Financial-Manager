@@ -31,7 +31,7 @@ public class Account {
     private float balance = 0;
 
     @ManyToOne
-    @JoinColumn(name = "ownerId", referencedColumnName = "id")
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
 
     @NotNull
