@@ -92,11 +92,6 @@ public class FinanceService {
         return (float) finances.stream().mapToDouble(Finance::getAmount).sum();
     }
 
-    public Optional<Finance> findBiggestExpenseOrIncome(FinanceType type, User user){
-        return financeRepository.findAllByTypeAndUser(type, user).stream()
-                .max(Comparator.comparing(Finance::getAmount));
-    }
-
     @Transactional
     public void save(Finance finance){
         financeRepository.save(finance);
