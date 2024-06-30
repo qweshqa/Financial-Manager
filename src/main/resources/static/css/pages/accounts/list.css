@@ -1,0 +1,45 @@
+.accounts-block{
+    text-align: center;
+}
+.accounts-block h1{
+    font-size: 16px;
+}
+.account-container{
+    text-align: left;
+    display: inline-block;
+    position: relative;
+    top: 100px;
+}
+.account-container__header{
+    margin: 0 0 5px 20px;
+}
+.accounts{
+    background: #2b2e36;
+    display: inline-block;
+    padding: 5px 15px 5px 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+.account{
+    width: 350px;
+    border-style: solid;
+    border-width: thin;
+    border-color: #5e5e5e;
+    border-radius: 7px;
+    padding: 10px;
+    margin: 10px 0 15px;
+}
+.account h1{
+    font-size: 20px;
+}
+.account__balance{
+    color: #838383;;
+}
+.account__description{
+    font-size: 16px;
+    color: #838383;
+    max-width: 350px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

@@ -8,6 +8,8 @@
 @import url('layouts/_header.css');
 @import url('layouts/_sidebar.css');
 
+@import url('pages/accounts/list.css');
+
 @import url('pages/auth/login.css');
 
 @import url('pages/finance/create.css');

@@ -22,7 +22,7 @@ public class Account {
     private String name;
 
     @Size(max = 70)
-    @ColumnDefault(value = "Without description.")
+    @ColumnDefault(value = "'Without description.'")
     @Column(name = "description")
     private String description;
 

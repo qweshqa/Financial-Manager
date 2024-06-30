@@ -22,6 +22,10 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
+    public List<Account> findAllUserAccountsByType(User user, AccountType accountType){
+        return accountRepository.findAllByAccountTypeAndOwner(accountType, user);
+    }
+
     @Transactional
     public List<Account> createAccountsSetsByDefault(User owner){
         List<Account> accounts = new ArrayList<>();
