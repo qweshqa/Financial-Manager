@@ -22,15 +22,13 @@
 }
 .account{
     width: 350px;
+    height: 60px;
     border-style: solid;
     border-width: thin;
     border-color: #5e5e5e;
     border-radius: 7px;
     padding: 10px;
     margin: 10px 0 15px;
-}
-.account:hover{
-    opacity: 0.8;
 }
 .account h1{
     font-size: 20px;
@@ -39,11 +37,37 @@
     color: #838383;;
 }
 .account__description{
+    position: relative;
+    bottom: 40px;
     color: #838383;
     max-width: 350px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+.delete-account-form{
+    display: inline-block;
+    position: relative;
+    left: 300px;
+    bottom: 40px;
+}
+.delete-account-button{
+    padding: 4px 5px 1px 5px;
+    background-color: #ff7c7c;
+    color: white;
+    border-radius: 5px;
+    border-style: none;
+}
+.delete-account-button:hover{
+    opacity: 0.8;
+}
+.new-account{
+    width: 370px;
+    height: 50px;
+    padding: 0;
+}
+.new-account:hover{
+    opacity: 0.8;
 }
 .new-account__href{
     display: flex;

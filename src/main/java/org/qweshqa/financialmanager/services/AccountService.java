@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -20,6 +21,10 @@ public class AccountService {
     @Autowired
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
+    }
+
+    public Optional<Account> findById(int id){
+        return accountRepository.findById(id);
     }
 
     public List<Account> findAllUserAccountsByType(User user, AccountType accountType){
@@ -34,6 +39,7 @@ public class AccountService {
         cashFinancialAccount.setOwner(owner);
         cashFinancialAccount.setType(AccountType.FINANCIAL);
         cashFinancialAccount.setName("Cash");
+        cashFinancialAccount.setDescription("");
 
         accounts.add(cashFinancialAccount);
         accountRepository.save(cashFinancialAccount);
@@ -42,6 +48,7 @@ public class AccountService {
         cardFinancialAccount.setOwner(owner);
         cardFinancialAccount.setType(AccountType.FINANCIAL);
         cardFinancialAccount.setName("Card");
+        cardFinancialAccount.setDescription("");
 
         accounts.add(cardFinancialAccount);
         accountRepository.save(cardFinancialAccount);
@@ -50,6 +57,7 @@ public class AccountService {
         savingsAccount.setOwner(owner);
         savingsAccount.setType(AccountType.SAVINGS);
         savingsAccount.setName("For a dream");
+        savingsAccount.setDescription("");
 
         accounts.add(savingsAccount);
         accountRepository.save(savingsAccount);
@@ -61,5 +69,10 @@ public class AccountService {
     public void save(Account account, User owner){
         account.setOwner(owner);
         accountRepository.save(account);
+    }
+
+    @Transactional
+    public void delete(Account account){
+        accountRepository.delete(account);
     }
 }

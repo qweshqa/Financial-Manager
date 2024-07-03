@@ -14,10 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -88,6 +85,15 @@ public class AccountController {
         account.setType(accountTypeStringConverter.convert(accountType));
 
         accountService.save(account, user);
+
+        return "redirect:/accounts";
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
+    public String deleteAccount(@PathVariable("id") int id){
+        Account account = accountService.findById(id).get();
+
+        accountService.delete(account);
 
         return "redirect:/accounts";
     }
