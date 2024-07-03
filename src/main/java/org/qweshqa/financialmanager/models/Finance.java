@@ -1,6 +1,8 @@
 package org.qweshqa.financialmanager.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.qweshqa.financialmanager.utils.FinanceType;
@@ -17,12 +19,13 @@ public class Finance {
     @Column(name = "id")
     private int id;
 
-    @NotNull(message = "Name must not be blank")
+    @NotBlank(message = "Name must not be blank")
     @Size(max = 50, message = "Name length must be smaller than 50")
     @Column(name = "name")
     private String name;
 
     @NotNull(message = "Amount must not be blank")
+    @Min(value = 0, message = "Amount minimum value is 0")
     @Column(name = "amount")
     private float amount;
 
@@ -37,7 +40,6 @@ public class Finance {
     // set month by default
     private Month month = LocalDate.now().getMonth();;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private FinanceType type;

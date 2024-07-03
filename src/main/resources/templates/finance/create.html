@@ -40,7 +40,7 @@
 <div class="content">
 
     <div class="new-finance">
-        <form class="new-finance-form" th:method="POST" th:action="@{/finances/add(type=${financeType})}" th:object="${new_finance}">
+        <form class="new-finance-form" th:method="POST" th:action="@{/finances/create(type=${financeType})}" th:object="${new_finance}">
 
             <label for="user-account">Account</label>
             <br/>
@@ -71,10 +71,10 @@
             <br/>
             <input class="input-field new-finance__comment" type="text" th:field="*{comment}" id="new-finance-comment" placeholder="No comment.">
             <br/>
-            <div class="error-block" th:if="${#fields.hasErrors('name')}">
-                <h1 th:errors="*{name}"></h1>
+            <div class="error-block" th:if="${#fields.hasErrors('comment')}">
+                <h1 th:errors="*{comment}"></h1>
             </div>
-            <br th:if="${#fields.hasErrors('name')}"/>
+            <br th:if="${#fields.hasErrors('comment')}"/>
 
             <button class="add-finance-item btn" type="submit">Create</button>
 
