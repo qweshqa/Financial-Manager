@@ -1,18 +1,23 @@
 package org.qweshqa.financialmanager.controllers;
 
+import jakarta.validation.Valid;
 import org.qweshqa.financialmanager.models.Account;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.AccountService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AccountType;
+import org.qweshqa.financialmanager.utils.AccountTypeStringConverter;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -26,11 +31,14 @@ public class AccountController {
 
     private final AmountFormatter amountFormatter;
 
+    private final AccountTypeStringConverter accountTypeStringConverter;
+
     @Autowired
-    public AccountController(AccountService accountService, UserService userService, AmountFormatter amountFormatter) {
+    public AccountController(AccountService accountService, UserService userService, AmountFormatter amountFormatter, AccountTypeStringConverter accountTypeStringConverter) {
         this.accountService = accountService;
         this.userService = userService;
         this.amountFormatter = amountFormatter;
+        this.accountTypeStringConverter = accountTypeStringConverter;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -49,5 +57,38 @@ public class AccountController {
         model.addAttribute("savingsAccounts", savingsAccounts);
 
         return "accounts/list";
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String createAccount(@RequestParam("accType") String strAccountType, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName()).get();
+
+        model.addAttribute("user", user);
+        model.addAttribute("amountFormatter", amountFormatter);
+
+        model.addAttribute("accountType", strAccountType);
+        model.addAttribute("account", new Account());
+
+        return "accounts/create";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String addAccount(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult, @RequestParam("accType") String accountType, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName()).get();
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("accountType", accountType);
+            model.addAttribute("user", user);
+            model.addAttribute("amountFormatter", amountFormatter);
+            return "accounts/create";
+        }
+
+        account.setType(accountTypeStringConverter.convert(accountType));
+
+        accountService.save(account, user);
+
+        return "redirect:/accounts";
     }
 }

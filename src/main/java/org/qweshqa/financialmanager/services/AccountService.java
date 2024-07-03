@@ -23,7 +23,7 @@ public class AccountService {
     }
 
     public List<Account> findAllUserAccountsByType(User user, AccountType accountType){
-        return accountRepository.findAllByAccountTypeAndOwner(accountType, user);
+        return accountRepository.findAllByTypeAndOwner(accountType, user);
     }
 
     @Transactional
@@ -32,7 +32,7 @@ public class AccountService {
 
         Account cashFinancialAccount = new Account();
         cashFinancialAccount.setOwner(owner);
-        cashFinancialAccount.setAccountType(AccountType.FINANCIAL);
+        cashFinancialAccount.setType(AccountType.FINANCIAL);
         cashFinancialAccount.setName("Cash");
 
         accounts.add(cashFinancialAccount);
@@ -40,7 +40,7 @@ public class AccountService {
 
         Account cardFinancialAccount = new Account();
         cardFinancialAccount.setOwner(owner);
-        cardFinancialAccount.setAccountType(AccountType.FINANCIAL);
+        cardFinancialAccount.setType(AccountType.FINANCIAL);
         cardFinancialAccount.setName("Card");
 
         accounts.add(cardFinancialAccount);
@@ -48,7 +48,7 @@ public class AccountService {
 
         Account savingsAccount = new Account();
         savingsAccount.setOwner(owner);
-        savingsAccount.setAccountType(AccountType.SAVINGS);
+        savingsAccount.setType(AccountType.SAVINGS);
         savingsAccount.setName("For a dream");
 
         accounts.add(savingsAccount);

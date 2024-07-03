@@ -17,7 +17,7 @@ public class Account {
     private int id;
 
     @Size(max = 35)
-    @NotBlank(message = "This field shouldn't be blank")
+    @NotBlank(message = "This field should not be blank")
     @Column(name = "name")
     private String name;
 
@@ -34,21 +34,20 @@ public class Account {
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private AccountType accountType;
+    private AccountType type;
 
     public Account() {
     }
 
-    public Account(int id, String name, String description, float balance, User owner, AccountType accountType) {
+    public Account(int id, String name, String description, float balance, User owner, AccountType type) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.balance = balance;
         this.owner = owner;
-        this.accountType = accountType;
+        this.type = type;
     }
 
     public int getId() {
@@ -75,8 +74,12 @@ public class Account {
         this.description = description;
     }
 
-    public float getBalance() {
+    public @NotNull float getBalance() {
         return balance;
+    }
+
+    public void setBalance(@NotNull float balance){
+        this.balance = balance;
     }
 
     public void plusBalance(float amount) {
@@ -95,11 +98,11 @@ public class Account {
         this.owner = owner;
     }
 
-    public @NotNull AccountType getAccountType() {
-        return accountType;
+    public AccountType getType() {
+        return type;
     }
 
-    public void setAccountType(@NotNull AccountType accountType) {
-        this.accountType = accountType;
+    public void setType( AccountType accountType) {
+        this.type = accountType;
     }
 }
