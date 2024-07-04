@@ -40,29 +40,11 @@
     color: #838383;;
 }
 .account-item__description{
-    position: relative;
-    bottom: 40px;
     color: #838383;
     max-width: 350px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-}
-.delete-account-form{
-    display: inline-block;
-    position: relative;
-    left: 300px;
-    bottom: 40px;
-}
-.delete-account-button{
-    padding: 4px 5px 1px 5px;
-    background-color: #ff7c7c;
-    color: white;
-    border-radius: 5px;
-    border-style: none;
-}
-.delete-account-button:hover{
-    opacity: 0.8;
 }
 .new-account{
     width: 370px;
