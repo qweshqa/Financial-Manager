@@ -40,32 +40,36 @@
 <div class="content">
 
     <div class="accounts-block">
-        <div class="account-container">
+        <div class="accounts-container">
 
-            <h1 class="account-container__header">Accounts</h1>
+            <h1 class="accounts-container__header">Accounts</h1>
             <div class="accounts">
-                <div class="account" th:each="account: ${financialAccounts}" th:style="${account.getDescription().isEmpty() ? 'height:50px;' : 'height:60px'}">
-                    <h1 class="account__name" th:text="${account.getName()}"></h1>
 
-                    <h1 th:if="${account.getBalance() < 0}" class="account__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
-                    style="color:#ff7c7c;"></h1>
-                    <h1 th:if="${account.getBalance() > 0}" class="account__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
-                        style="color:#7cffb2"></h1>
-                    <h1 th:if="${account.getBalance() == 0}" class="account__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"></h1>
+                <a class="account-container__href" th:each="account: ${financialAccounts}" th:href="@{/accounts/{id}(id=${account.getId()})}" title="Click to go to the account dashboard">
+                    <div class="account-item" th:style="${account.getDescription().isEmpty() ? 'height:50px;' : 'height:60px'}">
+                        <h1 class="account-item__name" th:text="${account.getName()}"></h1>
 
-                    <form class="delete-account-form" th:method="DELETE" th:action="@{/accounts/delete/{id}(id=${account.getId()})}">
-                        <button class="delete-account-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                            </svg>
-                        </button>
-                    </form>
+                        <h1 th:if="${account.getBalance() < 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
+                            style="color:#ff7c7c;"></h1>
+                        <h1 th:if="${account.getBalance() > 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
+                            style="color:#7cffb2"></h1>
+                        <h1 th:if="${account.getBalance() == 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"></h1>
 
-                    <h1 class="account__description" style="font-size:16px;" th:text="${account.getDescription()}"></h1>
+                        <form class="delete-account-form" th:method="DELETE" th:action="@{/accounts/delete/{id}(id=${account.getId()})}">
+                            <button class="delete-account-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                </svg>
+                            </button>
+                        </form>
 
-                </div>
-                <div class="new-account account">
+                        <h1 class="account-item__description" style="font-size:16px;" th:text="${account.getDescription()}"></h1>
+                    </div>
+
+                </a>
+
+                <div class="new-account account-item">
                     <a class="new-account__href" href="/accounts/create?accType=financial">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
                             <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
@@ -79,27 +83,32 @@
 
             <h1 class="account-container__header">Savings</h1>
             <div class="accounts">
-                <div class="account" th:each="account: ${savingsAccounts}" th:style="${account.getDescription().isEmpty() ? 'height:50px;' : 'height:60px'}">
-                    <h1 class="account__name" th:text="${account.getName()}"></h1>
 
-                    <h1 th:if="${account.getBalance() < 0}" class="account__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
-                        style="color:#ff7c7c;"></h1>
-                    <h1 th:if="${account.getBalance() > 0}" class="account__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
-                        style="color:#7cffb2"></h1>
-                    <h1 th:if="${account.getBalance() == 0}" class="account__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"></h1>
+                <a class="account-container__href" th:each="account: ${savingsAccounts}" th:href="@{/accounts/{id}(id=${account.getId()})}" title="Click to go to the account dashboard">
+                    <div class="account-item" th:style="${account.getDescription().isEmpty() ? 'height:50px;' : 'height:60px'}">
+                        <h1 class="account-item__name" th:text="${account.getName()}"></h1>
 
-                    <form class="delete-account-form" th:method="DELETE" th:action="@{/accounts/delete/{id}(id=${account.getId()})}">
-                        <button class="delete-account-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                            </svg>
-                        </button>
-                    </form>
+                        <h1 th:if="${account.getBalance() < 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
+                            style="color:#ff7c7c;"></h1>
+                        <h1 th:if="${account.getBalance() > 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
+                            style="color:#7cffb2"></h1>
+                        <h1 th:if="${account.getBalance() == 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"></h1>
 
-                    <h1 class="account__description" style="font-size:16px;" th:text="${account.getDescription()}"></h1>
-                </div>
-                <div class="new-account account">
+                        <form class="delete-account-form" th:method="DELETE" th:action="@{/accounts/delete/{id}(id=${account.getId()})}">
+                            <button class="delete-account-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                </svg>
+                            </button>
+                        </form>
+
+                        <h1 class="account-item__description" style="font-size:16px;" th:text="${account.getDescription()}"></h1>
+                    </div>
+
+                </a>
+
+                <div class="new-account account-item">
                     <a class="new-account__href" href="/accounts/create?accType=savings">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
                             <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
@@ -109,6 +118,7 @@
                         <h1>New savings account</h1>
                     </a>
                 </div>
+
             </div>
 
         </div>

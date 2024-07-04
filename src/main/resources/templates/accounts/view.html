@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${account.getName() + ' account'}"></title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="header">
+
+    <div class="header__user-balance">
+        <h5>General balance</h5>
+        <h2 th:text="${amountFormatter.formatAmount(user.getBalance()) + ' ' + user.getSetting().getCurrencyUnit()}"></h2>
+    </div>
+
+    <div class="header__logout">
+        <form th:action="@{/logout}" method="post">
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div class="sidebar">
+    <header>Flanaer</header>
+    <ul class="navbar">
+        <li><a href="/finances/show">Dashboard</a></li>
+
+        <li><a href="/accounts">Accounts</a></li>
+
+        <li><a href="/settings/currency">Settings</a></li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <div class="account-container">
+
+        <div class="account">
+
+            <h1 class="account__name" th:text="${account.getName()}"></h1>
+
+            <h1 style="font-size: 16px; text-align: center">Current balance</h1>
+            <h1 class="account__balance" th:text="${account.getBalance() + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
+            th:style="${account.getBalance() > 0 ? 'color: #7cffb2;' : 'color:#ff7c7c'}"></h1>
+
+            <h1 class="account__description" th:text="${account.getDescription()}" th:title="${account.getDescription()}"></h1>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

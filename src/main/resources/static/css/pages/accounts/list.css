@@ -4,14 +4,17 @@
 .accounts-block h1{
     font-size: 16px;
 }
-.account-container{
+.accounts-container{
     text-align: left;
     display: inline-block;
     position: relative;
     top: 70px;
 }
-.account-container__header{
+.accounts-container__header{
     margin: 0 0 5px 20px;
+}
+.account-container__href:hover{
+    opacity: 0.8;
 }
 .accounts{
     background: #2b2e36;
@@ -20,7 +23,7 @@
     margin-bottom: 20px;
     border-radius: 10px;
 }
-.account{
+.account-item{
     width: 350px;
     height: 60px;
     border-style: solid;
@@ -30,13 +33,13 @@
     padding: 10px;
     margin: 10px 0 15px;
 }
-.account h1{
+.account-item h1{
     font-size: 20px;
 }
-.account__balance{
+.account-item__balance{
     color: #838383;;
 }
-.account__description{
+.account-item__description{
     position: relative;
     bottom: 40px;
     color: #838383;
