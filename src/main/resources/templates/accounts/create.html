@@ -39,13 +39,14 @@
 
 
 <div class="content">
-    <div class="new-account-form-block">
+    <div class="form-block">
+        <h1 class="form-header">Create account</h1>
 
-        <form class="new-account-form new-finance-form" th:method="POST" th:action="@{/accounts/add(accType=${accountType})}" th:object="${account}">
+        <form class="form" th:method="POST" th:action="@{/accounts/add(accType=${accountType})}" th:object="${account}">
 
             <label for="new-account__name">Name</label>
             <br/>
-            <input class="input-field" type="text" id="new-account__name" th:field="*{name}"/>
+            <input class="field field--add-width" type="text" id="new-account__name" th:field="*{name}"/>
             <br/>
             <div class="error-block" th:if="${#fields.hasErrors('name')}">
                 <h1 th:errors="*{name}"></h1>
@@ -54,7 +55,7 @@
 
             <label for="new-account__description">Description</label>
             <br/>
-            <input class="input-field" type="text" id="new-account__description" th:field="*{description}"/>
+            <input class="field field--add-width" type="text" id="new-account__description" th:field="*{description}"/>
             <br/>
             <div class="error-block" th:if="${#fields.hasErrors('description')}">
                 <h1 th:errors="*{description}"></h1>

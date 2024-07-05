@@ -12,17 +12,15 @@
 </head>
 <body>
 
-<div class="auth-form">
-    <div class="auth-form-header">
-        <h1>Sign up on fLanaer</h1>
-    </div>
+<div class="form-block" style="top: 150px">
+    <h1 class="form-header">Sign up on fLanaer</h1>
 
-    <form class="auth-form-body" th:method="POST" th:action="@{/registration}" th:object="${user}">
+    <form class="form" th:method="POST" th:action="@{/registration}" th:object="${user}">
 
         <label for="email">Email</label>
         <br/>
 
-        <input class="input-field" type="email" id="email" th:field="*{email}"/>
+        <input class="field field--add-width" type="email" id="email" th:field="*{email}"/>
         <br/>
 
         <div class="error-block" th:if="${#fields.hasErrors('email')}">
@@ -33,7 +31,7 @@
         <label for="password">Password</label>
         <br/>
 
-        <input class="input-field" type="password" id="password" th:field="*{password}"/>
+        <input class="field field--add-width" type="password" id="password" th:field="*{password}"/>
         <br/>
 
         <div class="error-block" th:if="${#fields.hasErrors('password')}">

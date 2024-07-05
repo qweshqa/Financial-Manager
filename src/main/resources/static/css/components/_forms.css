@@ -1,12 +1,32 @@
 label{
-    font-family: "Roboto", sans-serif;
-    font-style: normal;
     color: white;
     margin: 5px 0 0 5px;;
 }
-.input-field{
+.form-block{
+    text-align: center;
+    position: relative;
+    top: 100px;
+}
+.form-header{
+    font-size: 24px;
+}
+.form{
+    display: inline-block;
+    text-align: left;
+    background-color: #2b2e36;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: thin;
+    border-color: #3e3e3e;
+}
+.form label{
+    font-weight: 500;
+}
+.field{
     font-size: 16px;
-    background-color: transparent;
+    background-color: #1f2126;
     border-style: solid;
     border-color: #6a6a6a;
     border-radius: 5px;
@@ -15,14 +35,9 @@ label{
     color: white;
     padding: 10px;
 }
-.select-field{
-    font-size: 16px;
-    background-color: #1f2126;
-    border-style: solid;
-    border-color: #6a6a6a;
-    border-radius: 5px;
-    border-width: 1px;
-    margin: 0 0 10px;
-    color: white;
-    padding: 10px;
+.field--add-width{
+    width: 280px;
+}
+.select-field--add-width{
+    width: 300px;
 }

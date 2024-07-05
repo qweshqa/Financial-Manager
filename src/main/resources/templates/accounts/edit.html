@@ -40,12 +40,14 @@
 
 <div class="content">
 
-    <div class="edit-account-form-block">
-        <form class="new-account-form new-finance-form" th:method="PATCH" th:action="@{/accounts/edit/{id}(id=${account.getId()})}" th:object="${account}">
+    <div class="form-block">
+        <h1 class="form-header">Edit account</h1>
+
+        <form class="form" th:method="PATCH" th:action="@{/accounts/edit/{id}(id=${account.getId()})}" th:object="${account}">
 
             <label for="new-account__name">Name</label>
             <br/>
-            <input class="input-field" type="text" id="new-account__name" th:field="*{name}"/>
+            <input class="field field--add-width" type="text" id="new-account__name" th:field="*{name}"/>
             <br/>
             <div class="error-block" th:if="${#fields.hasErrors('name')}">
                 <h1 th:errors="*{name}"></h1>
@@ -54,7 +56,7 @@
 
             <label for="new-account__description">Description</label>
             <br/>
-            <input class="input-field" type="text" id="new-account__description" th:field="*{description}"/>
+            <input class="field field--add-width" type="text" id="new-account__description" th:field="*{description}"/>
             <br/>
             <div class="error-block" th:if="${#fields.hasErrors('description')}">
                 <h1 th:errors="*{description}"></h1>
@@ -63,7 +65,7 @@
 
             <label for="account__type">Type</label>
             <br/>
-            <select class="select-field" id="account__type" th:field="*{type}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.AccountType)}">
+            <select class="field select-field--add-width" id="account__type" th:field="*{type}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.AccountType)}">
                 <option th:value="${typeClass.FINANCIAL}">Default</option>
                 <option th:value="${typeClass.SAVINGS}">Savings</option>
             </select>

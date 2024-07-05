@@ -12,21 +12,21 @@
 </head>
 <body>
 
-<div class="auth-form">
-    <div class="auth-form-header">
-        <h1>Sign in to fLanaer</h1>
-    </div>
-    <form class="auth-form-body" name="form" th:method="POST" action="/login/process">
+<div class="form-block" style="top: 150px">
+
+    <h1 class="form-header">Sign in to fLanaer</h1>
+
+    <form class="form" name="form" th:method="POST" action="/login/process">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
         <label for="email">Email</label>
         <br/>
-        <input class="input-field" type="text" id="email" name="username"/>
+        <input class="field field--add-width" type="text" id="email" name="username"/>
         <br/>
 
         <label for="password">Password</label>
         <br/>
-        <input class="input-field" type="password" id="password" name="password"/>
+        <input class="field field--add-width" type="password" id="password" name="password"/>
         <br/>
 
         <div class="error-block" th:if="${param.error}">

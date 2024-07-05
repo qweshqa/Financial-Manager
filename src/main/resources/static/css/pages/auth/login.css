@@ -1,28 +1,3 @@
-.auth-form{
-    text-align: center;
-    position: relative;
-    top: 150px;
-}
-.auth-form-header{
-    margin: 0 0 20px 0;
-}
-.auth-form-header h1{
-    font-size: 24px;
-    font-weight: 300;
-}
-.auth-form-body{
-    display: inline-block;
-    text-align: left;
-    padding: 15px;
-    background-color: #2b2e36;
-    border-radius: 10px;
-}
-.auth-form-body .input-field{
-    width: 280px;
-}
-.auth-form-body .select-field{
-    width: 300px;
-}
 .error-block{
     width: 282px;
     display: inline-block;

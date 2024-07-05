@@ -49,7 +49,7 @@
         <form class="currency-setting" th:method="PATCH" th:action="@{/settings/{id}(id=${settingsId})}" th:object="${settings}">
 
             <label for="currency-select">Select currency</label>
-            <select class="select-field" id="currency-select" th:field="*{currencyUnit}">
+            <select class="field" id="currency-select" th:field="*{currencyUnit}">
                 <option th:value="${user_currency}" th:text="${user_currency}" selected></option>
                 <option th:each="currency: ${currencies}" th:value="${currency}" th:text="${currency}"></option>
             </select>

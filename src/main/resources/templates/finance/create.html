@@ -39,19 +39,21 @@
 
 <div class="content">
 
-    <div class="new-finance">
-        <form class="new-finance-form" th:method="POST" th:action="@{/finances/create(type=${financeType})}" th:object="${new_finance}">
+    <div class="form-block">
+        <h1 class="form-header">Create finance</h1>
+
+        <form class="form" th:method="POST" th:action="@{/finances/create(type=${financeType})}" th:object="${new_finance}">
 
             <label for="user-account">Account</label>
             <br/>
-            <select class="select-field user-account-for-finance" id="user-account" th:field="*{involvedAccount}">
+            <select class="field select-field--add-width" id="user-account" th:field="*{involvedAccount}">
                 <option th:each="account: ${userAccounts}" th:value="${account.getId()}" th:text="${account.getName()}"></option>
             </select>
             <br/>
 
             <label for="new-finance-name">Name</label>
             <br/>
-            <input class="input-field new-finance__name" type="text" th:field="*{name}" id="new-finance-name">
+            <input class="field field--add-width" type="text" th:field="*{name}" id="new-finance-name">
             <br/>
             <div class="error-block" th:if="${#fields.hasErrors('name')}">
                 <h1 th:errors="*{name}"></h1>
@@ -60,7 +62,7 @@
 
             <label for="new-finance-amount">Amount</label>
             <br/>
-            <input class="input-field new-finance__amount" type="text" th:field="*{amount}" id="new-finance-amount">
+            <input class="field field--add-width" type="text" th:field="*{amount}" id="new-finance-amount">
             <br/>
             <div class="error-block" th:if="${#fields.hasErrors('amount')}">
                 <h1 th:errors="*{amount}"></h1>
@@ -69,7 +71,7 @@
 
             <label for="new-finance-comment">Comment(Optional)</label>
             <br/>
-            <input class="input-field new-finance__comment" type="text" th:field="*{comment}" id="new-finance-comment" placeholder="No comment.">
+            <input class="field field--add-width" type="text" th:field="*{comment}" id="new-finance-comment" placeholder="No comment.">
             <br/>
             <div class="error-block" th:if="${#fields.hasErrors('comment')}">
                 <h1 th:errors="*{comment}"></h1>
