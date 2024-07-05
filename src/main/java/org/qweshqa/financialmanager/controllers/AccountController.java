@@ -111,6 +111,45 @@ public class AccountController {
         return "redirect:/accounts";
     }
 
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String editAccount(@PathVariable("id") int id, Model model){
+        Optional<Account> account = accountService.findById(id);
+
+        if(account.isEmpty()){
+            model.addAttribute("errorTitle", "404 Nothing found");
+            model.addAttribute("errorMessage", "Account with this id doesn't exist");
+            return "error";
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName()).get();
+
+        model.addAttribute("user", user);
+        model.addAttribute("amountFormatter", amountFormatter);
+
+        model.addAttribute("account", account.get());
+
+        return "accounts/edit";
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
+    public String editAccount(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult, Model model,
+                              @PathVariable("id") int id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName()).get();
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("user", user);
+            model.addAttribute("amountFormatter", amountFormatter);
+            return "accounts/edit";
+        }
+        account.setOwner(user);
+
+        accountService.update(id, account);
+
+        return "redirect:/accounts/" + id;
+    }
+
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
     public String deleteAccount(@PathVariable("id") int id){
         Account account = accountService.findById(id).get();

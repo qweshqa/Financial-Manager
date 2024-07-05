@@ -66,6 +66,12 @@ public class AccountService {
     }
 
     @Transactional
+    public void update(int accountIdToUpdate, Account updatedAccount){
+        updatedAccount.setId(accountIdToUpdate);
+        accountRepository.save(updatedAccount);
+    }
+
+    @Transactional
     public void save(Account account, User owner){
         account.setOwner(owner);
         accountRepository.save(account);

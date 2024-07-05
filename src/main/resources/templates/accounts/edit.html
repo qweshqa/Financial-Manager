@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${'Edit ' + account.getName()}"></title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="header">
+
+    <div class="header__user-balance">
+        <h5>General balance</h5>
+        <h2 th:text="${amountFormatter.formatAmount(user.getBalance()) + ' ' + user.getSetting().getCurrencyUnit()}"></h2>
+    </div>
+
+    <div class="header__logout">
+        <form th:action="@{/logout}" method="post">
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div class="sidebar">
+    <header>Flanaer</header>
+    <ul class="navbar">
+        <li><a href="/finances/show">Dashboard</a></li>
+
+        <li><a href="/accounts">Accounts</a></li>
+
+        <li><a href="/settings/currency">Settings</a></li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <div class="edit-account-form-block">
+        <form class="new-account-form new-finance-form" th:method="PATCH" th:action="@{/accounts/edit/{id}(id=${account.getId()})}" th:object="${account}">
+
+            <label for="new-account__name">Name</label>
+            <br/>
+            <input class="input-field" type="text" id="new-account__name" th:field="*{name}"/>
+            <br/>
+            <div class="error-block" th:if="${#fields.hasErrors('name')}">
+                <h1 th:errors="*{name}"></h1>
+            </div>
+            <br th:if="${#fields.hasErrors('name')}"/>
+
+            <label for="new-account__description">Description</label>
+            <br/>
+            <input class="input-field" type="text" id="new-account__description" th:field="*{description}"/>
+            <br/>
+            <div class="error-block" th:if="${#fields.hasErrors('description')}">
+                <h1 th:errors="*{description}"></h1>
+            </div>
+            <br th:if="${#fields.hasErrors('description')}"/>
+
+            <label for="account__type">Type</label>
+            <br/>
+            <select class="select-field" id="account__type" th:field="*{type}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.AccountType)}">
+                <option th:value="${typeClass.FINANCIAL}">Default</option>
+                <option th:value="${typeClass.SAVINGS}">Savings</option>
+            </select>
+            <br/>
+
+            <button type="submit" class="add-finance-item btn">Edit</button>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
