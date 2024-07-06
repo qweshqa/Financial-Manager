@@ -59,13 +59,3 @@
 .account-control-element button:hover{
     opacity: 0.8;
 }
-.delete-account-button{
-    padding: 4px 5px 1px 5px;
-    background-color: #ff7c7c;
-    color: white;
-    border-radius: 5px;
-    border-style: none;
-}
-.delete-account-button:hover{
-    opacity: 0.8;
-}
