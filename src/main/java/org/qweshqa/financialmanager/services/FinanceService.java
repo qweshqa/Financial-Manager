@@ -3,11 +3,8 @@ package org.qweshqa.financialmanager.services;
 import org.qweshqa.financialmanager.models.Finance;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.FinanceRepository;
-import org.qweshqa.financialmanager.repositories.UserRepository;
 import org.qweshqa.financialmanager.utils.FinanceType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +12,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,15 +89,53 @@ public class FinanceService {
     }
 
     @Transactional
+    public void processFinanceSetup(Finance finance, User user, FinanceType type){
+
+        finance.setUser(user);
+        finance.setType(type);
+        if(finance.getComment().isEmpty()){
+            finance.setComment("No comment.");
+        }
+
+        if(finance.getType() == FinanceType.INCOME){
+            finance.getInvolvedAccount().plusBalance(finance.getAmount());
+        }
+        else finance.getInvolvedAccount().minusBalance(finance.getAmount());
+
+    }
+
+    @Transactional
     public void save(Finance finance){
         financeRepository.save(finance);
     }
 
     @Transactional
-    public void update(Finance financeToUpdate, Finance updatedFinance){
-        financeToUpdate.setName(updatedFinance.getName());
-        financeToUpdate.setAmount(updatedFinance.getAmount());
-        financeToUpdate.setComment(updatedFinance.getComment());
+    public void processFinanceEdit(Finance finance, Finance financeToUpdate){
+
+        if(finance.getType() == FinanceType.EXPENSE){
+            finance.getInvolvedAccount().plusBalance(financeToUpdate.getAmount());
+            finance.getInvolvedAccount().minusBalance(finance.getAmount());
+        }
+        else {
+            financeToUpdate.getInvolvedAccount().plusBalance(finance.getAmount());
+            financeToUpdate.getInvolvedAccount().minusBalance(financeToUpdate.getAmount());
+        }
+    }
+
+    @Transactional
+    public void update(int financeToUpdateId, Finance updatedFinance){
+        updatedFinance.setId(financeToUpdateId);
+        financeRepository.save(updatedFinance);
+    }
+
+    @Transactional
+    public void processFinanceDelete(Finance finance){
+
+        if(finance.getType() == FinanceType.INCOME){
+            finance.getInvolvedAccount().minusBalance(finance.getAmount());
+        }
+        else finance.getInvolvedAccount().plusBalance(finance.getAmount());
+
     }
 
     @Transactional

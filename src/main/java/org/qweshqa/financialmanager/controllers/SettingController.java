@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.money.CurrencyUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +52,7 @@ public class SettingController {
 
         return "/settings/currency";
     }
+
     @RequestMapping(value = "/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
     public String saveCurrencySettings(@PathVariable("id") int id,
                                        @ModelAttribute("settings") Setting setting){

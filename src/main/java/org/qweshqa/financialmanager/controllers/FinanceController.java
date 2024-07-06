@@ -44,7 +44,7 @@ public class FinanceController {
     }
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
-    public String showFinances(@RequestParam(value = "display", defaultValue = "expense") String financeType,
+    public String viewFinances(@RequestParam(value = "display", defaultValue = "expense") String financeType,
             @RequestParam(value = "displayPeriod", defaultValue = "day") String displayPeriod, Model model){
         // user info
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -116,15 +116,7 @@ public class FinanceController {
 
         User user = userService.findUserByEmail(authentication.getName()).get();
 
-        finance.setUser(user);
-        finance.setType(financeTypeStringConverter.convert(type));
-        if(finance.getComment().isEmpty()){
-            finance.setComment("No comment.");
-        }
-
-        if(finance.getType() == FinanceType.INCOME){
-            finance.getInvolvedAccount().plusBalance(finance.getAmount());
-        } else finance.getInvolvedAccount().minusBalance(finance.getAmount());
+        financeService.processFinanceSetup(finance, user, financeTypeStringConverter.convert(type));
 
         financeService.save(finance);
 
@@ -168,16 +160,12 @@ public class FinanceController {
         }
         Finance financeToUpdate = financeService.findById(id).get();
 
-        if(finance.getType() == FinanceType.EXPENSE){
-            financeToUpdate.getInvolvedAccount().plusBalance(financeToUpdate.getAmount());
-            financeToUpdate.getInvolvedAccount().minusBalance(finance.getAmount());
-        }
-        else {
-            financeToUpdate.getInvolvedAccount().plusBalance(finance.getAmount());
-            financeToUpdate.getInvolvedAccount().minusBalance(financeToUpdate.getAmount());
-        }
+        finance.setInvolvedAccount(financeToUpdate.getInvolvedAccount());
+        finance.setUser(financeToUpdate.getUser());
 
-        financeService.update(financeToUpdate, finance);
+        financeService.processFinanceEdit(finance, financeToUpdate);
+
+        financeService.update(id, finance);
 
         return "redirect:/finances/show?display=" + financeToUpdate.getType().toString().toLowerCase() +
                 "&displayPeriod=" + displayPeriod;
@@ -188,9 +176,7 @@ public class FinanceController {
 
         Finance finance = financeService.findById(id).get();
 
-        if(finance.getType() == FinanceType.INCOME){
-            finance.getInvolvedAccount().minusBalance(finance.getAmount());
-        } else finance.getInvolvedAccount().plusBalance(finance.getAmount());
+        financeService.processFinanceDelete(finance);
 
         financeService.delete(id);
 

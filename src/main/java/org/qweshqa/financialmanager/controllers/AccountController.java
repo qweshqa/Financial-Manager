@@ -105,8 +105,9 @@ public class AccountController {
         }
 
         account.setType(accountTypeStringConverter.convert(accountType));
+        account.setOwner(user);
 
-        accountService.save(account, user);
+        accountService.save(account);
 
         return "redirect:/accounts";
     }
@@ -143,6 +144,9 @@ public class AccountController {
             model.addAttribute("amountFormatter", amountFormatter);
             return "accounts/edit";
         }
+        Account accountToUpdate = accountService.findById(id).get();
+
+        account.setBalance(accountToUpdate.getBalance());
         account.setOwner(user);
 
         accountService.update(id, account);

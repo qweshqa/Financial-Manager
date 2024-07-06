@@ -12,11 +12,11 @@
 </head>
 <body>
 
-<div class="auth-form">
-    <div class="auth-form-header">
-        <h1>Almost there! Set up an important parameters and start!</h1>
-    </div>
-    <form class="auth-form-body" th:method="POST" th:action="@{/registration/setup}">
+<div class="form-block">
+
+    <h1 class="form-header">Almost there! Set up an important parameters and start!</h1>
+
+    <form class="form" th:method="POST" th:action="@{/registration/setup}">
 
         <label for="currency">General currency</label>
         <br/>

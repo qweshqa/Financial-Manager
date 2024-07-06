@@ -72,8 +72,7 @@ public class AccountService {
     }
 
     @Transactional
-    public void save(Account account, User owner){
-        account.setOwner(owner);
+    public void save(Account account){
         accountRepository.save(account);
     }
 
