@@ -34,20 +34,20 @@ public class Finance {
 
     @NotNull
     @Column(name = "date")
-    // set date by default
     private LocalDate date = LocalDate.now();
 
-    // set month by default
     private Month month = LocalDate.now().getMonth();;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private FinanceType type;
 
+    // ON DELETE CASCADE
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    // ON DELETE CASCADE
     @ManyToOne
     @JoinColumn(name = "involved_account", referencedColumnName = "id")
     private Account involvedAccount;

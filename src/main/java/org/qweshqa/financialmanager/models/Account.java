@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
 import org.qweshqa.financialmanager.utils.AccountType;
 
+import java.util.List;
+
 @Entity
 @Table(name = "account")
 public class Account {
@@ -37,6 +39,9 @@ public class Account {
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private AccountType type;
+
+    @OneToMany
+    private List<Finance> accountLinkedFinances;
 
     public Account() {
     }
@@ -102,7 +107,15 @@ public class Account {
         return type;
     }
 
-    public void setType( AccountType accountType) {
+    public void setType(AccountType accountType) {
         this.type = accountType;
+    }
+
+    public List<Finance> getAccountLinkedFinances() {
+        return accountLinkedFinances;
+    }
+
+    public void addAccountLinkedFinance(Finance accountLinkedFinance) {
+        this.accountLinkedFinances.add(accountLinkedFinance);
     }
 }

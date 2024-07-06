@@ -107,6 +107,7 @@ public class FinanceService {
     @Transactional
     public void save(Finance finance){
         financeRepository.save(finance);
+        finance.getInvolvedAccount().addAccountLinkedFinance(finance);
     }
 
     @Transactional
