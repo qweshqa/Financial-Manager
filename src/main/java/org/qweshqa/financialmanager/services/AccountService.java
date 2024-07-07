@@ -27,6 +27,10 @@ public class AccountService {
         return accountRepository.findById(id);
     }
 
+    public List<Account> findAllByUser(User user){
+        return accountRepository.findAllByOwner(user);
+    }
+
     public List<Account> findAllUserAccountsByType(User user, AccountType accountType){
         return accountRepository.findAllByTypeAndOwner(accountType, user);
     }
@@ -79,5 +83,11 @@ public class AccountService {
     @Transactional
     public void delete(Account account){
         accountRepository.delete(account);
+    }
+
+    @Transactional
+    public void replenish(Account fromAccount, Account toAccount, float amount){
+        fromAccount.minusBalance(amount);
+        toAccount.plusBalance(amount);
     }
 }

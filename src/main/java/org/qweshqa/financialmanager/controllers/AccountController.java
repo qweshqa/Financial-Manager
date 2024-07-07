@@ -162,4 +162,41 @@ public class AccountController {
 
         return "redirect:/accounts";
     }
+
+    @RequestMapping(value = "/replenish/{id}", method = RequestMethod.GET)
+    public String replenishAccount(@PathVariable("id") int id, Model model){
+        Optional<Account> account = accountService.findById(id);
+
+        if(account.isEmpty()){
+            model.addAttribute("errorTitle", "404 Nothing found");
+            model.addAttribute("errorMessage", "Account with this id doesn't exist");
+            return "error";
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName()).get();
+
+        model.addAttribute("user", user);
+        model.addAttribute("amountFormatter", amountFormatter);
+
+        List<Account> userAccounts = accountService.findAllByUser(user);
+
+        userAccounts.remove(account.get());
+
+        model.addAttribute("account", account.get());
+        model.addAttribute("userAccounts", userAccounts);
+
+        return "accounts/replenish";
+    }
+
+    @RequestMapping(value = "/replenish/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
+    public String replenishAccount(@PathVariable("id") int id, @RequestParam("fromAcc") int accountId, @RequestParam("amount") float amount){
+        Account toAccount = accountService.findById(id).get();
+        Account fromAccount = accountService.findById(accountId).get();
+
+        accountService.replenish(fromAccount, toAccount, amount);
+
+        return "redirect:/accounts/" + id;
+    }
+
 }
