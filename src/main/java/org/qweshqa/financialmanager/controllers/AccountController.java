@@ -69,11 +69,13 @@ public class AccountController {
         model.addAttribute("amountFormatter", amountFormatter);
         model.addAttribute("currency", user.getSetting().getCurrencyUnit());
 
-        List<Account> financialAccounts = accountService.findAllUserAccountsByType(user, AccountType.FINANCIAL);
-        List<Account> savingsAccounts = accountService.findAllUserAccountsByType(user, AccountType.SAVINGS);
+        List<Account> financialAccounts = accountService.findAllUserAccountsByTypeAndArchive(user, AccountType.FINANCIAL, false);
+        List<Account> savingsAccounts = accountService.findAllUserAccountsByTypeAndArchive(user, AccountType.SAVINGS, false);
+        List<Account> archivedAccounts = accountService.findAllUserAccountsByArchive(user, true);
 
         model.addAttribute("financialAccounts", financialAccounts);
         model.addAttribute("savingsAccounts", savingsAccounts);
+        model.addAttribute("archivedAccounts", archivedAccounts);
 
         return "accounts/list";
     }
@@ -144,9 +146,6 @@ public class AccountController {
             model.addAttribute("amountFormatter", amountFormatter);
             return "accounts/edit";
         }
-        Account accountToUpdate = accountService.findById(id).get();
-
-        account.setBalance(accountToUpdate.getBalance());
         account.setOwner(user);
 
         accountService.update(id, account);
@@ -197,6 +196,24 @@ public class AccountController {
         accountService.replenish(fromAccount, toAccount, amount);
 
         return "redirect:/accounts/" + id;
+    }
+
+    @RequestMapping(value = "/archive/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
+    public String archiveAccount(@PathVariable("id") int id){
+        Account account = accountService.findById(id).get();
+
+        accountService.archiveAccount(account);
+
+        return "redirect:/accounts";
+    }
+
+    @RequestMapping(value = "/unzip/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
+    public String unzipAccount(@PathVariable("id") int id){
+        Account account = accountService.findById(id).get();
+
+        accountService.unzipAccount(account);
+
+        return "redirect:/accounts";
     }
 
 }

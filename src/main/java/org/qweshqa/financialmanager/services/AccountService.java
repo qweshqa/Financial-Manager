@@ -31,8 +31,12 @@ public class AccountService {
         return accountRepository.findAllByOwner(user);
     }
 
-    public List<Account> findAllUserAccountsByType(User user, AccountType accountType){
-        return accountRepository.findAllByTypeAndOwner(accountType, user);
+    public List<Account> findAllUserAccountsByArchive(User user, boolean isArchive){
+        return accountRepository.findAllByOwnerAndArchived(user, isArchive);
+    }
+
+    public List<Account> findAllUserAccountsByTypeAndArchive(User user, AccountType accountType, boolean isArchived){
+        return accountRepository.findAllByTypeAndOwnerAndArchived(accountType, user, isArchived);
     }
 
     @Transactional
@@ -89,5 +93,15 @@ public class AccountService {
     public void replenish(Account fromAccount, Account toAccount, float amount){
         fromAccount.minusBalance(amount);
         toAccount.plusBalance(amount);
+    }
+
+    @Transactional
+    public void archiveAccount(Account account){
+        account.setArchived(true);
+    }
+
+    @Transactional
+    public void unzipAccount(Account account){
+        account.setArchived(false);
     }
 }

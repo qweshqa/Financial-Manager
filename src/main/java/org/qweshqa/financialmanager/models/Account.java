@@ -32,6 +32,10 @@ public class Account {
     @Column(name = "balance")
     private float balance = 0;
 
+    @NotNull
+    @Column(name = "archived")
+    private boolean archived = false;
+
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;
@@ -46,13 +50,15 @@ public class Account {
     public Account() {
     }
 
-    public Account(int id, String name, String description, float balance, User owner, AccountType type) {
+    public Account(int id, String name, String description, float balance, boolean archived, User owner, AccountType type, List<Finance> accountLinkedFinances) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.balance = balance;
+        this.archived = archived;
         this.owner = owner;
         this.type = type;
+        this.accountLinkedFinances = accountLinkedFinances;
     }
 
     public int getId() {
@@ -93,6 +99,14 @@ public class Account {
 
     public void minusBalance(float amount) {
         this.balance -= amount;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
     public User getOwner() {

@@ -54,6 +54,15 @@
             </div>
             <br th:if="${#fields.hasErrors('name')}"/>
 
+            <label for="new-account__balance">Balance</label>
+            <br/>
+            <input class="field field--add-width" type="text" id="new-account__balance" th:field="*{balance}"/>
+            <br/>
+            <div class="error-block" th:if="${#fields.hasErrors('balance')}">
+                <h1 th:errors="*{balance}"></h1>
+            </div>
+            <br th:if="${#fields.hasErrors('balance')}"/>
+
             <label for="new-account__description">Description</label>
             <br/>
             <input class="field field--add-width" type="text" id="new-account__description" th:field="*{description}"/>
