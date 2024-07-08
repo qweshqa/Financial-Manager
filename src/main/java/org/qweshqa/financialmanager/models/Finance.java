@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.qweshqa.financialmanager.utils.FinanceType;
+import org.qweshqa.financialmanager.utils.enums.FinanceType;
 
 import java.time.LocalDate;
 import java.time.Month;

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
-import org.qweshqa.financialmanager.utils.AccountType;
+import org.qweshqa.financialmanager.utils.enums.AccountType;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@ package org.qweshqa.financialmanager.services;
 import org.qweshqa.financialmanager.models.Account;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.AccountRepository;
-import org.qweshqa.financialmanager.utils.AccountType;
+import org.qweshqa.financialmanager.utils.enums.AccountType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

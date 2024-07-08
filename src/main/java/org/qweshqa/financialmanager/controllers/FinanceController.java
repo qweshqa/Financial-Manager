@@ -7,7 +7,7 @@ import org.qweshqa.financialmanager.services.FinanceService;
 import org.qweshqa.financialmanager.services.SettingService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
-import org.qweshqa.financialmanager.utils.FinanceType;
+import org.qweshqa.financialmanager.utils.enums.FinanceType;
 import org.qweshqa.financialmanager.utils.FinanceTypeStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

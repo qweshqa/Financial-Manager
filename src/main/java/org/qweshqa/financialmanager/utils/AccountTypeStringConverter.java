@@ -1,5 +1,6 @@
 package org.qweshqa.financialmanager.utils;
 
+import org.qweshqa.financialmanager.utils.enums.AccountType;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
