@@ -1,4 +1,4 @@
-package org.qweshqa.financialmanager.utils;
+package org.qweshqa.financialmanager.utils.converters;
 
 import org.qweshqa.financialmanager.utils.enums.FinanceType;
 import org.springframework.core.convert.converter.Converter;

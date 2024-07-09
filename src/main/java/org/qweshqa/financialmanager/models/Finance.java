@@ -42,27 +42,32 @@ public class Finance {
     @Column(name = "type")
     private FinanceType type;
 
-    // ON DELETE CASCADE
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    // ON DELETE CASCADE
     @ManyToOne
     @JoinColumn(name = "involved_account", referencedColumnName = "id")
     private Account involvedAccount;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
+
     public Finance() {
     }
 
-    public Finance(int id, String name, float amount, String comment, LocalDate date, FinanceType type, Account involvedAccount) {
+    public Finance(int id, String name, float amount, String comment, LocalDate date, Month month, FinanceType type, User user, Account involvedAccount, Category category) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.comment = comment;
         this.date = date;
+        this.month = month;
         this.type = type;
+        this.user = user;
         this.involvedAccount = involvedAccount;
+        this.category = category;
     }
 
     public int getId() {
@@ -129,5 +134,13 @@ public class Finance {
 
     public void setInvolvedAccount(Account involvedAccount) {
         this.involvedAccount = involvedAccount;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

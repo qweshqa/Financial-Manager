@@ -1,5 +1,6 @@
 package org.qweshqa.financialmanager.services;
 
+import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.Finance;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.FinanceRepository;
@@ -36,6 +37,10 @@ public class FinanceService {
 
     public List<Finance> findAllByType(FinanceType type, User user){
         return financeRepository.findAllByTypeAndUser(type, user);
+    }
+
+    public List<Finance> findAllByCategory(Category category, User user){
+        return financeRepository.findAllByCategoryAndUser(category, user);
     }
 
     public List<Finance> findAllByDateAndType(LocalDate date, FinanceType type, User user){

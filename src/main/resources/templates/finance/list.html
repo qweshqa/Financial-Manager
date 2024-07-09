@@ -84,7 +84,7 @@
 
     <div class="finances">
         <div class="finance-container" th:each="finance, iterStat: ${finances}">
-            <div class="finance-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.FinanceType)}">
+            <div class="finance-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.FinanceType)}">
 
                 <span class="finance-item__name" th:text="${finance.getName()}"></span>
 

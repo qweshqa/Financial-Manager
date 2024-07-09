@@ -3,7 +3,6 @@ package org.qweshqa.financialmanager.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
@@ -37,6 +36,9 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private List<Account> userAccounts;
 
+    @OneToMany(mappedBy = "user")
+    private List<Category> userCategories;
+
     @Transient
     private float balance;
 
@@ -47,14 +49,14 @@ public class User {
 
     }
 
-    public User(int id, String email, String userDisplayName, String password,
-                List<Finance> userFinances, List<Account> userAccounts, float balance, Setting setting) {
+    public User(int id, String email, String userDisplayName, String password, List<Finance> userFinances, List<Account> userAccounts, List<Category> userCategories, float balance, Setting setting) {
         this.id = id;
         this.email = email;
         this.userDisplayName = userDisplayName;
         this.password = password;
         this.userFinances = userFinances;
         this.userAccounts = userAccounts;
+        this.userCategories = userCategories;
         this.balance = balance;
         this.setting = setting;
     }
@@ -105,6 +107,14 @@ public class User {
 
     public void setUserAccounts(List<Account> userAccounts) {
         this.userAccounts = userAccounts;
+    }
+
+    public List<Category> getUserCategories() {
+        return userCategories;
+    }
+
+    public void setUserCategories(List<Category> userCategories) {
+        this.userCategories = userCategories;
     }
 
     public float getBalance() {

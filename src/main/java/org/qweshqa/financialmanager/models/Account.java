@@ -44,7 +44,7 @@ public class Account {
     @Column(name = "type")
     private AccountType type;
 
-    @OneToMany
+    @OneToMany(mappedBy = "involvedAccount")
     private List<Finance> accountLinkedFinances;
 
     public Account() {

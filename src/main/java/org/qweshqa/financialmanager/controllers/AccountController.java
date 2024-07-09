@@ -6,7 +6,7 @@ import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.AccountService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.enums.AccountType;
-import org.qweshqa.financialmanager.utils.AccountTypeStringConverter;
+import org.qweshqa.financialmanager.utils.converters.AccountTypeStringConverter;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
