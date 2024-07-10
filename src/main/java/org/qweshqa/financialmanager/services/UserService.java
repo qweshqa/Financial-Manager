@@ -2,6 +2,7 @@ package org.qweshqa.financialmanager.services;
 
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.UserRepository;
+import org.qweshqa.financialmanager.utils.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,24 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<User> findUserById(int id){
-        return userRepository.findById(id);
+    public User findUserById(int id){
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User with id " + id + " doesn't exist.");
+        }
+
+        return user.get();
     }
 
-    public Optional<User> findUserByEmail(String email){
-        return userRepository.findByEmail(email);
+    public User findUserByEmail(String email){
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User with email " + email + " doesn't exist.");
+        }
+
+        return user.get();
     }
 
     @Transactional()

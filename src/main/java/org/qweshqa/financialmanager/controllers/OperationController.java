@@ -10,6 +10,7 @@ import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
 import org.qweshqa.financialmanager.utils.enums.OperationType;
 import org.qweshqa.financialmanager.utils.converters.OperationTypeStringConverter;
+import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,9 +52,9 @@ public class OperationController {
             @RequestParam(value = "displayPeriod", defaultValue = "day") String displayPeriod, Model model){
         // user info
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
         model.addAttribute("user", user);
-        model.addAttribute("settings", settingService.findSettingByUser(user).get());
+        model.addAttribute("settings", user.getSetting());
 
         // index
         switch(displayPeriod){
@@ -95,10 +96,10 @@ public class OperationController {
         model.addAttribute("new_operation", new Operation());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         model.addAttribute("user", user);
-        model.addAttribute("userAccounts", userService.findUserByEmail(authentication.getName()).get().getUserAccounts());
+        model.addAttribute("userAccounts", userService.findUserByEmail(authentication.getName()).getUserAccounts());
 
         model.addAttribute("operationType", type);
 
@@ -116,12 +117,12 @@ public class OperationController {
         if(bindingResult.hasErrors()){
             model.addAttribute("amountFormatter", amountFormatter);
             model.addAttribute("operationType", type);
-            model.addAttribute("userAccounts", userService.findUserByEmail(authentication.getName()).get().getUserAccounts());
-            model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
+            model.addAttribute("userAccounts", userService.findUserByEmail(authentication.getName()).getUserAccounts());
+            model.addAttribute("user", userService.findUserByEmail(authentication.getName()));
             return "operations/create";
         }
 
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         operationService.processOperationSetup(operation, user, operationTypeStringConverter.convert(type));
 
@@ -132,23 +133,24 @@ public class OperationController {
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String editOperation(@PathVariable("id") int id, Model model){
+        Operation operation;
 
-        Optional<Operation> operation = operationService.findById(id);
-
-        if(operation.isEmpty()){
+        try{
+            operation = operationService.findById(id);
+        } catch (OperationNotFoundException e){
             model.addAttribute("errorTitle", "Page not found");
             model.addAttribute("errorMessage", "404. Nothing was found.");
             return "/error";
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
+        model.addAttribute("user", userService.findUserByEmail(authentication.getName()));
 
         model.addAttribute("amountFormatter", amountFormatter);
 
-        model.addAttribute("operation", operation.get());
+        model.addAttribute("operation", operation);
 
-        model.addAttribute("operationType", operation.get().getType());
+        model.addAttribute("operationType", operation.getType());
 
         return "/operations/edit";
     }
@@ -159,11 +161,11 @@ public class OperationController {
 
         if(bindingResult.hasErrors()){
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
+            model.addAttribute("user", userService.findUserByEmail(authentication.getName()));
             model.addAttribute("amountFormatter", amountFormatter);
             return "/operations/edit";
         }
-        Operation operationToUpdate = operationService.findById(id).get();
+        Operation operationToUpdate = operationService.findById(id);
 
         operation.setInvolvedAccount(operationToUpdate.getInvolvedAccount());
         operation.setUser(operationToUpdate.getUser());
@@ -179,7 +181,7 @@ public class OperationController {
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
     public String deleteOperation(@PathVariable("id") int id){
 
-        Operation operation = operationService.findById(id).get();
+        Operation operation = operationService.findById(id);
 
         operationService.processOperationDelete(operation);
 

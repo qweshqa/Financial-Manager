@@ -31,7 +31,7 @@ public class SettingController {
     @RequestMapping(value = "/currency", method = RequestMethod.GET)
     public String getCurrencySettings(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         List<String> currencies = new ArrayList<>(); {
             currencies.add("UAH");

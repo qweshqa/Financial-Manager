@@ -9,6 +9,7 @@ import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
 import org.qweshqa.financialmanager.utils.converters.CategoryTypeStringConverter;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
+import org.qweshqa.financialmanager.utils.exceptions.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,7 +49,7 @@ public class CategoryController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String viewCategories(@RequestParam(value = "t", defaultValue = "expense") String type, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
@@ -64,23 +65,25 @@ public class CategoryController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String viewCategory(@PathVariable("id") int id, Model model){
-        Optional<Category> category = categoryService.findById(id);
+        Category category;
 
-        if(category.isEmpty()){
+        try{
+            category = categoryService.findById(id);
+        } catch (CategoryNotFoundException e){
             model.addAttribute("errorTitle", "404 Nothing found");
             model.addAttribute("errorMessage", "Category with this id doesn't exist");
             return "error";
         }
 
-        model.addAttribute("category", category.get());
+        model.addAttribute("category", category);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        List<Operation> categoryOperations = operationService.findAllByCategory(category.get(), user);
+        List<Operation> categoryOperations = operationService.findAllByCategory(category, user);
 
         model.addAttribute("categoryOperations", categoryOperations);
 

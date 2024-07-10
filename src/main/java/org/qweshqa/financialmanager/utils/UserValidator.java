@@ -2,6 +2,7 @@ package org.qweshqa.financialmanager.utils;
 
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.UserService;
+import org.qweshqa.financialmanager.utils.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -26,8 +27,11 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
         User user = (User) target;
 
-        if(userService.findUserByEmail(user.getEmail()).isPresent()){
-            errors.rejectValue("email", "", "User with this email already exists");
+        try{
+            user = userService.findUserByEmail(user.getEmail());
+        } catch (UserNotFoundException e){
+            return;
         }
+        errors.rejectValue("email", "", "User with this email already exists");
     }
 }

@@ -8,6 +8,7 @@ import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.enums.AccountType;
 import org.qweshqa.financialmanager.utils.converters.AccountTypeStringConverter;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
+import org.qweshqa.financialmanager.utils.exceptions.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,21 +42,23 @@ public class AccountController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String viewAccount(@PathVariable("id") int id, Model model){
-        Optional<Account> account = accountService.findById(id);
+        Account account;
 
-        if(account.isEmpty()){
+        try{
+            account = accountService.findById(id);
+        } catch (AccountNotFoundException e){
             model.addAttribute("errorTitle", "404 Nothing found");
             model.addAttribute("errorMessage", "Account with this id doesn't exist");
             return "error";
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        model.addAttribute("account", account.get());
+        model.addAttribute("account", account);
 
         return "accounts/view";
     }
@@ -63,7 +66,7 @@ public class AccountController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String viewAccounts(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
@@ -83,7 +86,7 @@ public class AccountController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createAccount(@RequestParam("accType") String strAccountType, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
@@ -97,7 +100,7 @@ public class AccountController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addAccount(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult, @RequestParam("accType") String accountType, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         if(bindingResult.hasErrors()){
             model.addAttribute("accountType", accountType);
@@ -116,21 +119,23 @@ public class AccountController {
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String editAccount(@PathVariable("id") int id, Model model){
-        Optional<Account> account = accountService.findById(id);
+        Account account;
 
-        if(account.isEmpty()){
+        try{
+            account = accountService.findById(id);
+        } catch (AccountNotFoundException e){
             model.addAttribute("errorTitle", "404 Nothing found");
             model.addAttribute("errorMessage", "Account with this id doesn't exist");
             return "error";
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        model.addAttribute("account", account.get());
+        model.addAttribute("account", account);
 
         return "accounts/edit";
     }
@@ -139,7 +144,7 @@ public class AccountController {
     public String editAccount(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult, Model model,
                               @PathVariable("id") int id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         if(bindingResult.hasErrors()){
             model.addAttribute("user", user);
@@ -155,7 +160,7 @@ public class AccountController {
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
     public String deleteAccount(@PathVariable("id") int id){
-        Account account = accountService.findById(id).get();
+        Account account = accountService.findById(id);
 
         accountService.delete(account);
 
@@ -164,25 +169,27 @@ public class AccountController {
 
     @RequestMapping(value = "/replenish/{id}", method = RequestMethod.GET)
     public String replenishAccount(@PathVariable("id") int id, Model model){
-        Optional<Account> account = accountService.findById(id);
+        Account account;
 
-        if(account.isEmpty()){
+        try{
+            account = accountService.findById(id);
+        } catch (AccountNotFoundException e){
             model.addAttribute("errorTitle", "404 Nothing found");
             model.addAttribute("errorMessage", "Account with this id doesn't exist");
             return "error";
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName()).get();
+        User user = userService.findUserByEmail(authentication.getName());
 
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
         List<Account> userAccounts = accountService.findAllByUser(user);
 
-        userAccounts.remove(account.get());
+        userAccounts.remove(account);
 
-        model.addAttribute("account", account.get());
+        model.addAttribute("account", account);
         model.addAttribute("userAccounts", userAccounts);
 
         return "accounts/replenish";
@@ -190,8 +197,8 @@ public class AccountController {
 
     @RequestMapping(value = "/replenish/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
     public String replenishAccount(@PathVariable("id") int id, @RequestParam("fromAcc") int accountId, @RequestParam("amount") float amount){
-        Account toAccount = accountService.findById(id).get();
-        Account fromAccount = accountService.findById(accountId).get();
+        Account toAccount = accountService.findById(id);
+        Account fromAccount = accountService.findById(accountId);
 
         accountService.replenish(fromAccount, toAccount, amount);
 
@@ -200,7 +207,7 @@ public class AccountController {
 
     @RequestMapping(value = "/archive/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
     public String archiveAccount(@PathVariable("id") int id){
-        Account account = accountService.findById(id).get();
+        Account account = accountService.findById(id);
 
         accountService.archiveAccount(account);
 
@@ -209,7 +216,7 @@ public class AccountController {
 
     @RequestMapping(value = "/unzip/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
     public String unzipAccount(@PathVariable("id") int id){
-        Account account = accountService.findById(id).get();
+        Account account = accountService.findById(id);
 
         accountService.unzipAccount(account);
 

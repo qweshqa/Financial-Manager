@@ -4,6 +4,7 @@ import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.CategoryRepository;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
+import org.qweshqa.financialmanager.utils.exceptions.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +21,18 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> findAllByUser(User user){
-        return categoryRepository.findAllByUser(user);
+    public Category findById(int id){
+        Optional<Category> category = categoryRepository.findById(id);
+
+        if(category.isEmpty()){
+            throw new CategoryNotFoundException("Category with id " + id + " doesn't exist.");
+        }
+
+        return category.get();
     }
 
-    public Optional<Category> findById(int id){
-        return categoryRepository.findById(id);
+    public List<Category> findAllByUser(User user){
+        return categoryRepository.findAllByUser(user);
     }
 
     public List<Category> findAllByTypeAndUser(CategoryType type, User user){

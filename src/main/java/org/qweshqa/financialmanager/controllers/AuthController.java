@@ -93,7 +93,7 @@ public class AuthController {
                                    @RequestParam(value = "display-name", defaultValue = "", required = false) String displayName) {
 
         CurrencyUnit currencyUnit = Monetary.getCurrency(currency);
-        settingService.saveSettingSetup(new Setting(), userService.findUserById(user_id).get(), currencyUnit);
+        settingService.saveSettingSetup(new Setting(), userService.findUserById(user_id), currencyUnit);
 
         return "redirect:/login";
     }

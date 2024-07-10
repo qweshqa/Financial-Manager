@@ -6,6 +6,7 @@ import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.OperationRepository;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
 import org.qweshqa.financialmanager.utils.enums.OperationType;
+import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +29,14 @@ public class OperationService {
         this.operationRepository = operationRepository;
     }
 
-    public Optional<Operation> findById(int id){
-        return operationRepository.findById(id);
+    public Operation findById(int id){
+        Optional<Operation> operation = operationRepository.findById(id);
+
+        if(operation.isEmpty()){
+            throw new OperationNotFoundException("Operation with id " + id + " doesn't exist.");
+        }
+
+        return operation.get();
     }
 
     public List<Operation> findAll(){

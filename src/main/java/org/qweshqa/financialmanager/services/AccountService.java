@@ -4,6 +4,7 @@ import org.qweshqa.financialmanager.models.Account;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.AccountRepository;
 import org.qweshqa.financialmanager.utils.enums.AccountType;
+import org.qweshqa.financialmanager.utils.exceptions.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,14 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public Optional<Account> findById(int id){
-        return accountRepository.findById(id);
+    public Account findById(int id){
+        Optional<Account> account = accountRepository.findById(id);
+
+        if(account.isEmpty()){
+            throw new AccountNotFoundException("Account with id " + id + " doesn't exist.");
+        }
+
+        return account.get();
     }
 
     public List<Account> findAllByUser(User user){
