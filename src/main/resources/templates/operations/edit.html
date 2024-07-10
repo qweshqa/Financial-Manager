@@ -74,7 +74,6 @@
             <br th:if="${#fields.hasErrors('comment')}"/>
 
             <input type="hidden" th:field="*{type}" th:value="${operationType}"/>
-            <input type="hidden" name="displayPeriod" th:value="${displayPeriod}">
 
             <button class="add-operation-item btn" type="submit">Update</button>
 

@@ -4,6 +4,7 @@ import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.OperationRepository;
+import org.qweshqa.financialmanager.utils.enums.CategoryType;
 import org.qweshqa.financialmanager.utils.enums.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,10 +103,14 @@ public class OperationService {
             operation.setComment("No comment.");
         }
 
-        if(operation.getType() == OperationType.INCOME){
+        if(operation.getCategory().getCategoryType() == CategoryType.INCOME){
             operation.getInvolvedAccount().plusBalance(operation.getAmount());
+            operation.getCategory().plusBalance(operation.getAmount());
         }
-        else operation.getInvolvedAccount().minusBalance(operation.getAmount());
+        else{
+            operation.getInvolvedAccount().minusBalance(operation.getAmount());
+            operation.getCategory().minusBalance(operation.getAmount());
+        }
 
     }
 
@@ -118,13 +123,19 @@ public class OperationService {
     @Transactional
     public void processOperationEdit(Operation operation, Operation operationToUpdate){
 
-        if(operation.getType() == OperationType.EXPENSE){
+        if(operation.getCategory().getCategoryType() == CategoryType.EXPENSE){
             operation.getInvolvedAccount().plusBalance(operationToUpdate.getAmount());
             operation.getInvolvedAccount().minusBalance(operation.getAmount());
+
+            operation.getCategory().plusBalance(operationToUpdate.getAmount());
+            operation.getCategory().minusBalance(operation.getAmount());
         }
         else {
             operationToUpdate.getInvolvedAccount().plusBalance(operation.getAmount());
             operationToUpdate.getInvolvedAccount().minusBalance(operationToUpdate.getAmount());
+
+            operation.getCategory().plusBalance(operation.getAmount());
+            operation.getCategory().minusBalance(operationToUpdate.getAmount());
         }
     }
 
@@ -139,8 +150,12 @@ public class OperationService {
 
         if(operation.getType() == OperationType.INCOME){
             operation.getInvolvedAccount().minusBalance(operation.getAmount());
+            operation.getCategory().minusBalance(operation.getAmount());
         }
-        else operation.getInvolvedAccount().plusBalance(operation.getAmount());
+        else{
+            operation.getInvolvedAccount().plusBalance(operation.getAmount());
+            operation.getCategory().plusBalance(operation.getAmount());
+        }
 
     }
 

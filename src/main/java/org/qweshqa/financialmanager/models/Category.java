@@ -72,6 +72,10 @@ public class Category {
         this.balance = balance;
     }
 
+    public void plusBalance(float amount){ this.balance += amount; }
+
+    public void minusBalance(float amount){ this.balance -= amount; }
+
     public @NotNull CategoryType getCategoryType() {
         return categoryType;
     }

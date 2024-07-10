@@ -41,7 +41,7 @@
 
 <div class="content">
 
-    <div class="category">
+    <div class="category" style="opacity: 1;">
 
         <h1 class="category__name" th:text="${category.getName()}"></h1>
 
@@ -59,7 +59,7 @@
             <h4>Operations</h4>
         </div>
 
-        <div class="operations">
+        <div th:if="${!categoryOperations.isEmpty()}" class="operations">
             <div class="operation" th:each="operation: ${categoryOperations}">
                 <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.OperationType)}">
 
@@ -90,6 +90,10 @@
                     </form>
                 </div>
             </div>
+        </div>
+
+        <div th:if="${categoryOperations.isEmpty()}" class="nothing-found-block">
+            <h1>Operations were not found</h1>
         </div>
 
     </div>

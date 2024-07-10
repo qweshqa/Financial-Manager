@@ -41,7 +41,7 @@
 
 <div class="content">
 
-    <div class="form-block">
+    <div class="form-block" style="top: 50px;">
         <h1 class="form-header">Create operation</h1>
 
         <form class="form" th:method="POST" th:action="@{/operations/create(type=${operationType})}" th:object="${new_operation}">
@@ -50,6 +50,13 @@
             <br/>
             <select class="field select-field--add-width" id="user-account" th:field="*{involvedAccount}">
                 <option th:each="account: ${userAccounts}" th:value="${account.getId()}" th:text="${account.getName()}"></option>
+            </select>
+            <br/>
+
+            <label for="user-category">Category</label>
+            <br/>
+            <select class="field select-field--add-width" id="user-category" th:field="*{category}">
+                <option th:each="category: ${userCategories}" th:value="${category.getId()}" th:text="${category.getName()}"></option>
             </select>
             <br/>
 

@@ -3,6 +3,7 @@ package org.qweshqa.financialmanager.controllers;
 import jakarta.validation.Valid;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
+import org.qweshqa.financialmanager.services.CategoryService;
 import org.qweshqa.financialmanager.services.OperationService;
 import org.qweshqa.financialmanager.services.SettingService;
 import org.qweshqa.financialmanager.services.UserService;
@@ -33,14 +34,16 @@ public class OperationController {
     private final OperationTypeStringConverter operationTypeStringConverter;
 
     private final AmountFormatter amountFormatter;
+    private final CategoryService categoryService;
 
     @Autowired
-    public OperationController(OperationService operationService, UserService userService, SettingService settingService, OperationTypeStringConverter operationTypeStringConverter, AmountFormatter amountFormatter) {
+    public OperationController(OperationService operationService, UserService userService, SettingService settingService, OperationTypeStringConverter operationTypeStringConverter, AmountFormatter amountFormatter, CategoryService categoryService) {
         this.operationService = operationService;
         this.userService = userService;
         this.settingService = settingService;
         this.operationTypeStringConverter = operationTypeStringConverter;
         this.amountFormatter = amountFormatter;
+        this.categoryService = categoryService;
     }
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -92,12 +95,16 @@ public class OperationController {
         model.addAttribute("new_operation", new Operation());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("user", userService.findUserByEmail(authentication.getName()).get());
+        User user = userService.findUserByEmail(authentication.getName()).get();
+
+        model.addAttribute("user", user);
         model.addAttribute("userAccounts", userService.findUserByEmail(authentication.getName()).get().getUserAccounts());
 
         model.addAttribute("operationType", type);
 
         model.addAttribute("amountFormatter", amountFormatter);
+
+        model.addAttribute("userCategories", categoryService.findAllByUser(user));
 
         return "operations/create";
     }
@@ -124,8 +131,7 @@ public class OperationController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String editOperation(@PathVariable("id") int id, @RequestParam("displayPeriod") String displayPeriod,
-                              Model model){
+    public String editOperation(@PathVariable("id") int id, Model model){
 
         Optional<Operation> operation = operationService.findById(id);
 
@@ -143,14 +149,13 @@ public class OperationController {
         model.addAttribute("operation", operation.get());
 
         model.addAttribute("operationType", operation.get().getType());
-        model.addAttribute("displayPeriod", displayPeriod);
 
         return "/operations/edit";
     }
 
     @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
     public String updateOperation(@PathVariable("id") int id, @ModelAttribute("operation") @Valid Operation operation, BindingResult bindingResult,
-                                @RequestParam("displayPeriod") String displayPeriod, Model model){
+                                  Model model){
 
         if(bindingResult.hasErrors()){
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -162,17 +167,17 @@ public class OperationController {
 
         operation.setInvolvedAccount(operationToUpdate.getInvolvedAccount());
         operation.setUser(operationToUpdate.getUser());
+        operation.setCategory(operationToUpdate.getCategory());
 
         operationService.processOperationEdit(operation, operationToUpdate);
 
         operationService.update(id, operation);
 
-        return "redirect:/operations/show?display=" + operationToUpdate.getType().toString().toLowerCase() +
-                "&displayPeriod=" + displayPeriod;
+        return "redirect:/operations/show?display=" + operationToUpdate.getType().toString().toLowerCase();
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
-    public String deleteOperation(@PathVariable("id") int id, @RequestParam("display") String display, @RequestParam("displayPeriod") String displayPeriod){
+    public String deleteOperation(@PathVariable("id") int id){
 
         Operation operation = operationService.findById(id).get();
 
@@ -180,7 +185,6 @@ public class OperationController {
 
         operationService.delete(id);
 
-        return "redirect:/operations/show?display=" + display +
-                "&displayPeriod=" + displayPeriod ;
+        return "redirect:/operations/show?display=" + operation.getType().toString().toLowerCase();
     }
 }

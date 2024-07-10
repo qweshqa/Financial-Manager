@@ -76,7 +76,7 @@
 
             <label for="account__type">Type</label>
             <br/>
-            <select class="field select-field--add-width" id="account__type" th:field="*{type}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.AccountType)}">
+            <select class="field select-field--add-width" id="account__type" th:field="*{type}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.AccountType)}">
                 <option th:value="${typeClass.FINANCIAL}">Default</option>
                 <option th:value="${typeClass.SAVINGS}">Savings</option>
             </select>

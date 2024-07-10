@@ -10,3 +10,12 @@
     border-width: thin;
     border-color: #444444;
 }
+.nothing-found-block{
+    position: relative;
+    top: 40px;
+}
+.nothing-found-block h1{
+    text-align: center;
+    font-size: 34px;
+    font-weight: 500;
+}

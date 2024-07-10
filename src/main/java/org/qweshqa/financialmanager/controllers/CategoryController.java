@@ -82,7 +82,7 @@ public class CategoryController {
 
         List<Operation> categoryOperations = operationService.findAllByCategory(category.get(), user);
 
-        model.addAttribute("categoryFinances", categoryOperations);
+        model.addAttribute("categoryOperations", categoryOperations);
 
         return "categories/view";
     }

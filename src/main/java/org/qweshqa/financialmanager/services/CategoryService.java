@@ -20,6 +20,10 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    public List<Category> findAllByUser(User user){
+        return categoryRepository.findAllByUser(user);
+    }
+
     public Optional<Category> findById(int id){
         return categoryRepository.findById(id);
     }

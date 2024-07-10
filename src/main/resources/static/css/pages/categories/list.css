@@ -12,6 +12,9 @@
     border-width: thin;
     border-color: #444444;
 }
+.category:hover{
+    opacity: 0.8;
+}
 .category--width{
     width: 250px;
 }
