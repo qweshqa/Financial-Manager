@@ -1,15 +1,14 @@
 package org.qweshqa.financialmanager.controllers;
 
 import org.qweshqa.financialmanager.models.Category;
-import org.qweshqa.financialmanager.models.Finance;
+import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.CategoryService;
-import org.qweshqa.financialmanager.services.FinanceService;
+import org.qweshqa.financialmanager.services.OperationService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
 import org.qweshqa.financialmanager.utils.converters.CategoryTypeStringConverter;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
-import org.qweshqa.financialmanager.utils.enums.FinanceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,19 +30,19 @@ public class CategoryController {
 
     private final UserService userService;
 
-    private final FinanceService financeService;
+    private final OperationService operationService;
 
     private final CategoryTypeStringConverter categoryTypeStringConverter;
 
     private final AmountFormatter amountFormatter;
 
     @Autowired
-    public CategoryController(CategoryService categoryService, UserService userService, CategoryTypeStringConverter categoryTypeStringConverter, AmountFormatter amountFormatter, FinanceService financeService) {
+    public CategoryController(CategoryService categoryService, UserService userService, CategoryTypeStringConverter categoryTypeStringConverter, AmountFormatter amountFormatter, OperationService operationService) {
         this.categoryService = categoryService;
         this.userService = userService;
         this.categoryTypeStringConverter = categoryTypeStringConverter;
         this.amountFormatter = amountFormatter;
-        this.financeService = financeService;
+        this.operationService = operationService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -81,9 +80,9 @@ public class CategoryController {
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        List<Finance> categoryFinances = financeService.findAllByCategory(category.get(), user);
+        List<Operation> categoryOperations = operationService.findAllByCategory(category.get(), user);
 
-        model.addAttribute("categoryFinances", categoryFinances);
+        model.addAttribute("categoryFinances", categoryOperations);
 
         return "categories/view";
     }

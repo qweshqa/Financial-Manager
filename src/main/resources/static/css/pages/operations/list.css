@@ -1,4 +1,4 @@
-.finance-type-navigation{
+.operation-type-navigation{
     display: flex;
     justify-content: center;
     padding: 10px;
@@ -6,30 +6,30 @@
     margin: 0 10px 20px 10px;
     border-radius: 10px;
 }
-.finance-type-block{
+.operation-type-block{
     margin: 0 20px;
 }
-.finance-type{
+.operation-type{
     display: block;
     background-color: #00000063;
     padding: 10px;
     text-align: center;
 }
-.finance-type h1{
+.operation-type h1{
     font-size: 14px;
     font-weight: 500;
 }
-.finance-item{
+.operation-item{
     background-color: #0000004f;
     border-radius: 10px;
     height: 70px;
     margin: 10px 10px 20px 10px;
     padding: 10px
 }
-.finance-item:hover{
+.operation-item:hover{
     opacity: 0.95
 }
-.finance-item__name{
+.operation-item__name{
     color: white;
     font-weight: 500;
     font-size: 20px;
@@ -43,27 +43,27 @@
 .edit-form-url:hover{
     color: #b6bdf3;
 }
-.finance-item__amount{
+.operation-item__amount{
     font-weight: 500;
     font-size: 20px;
 }
-.finance-item__comment{
+.operation-item__comment{
     font-size: 15px;
     color: #787878;
     margin-top: 7px;
 }
-.delete-finance-item-form{
+.delete-operation-item-form{
     position: relative;
     left: 1070px;
     bottom: 60px;
     display: inline-block;
 }
-.delete-finance-item{
+.delete-operation-item{
     background-color: #ff7c7c;
     color: white;
     padding: 3px 1px 0 1px;
 }
-.add-finance-item{
+.add-operation-item{
     background-color: #55bb4d;
     color: white;
     font-size: 13px;

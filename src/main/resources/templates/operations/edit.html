@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create finance action</title>
+    <title>Edit operation</title>
 
     <link rel="stylesheet" href="/css/main.css" type="text/css">
 
@@ -29,7 +29,9 @@
 <div class="sidebar">
     <header>Flanaer</header>
     <ul class="navbar">
-        <li><a href="/finances/show">Dashboard</a></li>
+        <li><a href="/category">Categories</a></li>
+
+        <li><a href="/operations/show">Operations</a></li>
 
         <li><a href="/accounts">Accounts</a></li>
 
@@ -40,45 +42,41 @@
 <div class="content">
 
     <div class="form-block">
-        <h1 class="form-header">Create finance</h1>
+        <h1 class="form-header">Edit operation</h1>
 
-        <form class="form" th:method="POST" th:action="@{/finances/create(type=${financeType})}" th:object="${new_finance}">
+        <form class="form" th:method="PATCH" th:action="@{/operations/edit/{id}(id=${operation.getId()})}" th:object="${operation}">
 
-            <label for="user-account">Account</label>
+            <label for="new-operation-name">Name</label>
             <br/>
-            <select class="field select-field--add-width" id="user-account" th:field="*{involvedAccount}">
-                <option th:each="account: ${userAccounts}" th:value="${account.getId()}" th:text="${account.getName()}"></option>
-            </select>
-            <br/>
-
-            <label for="new-finance-name">Name</label>
-            <br/>
-            <input class="field field--add-width" type="text" th:field="*{name}" id="new-finance-name">
+            <input class="field field--add-width" type="text" th:field="*{name}" id="new-operation-name">
             <br/>
             <div class="error-block" th:if="${#fields.hasErrors('name')}">
                 <h1 th:errors="*{name}"></h1>
             </div>
             <br th:if="${#fields.hasErrors('name')}"/>
 
-            <label for="new-finance-amount">Amount</label>
+            <label for="new-operation-amount">Amount</label>
             <br/>
-            <input class="field field--add-width" type="text" th:field="*{amount}" id="new-finance-amount">
+            <input class="field field--add-width" type="text" th:field="*{amount}" id="new-operation-amount">
             <br/>
             <div class="error-block" th:if="${#fields.hasErrors('amount')}">
                 <h1 th:errors="*{amount}"></h1>
             </div>
             <br th:if="${#fields.hasErrors('amount')}"/>
 
-            <label for="new-finance-comment">Comment(Optional)</label>
+            <label for="new-operation-comment">Comment</label>
             <br/>
-            <input class="field field--add-width" type="text" th:field="*{comment}" id="new-finance-comment" placeholder="No comment.">
+            <input class="field field--add-width" type="text" th:field="*{comment}" id="new-operation-comment" placeholder="No comment.">
             <br/>
             <div class="error-block" th:if="${#fields.hasErrors('comment')}">
                 <h1 th:errors="*{comment}"></h1>
             </div>
             <br th:if="${#fields.hasErrors('comment')}"/>
 
-            <button class="add-finance-item btn" type="submit">Create</button>
+            <input type="hidden" th:field="*{type}" th:value="${operationType}"/>
+            <input type="hidden" name="displayPeriod" th:value="${displayPeriod}">
+
+            <button class="add-operation-item btn" type="submit">Update</button>
 
         </form>
     </div>

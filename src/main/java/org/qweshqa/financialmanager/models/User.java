@@ -31,7 +31,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private List<Finance> userFinances;
+    private List<Operation> userOperations;
 
     @OneToMany(mappedBy = "owner")
     private List<Account> userAccounts;
@@ -49,12 +49,12 @@ public class User {
 
     }
 
-    public User(int id, String email, String userDisplayName, String password, List<Finance> userFinances, List<Account> userAccounts, List<Category> userCategories, float balance, Setting setting) {
+    public User(int id, String email, String userDisplayName, String password, List<Operation> userOperations, List<Account> userAccounts, List<Category> userCategories, float balance, Setting setting) {
         this.id = id;
         this.email = email;
         this.userDisplayName = userDisplayName;
         this.password = password;
-        this.userFinances = userFinances;
+        this.userOperations = userOperations;
         this.userAccounts = userAccounts;
         this.userCategories = userCategories;
         this.balance = balance;
@@ -93,12 +93,12 @@ public class User {
         this.password = password;
     }
 
-    public List<Finance> getUserFinances() {
-        return userFinances;
+    public List<Operation> getUserFinances() {
+        return userOperations;
     }
 
-    public void setUserFinances(List<Finance> userFinances) {
-        this.userFinances = userFinances;
+    public void setUserFinances(List<Operation> userOperations) {
+        this.userOperations = userOperations;
     }
 
     public List<Account> getUserAccounts() {

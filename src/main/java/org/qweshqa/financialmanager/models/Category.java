@@ -30,7 +30,7 @@ public class Category {
     private CategoryType categoryType;
 
     @OneToMany(mappedBy = "category")
-    private List<Finance> financeList;
+    private List<Operation> operationList;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -39,11 +39,11 @@ public class Category {
     public Category() {
     }
 
-    public Category(int id, String name, float balance, List<Finance> financeList, User user) {
+    public Category(int id, String name, float balance, List<Operation> operationList, User user) {
         this.id = id;
         this.name = name;
         this.balance = balance;
-        this.financeList = financeList;
+        this.operationList = operationList;
         this.user = user;
     }
 
@@ -80,12 +80,12 @@ public class Category {
         this.categoryType = categoryType;
     }
 
-    public List<Finance> getFinanceList() {
-        return financeList;
+    public List<Operation> getFinanceList() {
+        return operationList;
     }
 
-    public void setFinanceList(List<Finance> financeList) {
-        this.financeList = financeList;
+    public void setFinanceList(List<Operation> operationList) {
+        this.operationList = operationList;
     }
 
     public User getUser() {

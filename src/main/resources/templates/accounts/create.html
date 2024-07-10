@@ -29,7 +29,9 @@
 <div class="sidebar">
     <header>Flanaer</header>
     <ul class="navbar">
-        <li><a href="/finances/show">Dashboard</a></li>
+        <li><a href="/category">Categories</a></li>
+
+        <li><a href="/operations/show">Operations</a></li>
 
         <li><a href="/accounts">Accounts</a></li>
 
@@ -62,7 +64,7 @@
             </div>
             <br th:if="${#fields.hasErrors('description')}"/>
 
-            <button type="submit" class="add-finance-item btn">Create</button>
+            <button type="submit" class="add-operation-item btn">Create</button>
 
         </form>
 

@@ -45,12 +45,12 @@ public class Account {
     private AccountType type;
 
     @OneToMany(mappedBy = "involvedAccount")
-    private List<Finance> accountLinkedFinances;
+    private List<Operation> accountLinkedOperations;
 
     public Account() {
     }
 
-    public Account(int id, String name, String description, float balance, boolean archived, User owner, AccountType type, List<Finance> accountLinkedFinances) {
+    public Account(int id, String name, String description, float balance, boolean archived, User owner, AccountType type, List<Operation> accountLinkedOperations) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -58,7 +58,7 @@ public class Account {
         this.archived = archived;
         this.owner = owner;
         this.type = type;
-        this.accountLinkedFinances = accountLinkedFinances;
+        this.accountLinkedOperations = accountLinkedOperations;
     }
 
     public int getId() {
@@ -125,11 +125,11 @@ public class Account {
         this.type = accountType;
     }
 
-    public List<Finance> getAccountLinkedFinances() {
-        return accountLinkedFinances;
+    public List<Operation> getAccountLinkedFinances() {
+        return accountLinkedOperations;
     }
 
-    public void addAccountLinkedFinance(Finance accountLinkedFinance) {
-        this.accountLinkedFinances.add(accountLinkedFinance);
+    public void addAccountLinkedFinance(Operation accountLinkedOperation) {
+        this.accountLinkedOperations.add(accountLinkedOperation);
     }
 }

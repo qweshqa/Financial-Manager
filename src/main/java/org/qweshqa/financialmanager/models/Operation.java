@@ -5,14 +5,14 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.qweshqa.financialmanager.utils.enums.FinanceType;
+import org.qweshqa.financialmanager.utils.enums.OperationType;
 
 import java.time.LocalDate;
 import java.time.Month;
 
 @Entity
-@Table(name = "finances")
-public class Finance {
+@Table(name = "operation")
+public class Operation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class Finance {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
-    private FinanceType type;
+    private OperationType type;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -54,10 +54,10 @@ public class Finance {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    public Finance() {
+    public Operation() {
     }
 
-    public Finance(int id, String name, float amount, String comment, LocalDate date, Month month, FinanceType type, User user, Account involvedAccount, Category category) {
+    public Operation(int id, String name, float amount, String comment, LocalDate date, Month month, OperationType type, User user, Account involvedAccount, Category category) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -112,11 +112,11 @@ public class Finance {
 
     public void setMonth(Month month) { this.month = month; }
 
-    public @NotNull FinanceType getType() {
+    public @NotNull OperationType getType() {
         return type;
     }
 
-    public void setType(@NotNull FinanceType type) {
+    public void setType(@NotNull OperationType type) {
         this.type = type;
     }
 

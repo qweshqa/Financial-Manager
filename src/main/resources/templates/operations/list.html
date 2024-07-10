@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Your finance list</title>
+    <title>Your operation list</title>
 
     <link rel="stylesheet" href="/css/main.css" type="text/css">
 
@@ -28,7 +28,9 @@
 <div class="sidebar">
     <header>Flanaer</header>
     <ul class="navbar">
-        <li><a href="/finances/show">Dashboard</a></li>
+        <li><a href="/category">Categories</a></li>
+
+        <li><a href="/operations/show">Operations</a></li>
 
         <li><a href="/accounts">Accounts</a></li>
 
@@ -39,7 +41,7 @@
 <div class="content">
 
     <div class="date-navigation" style="text-align: center; margin: 10px">
-        <form th:if="${financeType.equals('expense')}" class="finance-display-period-form" th:method="GET" th:action="@{/finances/show}">
+        <form th:if="${operationType.equals('expense')}" class="operation-display-period-form" th:method="GET" th:action="@{/operations/show}">
 
             <input type="hidden" name="display" value="expense"/>
 
@@ -54,7 +56,7 @@
 
             <input style="width: 260px;" type="submit" class="btn " value="Show">
         </form>
-        <form th:if="${financeType.equals('income')}" class="finance-display-period-form" th:method="GET" th:action="@{/finances/show}">
+        <form th:if="${operationType.equals('income')}" class="operation-display-period-form" th:method="GET" th:action="@{/operations/show}">
 
             <input type="hidden" name="display" value="income"/>
 
@@ -71,24 +73,24 @@
         </form>
     </div>
 
-    <div class="finance-type-navigation">
-        <div class="finance-type-block">
-            <a class="finance-type btn" href="/finances/show?display=expense&displayPeriod=day">Expenses
+    <div class="operation-type-navigation">
+        <div class="operation-type-block">
+            <a class="operation-type btn" href="/operations/show?display=expense&displayPeriod=day">Expenses
                 <h1 th:text="${amountFormatter.formatAmount(expense_total) + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#ff7c7c;"></h1></a>
         </div>
-        <div class="finance-type-block">
-            <a class="finance-type btn" href="/finances/show?display=income&displayPeriod=day">Incomes
+        <div class="operation-type-block">
+            <a class="operation-type btn" href="/operations/show?display=income&displayPeriod=day">Incomes
                 <h1 th:text="${amountFormatter.formatAmount(income_total) + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#7cffb2"></h1></a>
         </div>
     </div>
 
-    <div class="finances">
-        <div class="finance-container" th:each="finance, iterStat: ${finances}">
-            <div class="finance-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.FinanceType)}">
+    <div class="operations">
+        <div class="operation-container" th:each="operation, iterStat: ${operations}">
+            <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.OperationType)}">
 
-                <span class="finance-item__name" th:text="${finance.getName()}"></span>
+                <span class="operation-item__name" th:text="${operation.getName()}"></span>
 
-                <form th:method="GET" th:action="@{/finances/edit/{id}(id=${finance.getId()})}" style="display: inline">
+                <form th:method="GET" th:action="@{/operations/edit/{id}(id=${operation.getId()})}" style="display: inline">
                     <input type="hidden" name="displayPeriod" th:value="${displayPeriod}">
 
                     <button class="edit-form-url">
@@ -99,16 +101,16 @@
                     </button>
                 </form>
 
-                <h1 class="finance-item__amount"  th:style="${finance.getType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2'}" th:text="${amountFormatter.formatAmount(finance.getAmount()) + ' ' + settings.getCurrencyUnit()}"></h1>
+                <h1 class="operation-item__amount"  th:style="${operation.getType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2'}" th:text="${amountFormatter.formatAmount(operation.getAmount()) + ' ' + settings.getCurrencyUnit()}"></h1>
 
-                <h1 class="finance-item__comment" th:text="${finance.getComment()}"></h1>
+                <h1 class="operation-item__comment" th:text="${operation.getComment()}"></h1>
 
-                <form class="delete-finance-item-form" th:method="POST" th:action="@{/finances/delete/{id}(id=${finance.getId()})}" th:object="${finance}">
+                <form class="delete-operation-item-form" th:method="POST" th:action="@{/operations/delete/{id}(id=${operation.getId()})}" th:object="${operation}">
 
-                    <input type="hidden" name="display" th:value="${financeType}">
+                    <input type="hidden" name="display" th:value="${operationType}">
                     <input type="hidden" name="displayPeriod" th:value="${displayPeriod}">
 
-                    <button class="delete-finance-item btn" type="submit">
+                    <button class="delete-operation-item btn" type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
                             <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"></path>
                             <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"></path>
@@ -120,7 +122,7 @@
     </div>
 
     <div style="text-align: center; margin: 0 0 10px 0">
-        <a class="btn add-finance-item" style="display: inline-block" th:href="@{/finances/create(type=${financeType})}">Create</a>
+        <a class="btn add-operation-item" style="display: inline-block" th:href="@{/operations/create(type=${operationType})}">Create</a>
     </div>
 
 </div>
