@@ -1,5 +1,6 @@
 package org.qweshqa.financialmanager.controllers;
 
+import jakarta.validation.Valid;
 import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
@@ -15,13 +16,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/category")
@@ -88,5 +86,32 @@ public class CategoryController {
         model.addAttribute("categoryOperations", categoryOperations);
 
         return "categories/view";
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String createCategory(Model model){
+        model.addAttribute("category", new Category());
+
+        return "categories/create";
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String createCategory(@ModelAttribute("category") @Valid Category category, BindingResult bindingResult, Model model){
+
+        if(bindingResult.hasErrors()){
+            return "categories/create";
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName());
+
+        category.setUser(user);
+
+        categoryService.save(category);
+
+        model.addAttribute("user", user);
+        model.addAttribute("amountFormatter", amountFormatter);
+
+        return "redirect:/category?t=" + category.getCategoryType().toString().toLowerCase();
     }
 }

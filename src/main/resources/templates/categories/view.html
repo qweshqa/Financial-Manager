@@ -46,10 +46,10 @@
         <h1 class="category__name" th:text="${category.getName()}"></h1>
 
         <h1 class="category__balance" th:if="${category.getBalance() == 0}" th:text="${category.getBalance() + ' ' + user.getSetting().getCurrencyUnit() + '.'}"></h1>
-        <h1 th:if="${category.getBalance() != 0}"
+        <h1 th:if="${category.getBalance() != 0}" th:with="type=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}"
             th:text="${category.getBalance() + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
-            th:style="${category.getBalance() > 0 ? 'color:#7cffb2' : 'color:#ff7c7c'}">
-        </h1>
+            th:style="${category.getCategoryType() == type.INCOME ? 'color:#7cffb2' : 'color:#ff7c7c'}"
+        ></h1>
 
     </div>
 

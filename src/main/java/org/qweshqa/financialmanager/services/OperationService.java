@@ -103,22 +103,21 @@ public class OperationService {
 
     @Transactional
     public void processOperationSetup(Operation operation, User user, OperationType type){
-
         operation.setUser(user);
         operation.setType(type);
+
         if(operation.getComment().isEmpty()){
             operation.setComment("No comment.");
         }
 
         if(operation.getCategory().getCategoryType() == CategoryType.INCOME){
             operation.getInvolvedAccount().plusBalance(operation.getAmount());
-            operation.getCategory().plusBalance(operation.getAmount());
         }
         else{
             operation.getInvolvedAccount().minusBalance(operation.getAmount());
-            operation.getCategory().minusBalance(operation.getAmount());
         }
 
+        operation.getCategory().plusBalance(operation.getAmount());
     }
 
     @Transactional
@@ -157,12 +156,12 @@ public class OperationService {
 
         if(operation.getType() == OperationType.INCOME){
             operation.getInvolvedAccount().minusBalance(operation.getAmount());
-            operation.getCategory().minusBalance(operation.getAmount());
         }
         else{
             operation.getInvolvedAccount().plusBalance(operation.getAmount());
-            operation.getCategory().plusBalance(operation.getAmount());
         }
+
+        operation.getCategory().minusBalance(operation.getAmount());
 
     }
 

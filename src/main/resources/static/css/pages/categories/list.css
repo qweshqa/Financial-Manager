@@ -21,3 +21,13 @@
 .category__balance{
     color: #818181;
 }
+.new-category{
+    display: flex;
+    align-items: center;
+    color: #626262;
+    border-style: dashed;
+}
+.new-category h1{
+    margin-left: 14px;
+    color: #626262;
+}
