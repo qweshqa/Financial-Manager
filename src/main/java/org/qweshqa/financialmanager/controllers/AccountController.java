@@ -18,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/accounts")
@@ -97,8 +96,8 @@ public class AccountController {
         return "accounts/create";
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addAccount(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult, @RequestParam("accType") String accountType, Model model){
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String createAccount(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult, @RequestParam("accType") String accountType, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
 

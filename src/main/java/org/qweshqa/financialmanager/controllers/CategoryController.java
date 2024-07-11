@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/category")
+@RequestMapping("/categories")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -112,6 +112,6 @@ public class CategoryController {
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        return "redirect:/category?t=" + category.getCategoryType().toString().toLowerCase();
+        return "redirect:/categories?t=" + category.getCategoryType().toString().toLowerCase();
     }
 }

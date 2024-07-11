@@ -5,7 +5,6 @@ import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.CategoryService;
 import org.qweshqa.financialmanager.services.OperationService;
-import org.qweshqa.financialmanager.services.SettingService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
 import org.qweshqa.financialmanager.utils.enums.OperationType;
@@ -20,7 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/operations")
@@ -30,26 +28,24 @@ public class OperationController {
 
     private final UserService userService;
 
-    private final SettingService settingService;
-
     private final OperationTypeStringConverter operationTypeStringConverter;
 
     private final AmountFormatter amountFormatter;
+
     private final CategoryService categoryService;
 
     @Autowired
-    public OperationController(OperationService operationService, UserService userService, SettingService settingService, OperationTypeStringConverter operationTypeStringConverter, AmountFormatter amountFormatter, CategoryService categoryService) {
+    public OperationController(OperationService operationService, UserService userService, OperationTypeStringConverter operationTypeStringConverter, AmountFormatter amountFormatter, CategoryService categoryService) {
         this.operationService = operationService;
         this.userService = userService;
-        this.settingService = settingService;
         this.operationTypeStringConverter = operationTypeStringConverter;
         this.amountFormatter = amountFormatter;
         this.categoryService = categoryService;
     }
 
-    @RequestMapping(value = "/show", method = RequestMethod.GET)
-    public String viewOperations(@RequestParam(value = "display", defaultValue = "expense") String operationType,
-            @RequestParam(value = "displayPeriod", defaultValue = "day") String displayPeriod, Model model){
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String viewOperations(@RequestParam(value = "t", defaultValue = "expense") String type,
+                                 @RequestParam(value = "p", defaultValue = "day") String period, Model model){
         // user info
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
@@ -57,24 +53,24 @@ public class OperationController {
         model.addAttribute("settings", user.getSetting());
 
         // index
-        switch(displayPeriod){
+        switch(period){
             case "all-time":
-                model.addAttribute("operations", operationService.findAllByType(OperationType.valueOf(operationType.toUpperCase()), user));;
+                model.addAttribute("operations", operationService.findAllByType(OperationType.valueOf(type.toUpperCase()), user));;
                 model.addAttribute("expense_total", operationService.getAllTimeOperationTotalByType(OperationType.EXPENSE, user));
                 model.addAttribute("income_total", operationService.getAllTimeOperationTotalByType(OperationType.INCOME, user));
                 break;
             case "month":
-                model.addAttribute("operations", operationService.findAllByMonthAndType(LocalDate.now().getMonth(), OperationType.valueOf(operationType.toUpperCase()), user));
+                model.addAttribute("operations", operationService.findAllByMonthAndType(LocalDate.now().getMonth(), OperationType.valueOf(type.toUpperCase()), user));
                 model.addAttribute("expense_total", operationService.getMonthlyOperationTotalByType(OperationType.EXPENSE, user));
                 model.addAttribute("income_total", operationService.getMonthlyOperationTotalByType(OperationType.INCOME, user));
                 break;
             case "week":
-                model.addAttribute("operations", operationService.findAllByWeekAndType(LocalDate.now(), OperationType.valueOf(operationType.toUpperCase()), user));
+                model.addAttribute("operations", operationService.findAllByWeekAndType(LocalDate.now(), OperationType.valueOf(type.toUpperCase()), user));
                 model.addAttribute("expense_total", operationService.getWeeklyOperationTotalByType(OperationType.EXPENSE, user));
                 model.addAttribute("income_total", operationService.getWeeklyOperationTotalByType(OperationType.INCOME, user));
                 break;
             case "day":
-                model.addAttribute("operations", operationService.findAllByDateAndType(LocalDate.now(), OperationType.valueOf(operationType.toUpperCase()), user));
+                model.addAttribute("operations", operationService.findAllByDateAndType(LocalDate.now(), OperationType.valueOf(type.toUpperCase()), user));
                 model.addAttribute("expense_total", operationService.getDailyOperationTotalByType(OperationType.EXPENSE, user));
                 model.addAttribute("income_total", operationService.getDailyOperationTotalByType(OperationType.INCOME, user));
                 break;
@@ -85,14 +81,14 @@ public class OperationController {
         model.addAttribute("new_operation", new Operation());
 
         // add request params
-        model.addAttribute("displayPeriod", displayPeriod);
-        model.addAttribute("operationType", operationType);
+        model.addAttribute("displayPeriod", period);
+        model.addAttribute("operationType", type);
 
         return "/operations/list";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String createOperation(@RequestParam("type") String type, Model model){
+    public String createOperation(@RequestParam("t") String type, Model model){
         model.addAttribute("new_operation", new Operation());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -111,7 +107,7 @@ public class OperationController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String addOperation(@ModelAttribute("new_operation") @Valid Operation operation, BindingResult bindingResult, @RequestParam("type") String type, Model model){
+    public String createOperation(@ModelAttribute("new_operation") @Valid Operation operation, BindingResult bindingResult, @RequestParam("t") String type, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(bindingResult.hasErrors()){
@@ -128,7 +124,7 @@ public class OperationController {
 
         operationService.save(operation);
 
-        return "redirect:/operations/show?display=" + type;
+        return "redirect:/operations?t=" + type;
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
@@ -156,7 +152,7 @@ public class OperationController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
-    public String updateOperation(@PathVariable("id") int id, @ModelAttribute("operation") @Valid Operation operation, BindingResult bindingResult,
+    public String editOperation(@PathVariable("id") int id, @ModelAttribute("operation") @Valid Operation operation, BindingResult bindingResult,
                                   Model model){
 
         if(bindingResult.hasErrors()){
@@ -175,7 +171,7 @@ public class OperationController {
 
         operationService.update(id, operation);
 
-        return "redirect:/operations/show?display=" + operationToUpdate.getType().toString().toLowerCase();
+        return "redirect:/operations?t=" + operationToUpdate.getType().toString().toLowerCase();
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
@@ -187,6 +183,6 @@ public class OperationController {
 
         operationService.delete(id);
 
-        return "redirect:/operations/show?display=" + operation.getType().toString().toLowerCase();
+        return "redirect:/operations?t=" + operation.getType().toString().toLowerCase();
     }
 }
