@@ -76,6 +76,10 @@ public class Category {
 
     public void minusBalance(float amount){ this.balance -= amount; }
 
+    public float getTransientBalance(){
+        return (float) operationList.stream().mapToDouble(Operation::getAmount).sum() + this.balance;
+    }
+
     public @NotNull CategoryType getCategoryType() {
         return categoryType;
     }

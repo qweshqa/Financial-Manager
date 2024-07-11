@@ -116,8 +116,6 @@ public class OperationService {
         else{
             operation.getInvolvedAccount().minusBalance(operation.getAmount());
         }
-
-        operation.getCategory().plusBalance(operation.getAmount());
     }
 
     @Transactional
@@ -132,16 +130,10 @@ public class OperationService {
         if(operation.getCategory().getCategoryType() == CategoryType.EXPENSE){
             operation.getInvolvedAccount().plusBalance(operationToUpdate.getAmount());
             operation.getInvolvedAccount().minusBalance(operation.getAmount());
-
-            operation.getCategory().plusBalance(operationToUpdate.getAmount());
-            operation.getCategory().minusBalance(operation.getAmount());
         }
         else {
             operationToUpdate.getInvolvedAccount().plusBalance(operation.getAmount());
             operationToUpdate.getInvolvedAccount().minusBalance(operationToUpdate.getAmount());
-
-            operation.getCategory().plusBalance(operation.getAmount());
-            operation.getCategory().minusBalance(operationToUpdate.getAmount());
         }
     }
 
@@ -160,9 +152,6 @@ public class OperationService {
         else{
             operation.getInvolvedAccount().plusBalance(operation.getAmount());
         }
-
-        operation.getCategory().minusBalance(operation.getAmount());
-
     }
 
     @Transactional
