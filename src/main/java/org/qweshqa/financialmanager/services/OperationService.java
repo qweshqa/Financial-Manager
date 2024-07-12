@@ -39,73 +39,36 @@ public class OperationService {
         return operation.get();
     }
 
-    public List<Operation> findAll(){
-        return operationRepository.findAll();
-    }
-
-    public List<Operation> findAllByType(OperationType type, User user){
-        return operationRepository.findAllByTypeAndUser(type, user);
+    public List<Operation> findAllByUser(User user){
+        return operationRepository.findAllByUser(user);
     }
 
     public List<Operation> findAllByCategory(Category category, User user){
         return operationRepository.findAllByCategoryAndUser(category, user);
     }
 
-    public List<Operation> findAllByDateAndType(LocalDate date, OperationType type, User user){
-        return operationRepository.findAllByDateAndTypeAndUser(date, type, user);
+    public List<Operation> findAllByDateAndUser(LocalDate date, User user){
+        return operationRepository.findAllByDateAndUser(date, user);
     }
 
-    public List<Operation> findAllByMonthAndType(Month month, OperationType operationType, User user){
-        return operationRepository.findAllByMonthAndTypeAndUser(month, operationType, user);
+    public List<Operation> findAllByMonthAndUser(Month month, User user){
+        return operationRepository.findAllByMonthAndUser(month, user);
     }
 
-    public List<Operation> findAllByWeekAndType(LocalDate date, OperationType operationType, User user){
+    public List<Operation> findAllByWeekAndUser(LocalDate date, User user){
         LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
 
         List<Operation> operations = new ArrayList<>();
         for(int i = 0; i < 7; i++){
-            List<Operation> financesInDay = operationRepository.findAllByDateAndTypeAndUser(startOfWeek.plusDays(i), operationType, user);
+            List<Operation> financesInDay = operationRepository.findAllByDateAndUser(startOfWeek.plusDays(i), user);
             operations.addAll(financesInDay);
         }
 
         return operations;
     }
 
-    public float getDailyOperationTotalByType(OperationType type, User user){
-        List<Operation> operations = operationRepository.findAllByDateAndTypeAndUser(LocalDate.now(), type, user);
-
-        return (float) operations.stream().mapToDouble(Operation::getAmount).sum();
-    }
-
-    public float getWeeklyOperationTotalByType(OperationType type, User user){
-        LocalDate startOfWeek = LocalDate.now().with(DayOfWeek.MONDAY);
-
-        List<Operation> operations = new ArrayList<>();
-        for(int i = 0; i < 7; i++){
-            List<Operation> financesInDay = operationRepository.findAllByDateAndTypeAndUser(startOfWeek.plusDays(i), type, user);
-            operations.addAll(financesInDay);
-        }
-
-        return (float) operations.stream().mapToDouble(Operation::getAmount).sum();
-    }
-
-    public float getMonthlyOperationTotalByType(OperationType type, User user){
-        List<Operation> operations = operationRepository.findAllByMonthAndTypeAndUser(LocalDate.now().getMonth(), type, user);
-
-        return (float) operations.stream().mapToDouble(Operation::getAmount).sum();
-    }
-
-    public float getAllTimeOperationTotalByType(OperationType type, User user){
-        List<Operation> operations = operationRepository.findAllByTypeAndUser(type, user);
-
-        return (float) operations.stream().mapToDouble(Operation::getAmount).sum();
-    }
-
     @Transactional
-    public void processOperationSetup(Operation operation, User user, OperationType type){
-        operation.setUser(user);
-        operation.setType(type);
-
+    public void processOperationSetup(Operation operation){
         if(operation.getComment().isEmpty()){
             operation.setComment("No comment.");
         }

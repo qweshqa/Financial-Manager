@@ -11,11 +11,11 @@ import java.time.Month;
 import java.util.List;
 
 public interface OperationRepository extends JpaRepository<Operation, Integer> {
-    List<Operation> findAllByTypeAndUser(OperationType type, User user);
+    List<Operation> findAllByUser(User user);
 
     List<Operation> findAllByCategoryAndUser(Category category, User user);
 
-    List<Operation> findAllByDateAndTypeAndUser(LocalDate date, OperationType type, User user);
+    List<Operation> findAllByDateAndUser(LocalDate date, User user);
 
-    List<Operation> findAllByMonthAndTypeAndUser(Month month, OperationType type, User user);
+    List<Operation> findAllByMonthAndUser(Month month, User user);
 }

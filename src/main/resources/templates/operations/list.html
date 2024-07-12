@@ -40,50 +40,6 @@
 
 <div class="content">
 
-    <div class="date-navigation" style="text-align: center; margin: 10px">
-        <form th:if="${operationType.equals('expense')}" class="operation-display-period-form" th:method="GET" th:action="@{/operations}">
-
-            <input type="hidden" name="t" value="expense"/>
-
-            <label for="expense-display-period">Choose display period</label>
-            <select class="field" id="expense-display-period" name="p">
-                <option value="day">Day</option>
-                <option value="week">Week</option>
-                <option value="month">Month</option>
-                <option value="all-time">All time</option>
-            </select>
-            <br/>
-
-            <input style="width: 260px;" type="submit" class="btn " value="Show">
-        </form>
-        <form th:if="${operationType.equals('income')}" class="operation-display-period-form" th:method="GET" th:action="@{/operations}">
-
-            <input type="hidden" name="t" value="income"/>
-
-            <label for="income-display-period">Choose display period</label>
-            <select class="field" id="income-display-period" name="p">
-                <option value="day">Day</option>
-                <option value="week">Week</option>
-                <option value="month">Month</option>
-                <option value="all-time">All time</option>
-            </select>
-            <br/>
-
-            <input style="width: 260px;" type="submit" class="btn " value="Show">
-        </form>
-    </div>
-
-    <div class="operation-type-navigation">
-        <div class="operation-type-block">
-            <a class="operation-type btn" href="/operations?t=expense&p=day">Expenses
-                <h1 th:text="${amountFormatter.formatAmount(expense_total) + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#ff7c7c;"></h1></a>
-        </div>
-        <div class="operation-type-block">
-            <a class="operation-type btn" href="/operations?t=income&p=day">Incomes
-                <h1 th:text="${amountFormatter.formatAmount(income_total) + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#7cffb2"></h1></a>
-        </div>
-    </div>
-
     <div class="operations">
         <div class="operation-container" th:each="operation, iterStat: ${operations}">
             <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.OperationType)}">
@@ -107,7 +63,6 @@
 
                 <form class="delete-operation-item-form" th:method="POST" th:action="@{/operations/delete/{id}(id=${operation.getId()})}" th:object="${operation}">
 
-                    <input type="hidden" name="display" th:value="${operationType}">
                     <input type="hidden" name="displayPeriod" th:value="${displayPeriod}">
 
                     <button class="delete-operation-item btn" type="submit">
@@ -122,7 +77,7 @@
     </div>
 
     <div style="text-align: center; margin: 0 0 10px 0">
-        <a class="btn add-operation-item" style="display: inline-block" th:href="@{/operations/create(t=${operationType})}">Create</a>
+        <a class="btn add-operation-item" style="display: inline-block" th:href="@{/operations/create}">Create</a>
     </div>
 
 </div>

@@ -52,8 +52,11 @@ public class CategoryController {
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        CategoryType categoryType = categoryTypeStringConverter.convert(type.toUpperCase());
+        model.addAttribute("expense_total", categoryService.getCategoriesTotalByTypeAndUser(CategoryType.EXPENSE, user));
+        model.addAttribute("income_total", categoryService.getCategoriesTotalByTypeAndUser(CategoryType.INCOME, user));
 
+        CategoryType categoryType = categoryTypeStringConverter.convert(type.toUpperCase());
+        
         List<Category> categories = categoryService.findAllByTypeAndUser(categoryType, user);
 
         model.addAttribute("categories", categories);

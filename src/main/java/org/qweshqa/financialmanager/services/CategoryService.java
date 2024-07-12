@@ -41,6 +41,12 @@ public class CategoryService {
         return categoryRepository.findAllByCategoryTypeAndUser(type, user);
     }
 
+    public float getCategoriesTotalByTypeAndUser(CategoryType type, User user){
+        List<Category> categories = categoryRepository.findAllByCategoryTypeAndUser(type, user);
+
+        return (float) categories.stream().mapToDouble(Category::getTransientBalance).sum();
+    }
+
     @Transactional
     public void save(Category category){
         categoryRepository.save(category);
