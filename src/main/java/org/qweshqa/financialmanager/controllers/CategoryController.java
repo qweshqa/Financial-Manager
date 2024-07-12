@@ -147,4 +147,11 @@ public class CategoryController {
 
         return "redirect:/categories/" + id;
     }
+
+    @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
+    public String deleteCategory(@PathVariable("id") int id){
+        categoryService.delete(id);
+
+        return "redirect:/categories";
+    }
 }

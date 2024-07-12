@@ -51,4 +51,10 @@ public class CategoryService {
         updated.setId(toUpdate.getId());
         categoryRepository.save(updated);
     }
+
+    @Transactional
+    public void delete(int id){
+        categoryRepository.deleteById(id);
+    }
+
 }
