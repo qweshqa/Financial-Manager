@@ -3,7 +3,6 @@ package org.qweshqa.financialmanager.repositories;
 import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
-import org.qweshqa.financialmanager.utils.enums.OperationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

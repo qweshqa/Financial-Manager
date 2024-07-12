@@ -7,8 +7,6 @@ import org.qweshqa.financialmanager.services.CategoryService;
 import org.qweshqa.financialmanager.services.OperationService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
-import org.qweshqa.financialmanager.utils.enums.OperationType;
-import org.qweshqa.financialmanager.utils.converters.OperationTypeStringConverter;
 import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,17 +26,14 @@ public class OperationController {
 
     private final UserService userService;
 
-    private final OperationTypeStringConverter operationTypeStringConverter;
-
     private final AmountFormatter amountFormatter;
 
     private final CategoryService categoryService;
 
     @Autowired
-    public OperationController(OperationService operationService, UserService userService, OperationTypeStringConverter operationTypeStringConverter, AmountFormatter amountFormatter, CategoryService categoryService) {
+    public OperationController(OperationService operationService, UserService userService, AmountFormatter amountFormatter, CategoryService categoryService) {
         this.operationService = operationService;
         this.userService = userService;
-        this.operationTypeStringConverter = operationTypeStringConverter;
         this.amountFormatter = amountFormatter;
         this.categoryService = categoryService;
     }
@@ -53,18 +48,13 @@ public class OperationController {
 
         // index
         switch(period){
-            case "all-time":
-                model.addAttribute("operations", operationService.findAllByUser(user));
-                break;
-            case "month":
-                model.addAttribute("operations", operationService.findAllByMonthAndUser(LocalDate.now().getMonth(), user));
-                break;
-            case "week":
-                model.addAttribute("operations", operationService.findAllByWeekAndUser(LocalDate.now(), user));
-                break;
-            case "day":
-                model.addAttribute("operations", operationService.findAllByDateAndUser(LocalDate.now(), user));
-                break;
+            case "all-time" -> model.addAttribute("operations", operationService.findAllByUser(user));
+
+            case "month" -> model.addAttribute("operations", operationService.findAllByMonthAndUser(LocalDate.now().getMonth(), user));
+
+            case "week" -> model.addAttribute("operations", operationService.findAllByWeekAndUser(LocalDate.now(), user));
+            
+            case "day" -> model.addAttribute("operations", operationService.findAllByDateAndUser(LocalDate.now(), user));
         }
         model.addAttribute("amountFormatter", amountFormatter);
 
@@ -133,8 +123,6 @@ public class OperationController {
         model.addAttribute("amountFormatter", amountFormatter);
 
         model.addAttribute("operation", operation);
-
-        model.addAttribute("operationType", operation.getType());
 
         return "/operations/edit";
     }

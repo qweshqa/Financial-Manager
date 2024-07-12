@@ -5,7 +5,6 @@ import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.OperationRepository;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
-import org.qweshqa.financialmanager.utils.enums.OperationType;
 import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,7 +108,7 @@ public class OperationService {
     @Transactional
     public void processOperationDelete(Operation operation){
 
-        if(operation.getType() == OperationType.INCOME){
+        if(operation.getCategory().getCategoryType()== CategoryType.INCOME){
             operation.getInvolvedAccount().minusBalance(operation.getAmount());
         }
         else{

@@ -5,8 +5,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.qweshqa.financialmanager.utils.enums.OperationType;
-
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -38,10 +36,6 @@ public class Operation {
 
     private Month month = LocalDate.now().getMonth();;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private OperationType type;
-
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -57,14 +51,13 @@ public class Operation {
     public Operation() {
     }
 
-    public Operation(int id, String name, float amount, String comment, LocalDate date, Month month, OperationType type, User user, Account involvedAccount, Category category) {
+    public Operation(int id, String name, float amount, String comment, LocalDate date, Month month, User user, Account involvedAccount, Category category) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.comment = comment;
         this.date = date;
         this.month = month;
-        this.type = type;
         this.user = user;
         this.involvedAccount = involvedAccount;
         this.category = category;
@@ -111,14 +104,6 @@ public class Operation {
     }
 
     public void setMonth(Month month) { this.month = month; }
-
-    public @NotNull OperationType getType() {
-        return type;
-    }
-
-    public void setType(@NotNull OperationType type) {
-        this.type = type;
-    }
 
     public User getUser() {
         return user;

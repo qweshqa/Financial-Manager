@@ -44,7 +44,7 @@
     <div class="form-block" style="top: 50px;">
         <h1 class="form-header">Create operation</h1>
 
-        <form class="form" th:method="POST" th:action="@{/operations/create(t=${operationType})}" th:object="${new_operation}">
+        <form class="form" th:method="POST" th:action="@{/operations/create}" th:object="${new_operation}">
 
             <label for="user-account">Account</label>
             <br/>

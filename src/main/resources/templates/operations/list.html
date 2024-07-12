@@ -42,7 +42,7 @@
 
     <div class="operations">
         <div class="operation-container" th:each="operation, iterStat: ${operations}">
-            <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.OperationType)}">
+            <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}">
 
                 <span class="operation-item__name" th:text="${operation.getName()}"></span>
 
@@ -57,7 +57,9 @@
                     </button>
                 </form>
 
-                <h1 class="operation-item__amount"  th:style="${operation.getType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2'}" th:text="${amountFormatter.formatAmount(operation.getAmount()) + ' ' + settings.getCurrencyUnit()}"></h1>
+                <h1 class="operation-item__amount"
+                    th:style="${operation.getCategory().getCategoryType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2'}"
+                    th:text="${amountFormatter.formatAmount(operation.getAmount()) + ' ' + settings.getCurrencyUnit()}"></h1>
 
                 <h1 class="operation-item__comment" th:text="${operation.getComment()}"></h1>
 
