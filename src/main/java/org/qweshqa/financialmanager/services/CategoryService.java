@@ -45,4 +45,10 @@ public class CategoryService {
     public void save(Category category){
         categoryRepository.save(category);
     }
+
+    @Transactional
+    public void update(Category toUpdate, Category updated){
+        updated.setId(toUpdate.getId());
+        categoryRepository.save(updated);
+    }
 }

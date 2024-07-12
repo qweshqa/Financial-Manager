@@ -1,0 +1,22 @@
+.control-panel{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+.control-panel__element{
+    margin: 10px;
+    text-align: center;
+}
+.control-panel__element button{
+    padding: 4px 5px 1px 5px;
+    color: white;
+    border-radius: 5px;
+    border-style: none;
+}
+.control-panel__element button:hover{
+    opacity: 0.8;
+}
+.control-panel__element h1{
+    font-size: 14px;
+    width: 100px;
+}

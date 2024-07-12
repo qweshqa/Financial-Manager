@@ -40,22 +40,7 @@
     overflow: hidden;
     white-space: nowrap;
 }
-.account-control-panel{
+.control-panel--account-position{
     position: relative;
     top: 50px;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-}
-.account-control-element{
-    margin: 10px;
-}
-.account-control-element button{
-    padding: 4px 5px 1px 5px;
-    color: white;
-    border-radius: 5px;
-    border-style: none;
-}
-.account-control-element button:hover{
-    opacity: 0.8;
 }

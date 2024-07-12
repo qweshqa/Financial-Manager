@@ -114,4 +114,37 @@ public class CategoryController {
 
         return "redirect:/categories?t=" + category.getCategoryType().toString().toLowerCase();
     }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String editCategory(@PathVariable("id") int id, Model model){
+        Category category;
+
+        try{
+            category = categoryService.findById(id);
+        } catch (CategoryNotFoundException e){
+            model.addAttribute("errorTitle", "404 Nothing found");
+            model.addAttribute("errorMessage", "Category with this id doesn't exist");
+            return "error";
+        }
+
+        model.addAttribute("category", category);
+
+        return "categories/edit";
+    }
+
+    @RequestMapping(value = "/edit/{id}", method =  {RequestMethod.PATCH, RequestMethod.POST})
+    public String editCategory(@PathVariable("id") int id, @ModelAttribute("category") @Valid Category updatedCategory,
+                               BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "categories/edit";
+        }
+
+        Category categoryToUpdate = categoryService.findById(id);
+
+        updatedCategory.setUser(categoryToUpdate.getUser());
+
+        categoryService.update(categoryToUpdate, updatedCategory);
+
+        return "redirect:/categories/" + id;
+    }
 }
