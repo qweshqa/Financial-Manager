@@ -1,3 +1,25 @@
+.operations-period-navigation-block{
+    text-align: center;
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+    border-bottom-color: #404040;
+}
+.operations-period-navigation{
+    display: inline-block;
+    padding: 10px;
+    background-color: #00000052;
+    border-radius: 15px;
+    margin: 10px;
+}
+.operations-period-navigation button{
+    font-size: 14px;
+    font-weight: 600;
+    padding: 5px 10px;
+}
+.operations-period-navigation select{
+    border-style: none;
+    padding: 0;
+}
 .operation-item{
     background-color: #0000004f;
     border-radius: 10px;

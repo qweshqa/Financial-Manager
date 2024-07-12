@@ -40,6 +40,23 @@
 
 <div class="content">
 
+    <div class="operations-period-navigation-block">
+
+        <form class="operations-period-navigation" th:method="GET" th:action="@{/operations}">
+            <label for="period"></label>
+            <select class="field" name="p" id="period">
+                <option value="all-time">All time</option>
+                <option value="month">Month</option>
+                <option value="week">Week</option>
+                <option value="day">Day</option>
+            </select>
+            <br/>
+
+            <button class="btn" type="submit">Submit</button>
+        </form>
+
+    </div>
+
     <div class="operations">
         <div class="operation-container" th:each="operation, iterStat: ${operations}">
             <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}">
