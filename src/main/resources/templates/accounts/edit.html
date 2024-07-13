@@ -14,13 +14,7 @@
 <body>
 
 <div class="header">
-
-    <div class="header__user-balance">
-        <h5>General balance</h5>
-        <h2 th:text="${amountFormatter.formatAmount(user.getBalance()) + ' ' + user.getSetting().getCurrencyUnit()}"></h2>
-    </div>
-
-    <div class="header__logout">
+    <div class="header__logout" style="bottom: -10px">
         <form th:action="@{/logout}" method="post">
             <button class="logout-button" type="submit">Logout</button>
         </form>

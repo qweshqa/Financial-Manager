@@ -103,12 +103,6 @@ public class AccountController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createAccount(@RequestParam("accType") String strAccountType, Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName());
-
-        model.addAttribute("user", user);
-        model.addAttribute("amountFormatter", amountFormatter);
-
         model.addAttribute("accountType", strAccountType);
         model.addAttribute("account", new Account());
 
@@ -117,15 +111,12 @@ public class AccountController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createAccount(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult, @RequestParam("accType") String accountType, Model model){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName());
-
         if(bindingResult.hasErrors()){
             model.addAttribute("accountType", accountType);
-            model.addAttribute("user", user);
-            model.addAttribute("amountFormatter", amountFormatter);
             return "accounts/create";
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName());
 
         account.setType(accountTypeStringConverter.convert(accountType));
         account.setOwner(user);
@@ -147,12 +138,6 @@ public class AccountController {
             return "error";
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(authentication.getName());
-
-        model.addAttribute("user", user);
-        model.addAttribute("amountFormatter", amountFormatter);
-
         model.addAttribute("account", account);
 
         return "accounts/edit";
@@ -161,14 +146,12 @@ public class AccountController {
     @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
     public String editAccount(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult, Model model,
                               @PathVariable("id") int id){
+        if(bindingResult.hasErrors()){
+            return "accounts/edit";
+        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
 
-        if(bindingResult.hasErrors()){
-            model.addAttribute("user", user);
-            model.addAttribute("amountFormatter", amountFormatter);
-            return "accounts/edit";
-        }
         account.setOwner(user);
 
         accountService.update(id, account);
@@ -199,9 +182,6 @@ public class AccountController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
-
-        model.addAttribute("user", user);
-        model.addAttribute("amountFormatter", amountFormatter);
 
         List<Account> userAccounts = accountService.findAllByUser(user);
 

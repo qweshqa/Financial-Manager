@@ -71,10 +71,7 @@ public class OperationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
 
-        model.addAttribute("user", user);
         model.addAttribute("userAccounts", userService.findUserByEmail(authentication.getName()).getUserAccounts());
-
-        model.addAttribute("amountFormatter", amountFormatter);
 
         model.addAttribute("userCategories", categoryService.findAllByUser(user));
 
@@ -86,9 +83,7 @@ public class OperationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(bindingResult.hasErrors()){
-            model.addAttribute("amountFormatter", amountFormatter);
             model.addAttribute("userAccounts", userService.findUserByEmail(authentication.getName()).getUserAccounts());
-            model.addAttribute("user", userService.findUserByEmail(authentication.getName()));
             return "operations/create";
         }
 
@@ -114,11 +109,6 @@ public class OperationController {
             return "/error";
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("user", userService.findUserByEmail(authentication.getName()));
-
-        model.addAttribute("amountFormatter", amountFormatter);
-
         model.addAttribute("operation", operation);
 
         return "/operations/edit";
@@ -129,9 +119,6 @@ public class OperationController {
                                   Model model){
 
         if(bindingResult.hasErrors()){
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            model.addAttribute("user", userService.findUserByEmail(authentication.getName()));
-            model.addAttribute("amountFormatter", amountFormatter);
             return "/operations/edit";
         }
         Operation operationToUpdate = operationService.findById(id);
