@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Archived accounts</title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="header">
+
+    <div class="header__user-balance">
+        <h5>General balance</h5>
+        <h2 th:text="${amountFormatter.formatAmount(user.getBalance()) + ' ' + user.getSetting().getCurrencyUnit()}"></h2>
+    </div>
+
+    <div class="header__logout">
+        <form th:action="@{/logout}" method="post">
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div class="sidebar">
+    <header>Flanaer</header>
+    <ul class="navbar">
+        <li><a href="/categories">Categories</a></li>
+
+        <li><a href="/operations">Operations</a></li>
+
+        <li><a href="/accounts">Accounts</a></li>
+
+        <li><a href="/settings/currency">Settings</a></li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <div class="accounts-block" style="border-bottom-style: none;">
+        <div class="accounts-container">
+
+            <h1 class="accounts-container__header">Archive</h1>
+            <div class="accounts">
+
+                <a class="account-container__href" th:each="account: ${archivedAccounts}" th:href="@{/accounts/{id}(id=${account.getId()})}" title="Click to go to the account dashboard">
+                    <div class="account-item" th:style="${account.getDescription().isEmpty() ? 'height:50px;' : 'height:60px'}">
+                        <h1 class="account-item__name" th:text="${account.getName()}"></h1>
+
+                        <h1 th:if="${account.getBalance() < 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
+                            style="color:#ff7c7c;"></h1>
+                        <h1 th:if="${account.getBalance() > 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
+                            style="color:#7cffb2"></h1>
+                        <h1 th:if="${account.getBalance() == 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"></h1>
+
+                        <h1 class="account-item__description" style="font-size:16px;" th:text="${account.getDescription()}"></h1>
+                    </div>
+
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

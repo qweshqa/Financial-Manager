@@ -104,33 +104,14 @@
                 </div>
 
             </div>
-
-            <div class="archived-accounts" th:if="${!archivedAccounts.isEmpty()}">
-
-                <h1 class="accounts-container__header">Archived accounts</h1>
-                <div class="accounts">
-
-                    <a class="account-container__href" th:each="account: ${archivedAccounts}" th:href="@{/accounts/{id}(id=${account.getId()})}" title="Click to go to the account dashboard">
-                        <div class="account-item" th:style="${account.getDescription().isEmpty() ? 'height:50px;' : 'height:60px'}">
-                            <h1 class="account-item__name" th:text="${account.getName()}"></h1>
-
-                            <h1 th:if="${account.getBalance() < 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
-                                style="color:#ff7c7c;"></h1>
-                            <h1 th:if="${account.getBalance() > 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
-                                style="color:#7cffb2"></h1>
-                            <h1 th:if="${account.getBalance() == 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"></h1>
-
-                            <h1 class="account-item__description" style="font-size:16px;" th:text="${account.getDescription()}"></h1>
-                        </div>
-
-                    </a>
-
-                </div>
-
-            </div>
-
         </div>
+
     </div>
+    <br/>
+
+    <form class="account-archive-href" th:method="GET" action="/accounts/archived">
+        <button type="submit">Show archive</button>
+    </form>
 
 </div>
 </body>

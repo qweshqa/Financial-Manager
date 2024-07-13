@@ -73,13 +73,27 @@ public class AccountController {
 
         List<Account> financialAccounts = accountService.findAllUserAccountsByTypeAndArchive(user, AccountType.FINANCIAL, false);
         List<Account> savingsAccounts = accountService.findAllUserAccountsByTypeAndArchive(user, AccountType.SAVINGS, false);
-        List<Account> archivedAccounts = accountService.findAllUserAccountsByArchive(user, true);
 
         model.addAttribute("financialAccounts", financialAccounts);
         model.addAttribute("savingsAccounts", savingsAccounts);
-        model.addAttribute("archivedAccounts", archivedAccounts);
 
         return "accounts/list";
+    }
+
+    @RequestMapping(value = "/archived", method = RequestMethod.GET)
+    public String viewArchivedAccounts(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName());
+
+        model.addAttribute("user", user);
+        model.addAttribute("amountFormatter", amountFormatter);
+        model.addAttribute("currency", user.getSetting().getCurrencyUnit());
+
+        List<Account> archivedAccounts = accountService.findAllUserAccountsByArchive(user, true);
+
+        model.addAttribute("archivedAccounts", archivedAccounts);
+
+        return "accounts/archivedList";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)

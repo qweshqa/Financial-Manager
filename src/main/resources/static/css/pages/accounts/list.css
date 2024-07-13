@@ -1,5 +1,12 @@
 .accounts-block{
     text-align: center;
+
+    position: relative;
+    top: 70px;
+
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+    border-bottom-color: #404040;
 }
 .accounts-block h1{
     font-size: 16px;
@@ -7,8 +14,6 @@
 .accounts-container{
     text-align: left;
     display: inline-block;
-    position: relative;
-    top: 70px;
 }
 .accounts-container__header{
     margin: 0 0 5px 20px;
@@ -68,4 +73,22 @@
     position: relative;
     left: 10px;
     color: #838383;
+}
+.account-archive-href{
+    text-align: center;
+    position: relative;
+    top: 60px;
+}
+.account-archive-href button{
+    font-size: 14px;
+    background-color: transparent;
+    color: wheat;
+    border-style: solid;
+    border-width: thin;
+    border-color: #4c4c4c;
+    border-radius: 15px;
+    padding: 10px;
+}
+.account-archive-href button:hover{
+    background-color: #2f3136;
 }
