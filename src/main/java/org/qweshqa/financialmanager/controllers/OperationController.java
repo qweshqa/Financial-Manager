@@ -61,9 +61,6 @@ public class OperationController {
         // empty finance for creating a new one
         model.addAttribute("new_operation", new Operation());
 
-        // add request params
-        model.addAttribute("displayPeriod", period);
-
         return "/operations/list";
     }
 

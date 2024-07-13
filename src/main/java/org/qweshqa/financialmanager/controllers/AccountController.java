@@ -2,6 +2,7 @@ package org.qweshqa.financialmanager.controllers;
 
 import jakarta.validation.Valid;
 import org.qweshqa.financialmanager.models.Account;
+import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.AccountService;
 import org.qweshqa.financialmanager.services.UserService;
@@ -56,8 +57,12 @@ public class AccountController {
 
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
+        model.addAttribute("settings", user.getSetting());
 
         model.addAttribute("account", account);
+
+        List<Operation> accountOperations = accountService.findAllOperationsByAccountAndUser(account, user);
+        model.addAttribute("accountOperations", accountOperations);
 
         return "accounts/view";
     }

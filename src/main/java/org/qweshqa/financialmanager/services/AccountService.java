@@ -1,8 +1,10 @@
 package org.qweshqa.financialmanager.services;
 
 import org.qweshqa.financialmanager.models.Account;
+import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.AccountRepository;
+import org.qweshqa.financialmanager.repositories.OperationRepository;
 import org.qweshqa.financialmanager.utils.enums.AccountType;
 import org.qweshqa.financialmanager.utils.exceptions.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,12 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
+    private final OperationRepository operationRepository;
+
     @Autowired
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, OperationRepository operationRepository) {
         this.accountRepository = accountRepository;
+        this.operationRepository = operationRepository;
     }
 
     public Account findById(int id){
@@ -44,6 +49,10 @@ public class AccountService {
 
     public List<Account> findAllUserAccountsByTypeAndArchive(User user, AccountType accountType, boolean isArchived){
         return accountRepository.findAllByTypeAndOwnerAndArchived(accountType, user, isArchived);
+    }
+
+    public List<Operation> findAllOperationsByAccountAndUser(Account account, User user){
+        return operationRepository.findAllByInvolvedAccountAndUser(account, user);
     }
 
     @Transactional

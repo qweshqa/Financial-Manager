@@ -1,14 +1,21 @@
 .account-container{
     text-align: center;
-    position: relative;
-    top: 70px;
+    margin: 50px 0 20px 0;
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+    border-bottom-color: #404040;
 }
 .account{
     display: inline-block;
     width: 500px;
+
     text-align: left;
+
     background-color: #0000004f;
+
     padding: 10px;
+    margin-bottom: 30px;
+
     border-radius: 10px;
     border-style: solid;
     border-width: thin;
@@ -39,8 +46,4 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-}
-.control-panel--account-position{
-    position: relative;
-    top: 50px;
 }
