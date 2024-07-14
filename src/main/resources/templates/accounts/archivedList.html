@@ -41,7 +41,7 @@
 
 <div class="content">
 
-    <div class="accounts-block" style="border-bottom-style: none;">
+    <div class="accounts-block" style="border-bottom-style: none;" th:if="${!archivedAccounts.isEmpty()}">
         <div class="accounts-container">
 
             <h1 class="accounts-container__header">Archive</h1>
@@ -64,6 +64,10 @@
 
             </div>
         </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 150px" th:if="${archivedAccounts.isEmpty()}">
+        <h1 style="font-size: 50px; font-weight: 500;">Archive is empty</h1>
     </div>
 </div>
 
