@@ -20,12 +20,16 @@
 .operation-item{
     background-color: #0000004f;
     border-radius: 10px;
-    height: 70px;
+    height: 60px;
     margin: 10px 10px 20px 10px;
     padding: 10px
 }
 .operation-item:hover{
     opacity: 0.95
+}
+.operation-item__category{
+    font-size: 14px;
+    width: fit-content;
 }
 .operation-item__name{
     color: white;
@@ -42,18 +46,35 @@
     color: #b6bdf3;
 }
 .operation-item__amount{
-    font-weight: 500;
     font-size: 20px;
+    position: relative;
+    left: 525px;
+    bottom: 24px;
+    width: fit-content;
+}
+.operation-item__account{
+    width: fit-content;
+    position: relative;
+    left: 900px;
+    bottom: 48px;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+.operation-item__account h1{
+    font-size: 20px;
+    margin-left: 5px;
 }
 .operation-item__comment{
     font-size: 15px;
     color: #787878;
-    margin-top: 7px;
+    position: relative;
+    bottom: 40px;
 }
 .delete-operation-item-form{
     position: relative;
     left: 1070px;
-    bottom: 60px;
+    bottom: 97px;
     display: inline-block;
 }
 .delete-operation-item{
