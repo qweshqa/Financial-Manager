@@ -3,6 +3,7 @@ package org.qweshqa.financialmanager.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.ColumnDefault;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
 
 import java.util.List;
@@ -23,6 +24,11 @@ public class Category {
     @NotNull
     @Column(name = "balance")
     private float balance = 0;
+
+    @NotNull
+    @ColumnDefault("false")
+    @Column(name = "archived")
+    private boolean archived = false;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -80,6 +86,15 @@ public class Category {
         return (float) operationList.stream().mapToDouble(Operation::getAmount).sum() + this.balance;
     }
 
+    @NotNull
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(@NotNull boolean archived) {
+        this.archived = archived;
+    }
+
     public @NotNull CategoryType getCategoryType() {
         return categoryType;
     }
@@ -88,11 +103,11 @@ public class Category {
         this.categoryType = categoryType;
     }
 
-    public List<Operation> getFinanceList() {
+    public List<Operation> getOperationList() {
         return operationList;
     }
 
-    public void setFinanceList(List<Operation> operationList) {
+    public void setOperationList(List<Operation> operationList) {
         this.operationList = operationList;
     }
 

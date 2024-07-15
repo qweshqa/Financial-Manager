@@ -52,12 +52,12 @@ public class CategoryController {
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        model.addAttribute("expense_total", categoryService.getCategoriesTotalByTypeAndUser(CategoryType.EXPENSE, user));
-        model.addAttribute("income_total", categoryService.getCategoriesTotalByTypeAndUser(CategoryType.INCOME, user));
+        model.addAttribute("expense_total", categoryService.getCategoriesTotalByTypeAndArchivedAndUser(CategoryType.EXPENSE, false, user));
+        model.addAttribute("income_total", categoryService.getCategoriesTotalByTypeAndArchivedAndUser(CategoryType.INCOME, false, user));
 
         CategoryType categoryType = categoryTypeStringConverter.convert(type.toUpperCase());
         
-        List<Category> categories = categoryService.findAllByTypeAndUser(categoryType, user);
+        List<Category> categories = categoryService.findAllByTypeAndArchivedAndUser(categoryType, false, user);
 
         model.addAttribute("categories", categories);
 
@@ -156,5 +156,23 @@ public class CategoryController {
         categoryService.delete(id);
 
         return "redirect:/categories";
+    }
+
+    @RequestMapping(value = "/archive/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
+    public String archiveCategory(@PathVariable("id") int id){
+        Category category = categoryService.findById(id);
+
+        categoryService.archive(category);
+
+        return "redirect:/categories?t=" + category.getCategoryType().toString().toLowerCase();
+    }
+
+    @RequestMapping(value = "/unzip/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
+    public String unzipCategory(@PathVariable("id") int id){
+        Category category = categoryService.findById(id);
+
+        categoryService.unzip(category);
+
+        return "redirect:/categories?t=" + category.getCategoryType().toString().toLowerCase();
     }
 }

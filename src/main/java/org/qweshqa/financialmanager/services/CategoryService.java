@@ -37,12 +37,12 @@ public class CategoryService {
         return categoryRepository.findAllByUser(user);
     }
 
-    public List<Category> findAllByTypeAndUser(CategoryType type, User user){
-        return categoryRepository.findAllByCategoryTypeAndUser(type, user);
+    public List<Category> findAllByTypeAndArchivedAndUser(CategoryType type, boolean archived, User user){
+        return categoryRepository.findAllByCategoryTypeAndArchivedAndUser(type, archived, user);
     }
 
-    public float getCategoriesTotalByTypeAndUser(CategoryType type, User user){
-        List<Category> categories = categoryRepository.findAllByCategoryTypeAndUser(type, user);
+    public float getCategoriesTotalByTypeAndArchivedAndUser(CategoryType type, boolean archived, User user){
+        List<Category> categories = categoryRepository.findAllByCategoryTypeAndArchivedAndUser(type, archived, user);
 
         return (float) categories.stream().mapToDouble(Category::getTransientBalance).sum();
     }
@@ -61,6 +61,16 @@ public class CategoryService {
     @Transactional
     public void delete(int id){
         categoryRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void archive(Category category){
+        category.setArchived(true);
+    }
+
+    @Transactional
+    public void unzip(Category category){
+        category.setArchived(false);
     }
 
 }
