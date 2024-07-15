@@ -1,12 +1,6 @@
 .accounts-block{
     text-align: center;
-
-    position: relative;
-    top: 70px;
-
-    border-bottom-style: solid;
-    border-bottom-width: thin;
-    border-bottom-color: #404040;
+    margin: 70px 0 0;
 }
 .accounts-block h1{
     font-size: 16px;
@@ -74,12 +68,7 @@
     left: 10px;
     color: #838383;
 }
-.account-archive-href{
-    text-align: center;
-    position: relative;
-    top: 60px;
-}
-.account-archive-href button{
+.archive-href{
     font-size: 14px;
     background-color: transparent;
     color: wheat;
@@ -89,6 +78,6 @@
     border-radius: 15px;
     padding: 10px;
 }
-.account-archive-href button:hover{
+.archive-href:hover{
     background-color: #2f3136;
 }

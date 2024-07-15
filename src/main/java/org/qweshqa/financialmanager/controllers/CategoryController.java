@@ -45,7 +45,8 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String viewCategories(@RequestParam(value = "t", defaultValue = "expense") String type, Model model){
+    public String viewCategories(@RequestParam(value = "t", defaultValue = "expense") String type,
+                                 Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
 
@@ -61,7 +62,30 @@ public class CategoryController {
 
         model.addAttribute("categories", categories);
 
+        model.addAttribute("type", type);
+
         return "categories/list";
+    }
+
+    @RequestMapping(value = "/archive", method = RequestMethod.GET)
+    public String viewArchive(@RequestParam(value = "t", defaultValue = "expense") String type,
+                              Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName());
+
+        model.addAttribute("user", user);
+        model.addAttribute("amountFormatter", amountFormatter);
+
+        model.addAttribute("expense_total", categoryService.getCategoriesTotalByTypeAndArchivedAndUser(CategoryType.EXPENSE, true, user));
+        model.addAttribute("income_total", categoryService.getCategoriesTotalByTypeAndArchivedAndUser(CategoryType.INCOME, true, user));
+
+        CategoryType categoryType = categoryTypeStringConverter.convert(type.toUpperCase());
+
+        List<Category> categories = categoryService.findAllByTypeAndArchivedAndUser(categoryType, true, user);
+
+        model.addAttribute("categories", categories);
+
+        return "categories/archive";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -164,7 +188,7 @@ public class CategoryController {
 
         categoryService.archive(category);
 
-        return "redirect:/categories?t=" + category.getCategoryType().toString().toLowerCase();
+        return "redirect:/categories/archive?t=" + category.getCategoryType().toString().toLowerCase();
     }
 
     @RequestMapping(value = "/unzip/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
@@ -173,6 +197,6 @@ public class CategoryController {
 
         categoryService.unzip(category);
 
-        return "redirect:/categories?t=" + category.getCategoryType().toString().toLowerCase();
+        return "redirect:/categories/archive?t=" + category.getCategoryType().toString().toLowerCase();
     }
 }

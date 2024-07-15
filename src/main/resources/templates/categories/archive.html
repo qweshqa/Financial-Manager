@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Categories</title>
+    <title>Category archive</title>
 
     <link rel="stylesheet" href="/css/main.css" type="text/css">
 
@@ -43,26 +43,30 @@
 
     <div class="category-type-navigation">
         <div class="category-type-block">
-            <a class="category-type btn" href="/categories?t=expense">Expenses
+            <a class="category-type btn" href="/categories/archive?t=expense">Expenses
                 <h1 th:text="${amountFormatter.formatAmount(expense_total) + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#ff7c7c;"></h1></a>
         </div>
         <div class="category-type-block">
-            <a class="category-type btn" href="/categories?t=income">Incomes
+            <a class="category-type btn" href="/categories/archive?t=income">Incomes
                 <h1 th:text="${amountFormatter.formatAmount(income_total) + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#7cffb2"></h1></a>
         </div>
     </div>
 
-    <div class="categories block--border-bottom">
+    <div class="operations-header">
+        <h4>Archive</h4>
+    </div>
 
-        <a class="category category--width" th:href="@{/categories/{id}(id=${category.getId()})}" th:each="category: ${categories}">
+    <div class="categories">
+
+        <a th:if="${!categories.isEmpty()}" class="category category--width" th:href="@{/categories/{id}(id=${category.getId()})}" th:each="category: ${categories}">
 
             <div>
 
                 <h1 th:text="${category.getName()}"></h1>
 
-                <h1 class="category__balance" th:if="${category.getTransientBalance() == 0}" th:text="${category.getTransientBalance() + ' ' + user.getSetting().getCurrencyUnit() + '.'}"></h1>
+                <h1 class="category__balance" th:if="${category.getTransientBalance() == 0}" th:text="${amountFormatter.formatAmount(category.getTransientBalance()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"></h1>
                 <h1 th:if="${category.getTransientBalance() != 0}" th:with="type=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}"
-                    th:text="${category.getTransientBalance() + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
+                    th:text="${amountFormatter.formatAmount(category.getTransientBalance()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
                     th:style="${category.getCategoryType() == type.INCOME ? 'color:#7cffb2' : 'color:#ff7c7c'}"
                 ></h1>
 
@@ -70,21 +74,11 @@
 
         </a>
 
-        <a class="new-category category category--width" th:href="@{/categories/create}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
-                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"></path>
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"></path>
-            </svg>
-
-            <h1>New category</h1>
-        </a>
-
     </div>
 
-    <div style="text-align: center">
-        <a class="archive-href" th:href="@{/categories/archive(t=${type})}">Show archive</a>
+    <div style="text-align: center; margin-top: 150px" th:if="${categories.isEmpty()}">
+        <h1 style="font-size: 50px; font-weight: 500;">Archive is empty</h1>
     </div>
-
 
 </div>
 

@@ -1,6 +1,7 @@
 @import url('base/_reset.css');
 @import url('base/_typography.css');
 
+@import url('components/_block.css');
 @import url('components/_buttons.css');
 @import url('components/_control-panel.css');
 @import url('components/_forms.css');
