@@ -71,13 +71,6 @@ public class OperationService {
         if(operation.getComment().isEmpty()){
             operation.setComment("No comment.");
         }
-
-        if(operation.getCategory().getCategoryType() == CategoryType.INCOME){
-            operation.getInvolvedAccount().plusBalance(operation.getAmount());
-        }
-        else{
-            operation.getInvolvedAccount().minusBalance(operation.getAmount());
-        }
     }
 
     @Transactional
@@ -87,33 +80,9 @@ public class OperationService {
     }
 
     @Transactional
-    public void processOperationEdit(Operation operation, Operation operationToUpdate){
-
-        if(operation.getCategory().getCategoryType() == CategoryType.EXPENSE){
-            operation.getInvolvedAccount().plusBalance(operationToUpdate.getAmount());
-            operation.getInvolvedAccount().minusBalance(operation.getAmount());
-        }
-        else {
-            operationToUpdate.getInvolvedAccount().plusBalance(operation.getAmount());
-            operationToUpdate.getInvolvedAccount().minusBalance(operationToUpdate.getAmount());
-        }
-    }
-
-    @Transactional
     public void update(int operationToUpdateId, Operation updatedOperation){
         updatedOperation.setId(operationToUpdateId);
         operationRepository.save(updatedOperation);
-    }
-
-    @Transactional
-    public void processOperationDelete(Operation operation){
-
-        if(operation.getCategory().getCategoryType()== CategoryType.INCOME){
-            operation.getInvolvedAccount().minusBalance(operation.getAmount());
-        }
-        else{
-            operation.getInvolvedAccount().plusBalance(operation.getAmount());
-        }
     }
 
     @Transactional

@@ -128,8 +128,6 @@ public class OperationController {
         operation.setUser(operationToUpdate.getUser());
         operation.setCategory(operationToUpdate.getCategory());
 
-        operationService.processOperationEdit(operation, operationToUpdate);
-
         operationService.update(id, operation);
 
         return "redirect:/operations";
@@ -139,8 +137,6 @@ public class OperationController {
     public String deleteOperation(@PathVariable("id") int id){
 
         Operation operation = operationService.findById(id);
-
-        operationService.processOperationDelete(operation);
 
         operationService.delete(id);
 
