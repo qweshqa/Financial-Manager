@@ -57,7 +57,7 @@
 
     </div>
 
-    <div class="operations">
+    <div class="operations" style="overflow: hidden;">
         <div class="operation" th:each="operation: ${operations}">
             <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}">
 
@@ -104,7 +104,7 @@
     </div>
 
     <div style="text-align: center; margin: 0 0 10px 0">
-        <a class="btn add-operation-item" style="display: inline-block" th:href="@{/operations/create}">Create</a>
+        <a class="btn btn--basic" style="display: inline-block" th:href="@{/operations/create}">Create</a>
     </div>
 
 </div>

@@ -1,8 +1,15 @@
 .btn{
-    font-size: 20px;
     border-style: none;
     border-radius: 5px;
-    padding: 4px 10px 4px 10px;
+    font-weight: 600;
+    padding: 5px;
+}
+.btn--basic{
+    background-color: #55bb4d;
+    color: white;
+    font-size: 13px;
+    width: 300px;
+    margin: 10px 0 0 0;
 }
 .btn:hover{
     opacity: 0.9;
