@@ -49,7 +49,7 @@
             <h1 class="account__name" th:text="${account.getName()}"></h1>
 
             <h1 style="font-size: 16px; text-align: center">Current balance</h1>
-            <h1 class="account__balance" th:text="${account.getTransientBalance() + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
+            <h1 class="account__balance" th:text="${amountFormatter.formatAmount(account.getTransientBalance()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
             th:style="${account.getTransientBalance() > 0 ? 'color: #7cffb2;' : 'color:#ff7c7c'}"></h1>
 
             <h1 class="account__description" th:text="${account.getDescription()}" th:title="${account.getDescription()}"></h1>

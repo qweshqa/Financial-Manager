@@ -1,0 +1,10 @@
+.date-navigation{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10px 10px;
+}
+.date-navigation span{
+    font-weight: 500;
+    color: white;
+    font-size: 20px;
+}

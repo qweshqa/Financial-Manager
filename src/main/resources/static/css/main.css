@@ -6,6 +6,7 @@
 @import url('components/_control-panel.css');
 @import url('components/_forms.css');
 @import url('components/_navigation.css');
+@import url('components/_date-navigation.css');
 
 @import url('layouts/_header.css');
 @import url('layouts/_sidebar.css');

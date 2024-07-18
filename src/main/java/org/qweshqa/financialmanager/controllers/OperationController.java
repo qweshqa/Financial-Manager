@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/operations")
@@ -40,27 +42,79 @@ public class OperationController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String viewOperations(@RequestParam(value = "p", defaultValue = "day") String period, Model model){
+    public String viewOperations(@RequestParam(value = "p", defaultValue = "day") String period,
+                                 @RequestParam(value = "d", defaultValue = "") String day,
+                                 @RequestParam(value = "m", defaultValue = "") String month,
+                                 Model model){
         // user info
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
         model.addAttribute("user", user);
         model.addAttribute("settings", user.getSetting());
 
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH);
+
         // index
         switch(period){
-            case "all-time" -> model.addAttribute("operations", operationService.findAllByUser(user));
+            case "all-time":
+                model.addAttribute("operations", operationService.findAllByUser(user));
 
-            case "month" -> model.addAttribute("operations", operationService.findAllByMonthAndUser(LocalDate.now().getMonth(), user));
+            case "month":
+                model.addAttribute("operations", operationService.findAllByMonthAndUser(LocalDate.now().getMonth(), user));
 
-            case "week" -> model.addAttribute("operations", operationService.findAllByWeekAndUser(LocalDate.now(), user));
-            
-            case "day" -> model.addAttribute("operations", operationService.findAllByDateAndUser(LocalDate.now(), user));
+            case "week":
+                model.addAttribute("operations", operationService.findAllByWeekAndUser(LocalDate.now(), user));
+
+            case "day":
+                if(day.isBlank()){
+                    model.addAttribute("operations", operationService.findAllByDateAndUser(date, user));
+                    break;
+                }
+
+                Month monthValue = month.isBlank() ? date.getMonth() : Month.of(Byte.parseByte(month));
+
+                if(Integer.parseInt(day) > monthValue.maxLength()){
+                    date = date.withMonth(monthValue.getValue() + 1).withDayOfMonth(1);
+                    return "redirect:/operations?p=" + period +
+                            "&m=" + date.getMonth().getValue() +
+                            "&d=" + date.getDayOfMonth();
+                }
+                else if(Integer.parseInt(day) < 1){
+                    date = date.withMonth(monthValue.getValue() - 1).withDayOfMonth(Month.of(Byte.parseByte(month) - 1).maxLength());
+                    return "redirect:/operations?p=" + period +
+                            "&m=" + date.getMonth().getValue() +
+                            "&d=" + date.getDayOfMonth();
+                }
+                else{
+                    date = date.withDayOfMonth(Integer.parseInt(day));
+                }
+                model.addAttribute("operations", operationService.findAllByDateAndUser(date, user));
         }
         model.addAttribute("amountFormatter", amountFormatter);
 
         // empty finance for creating a new one
         model.addAttribute("new_operation", new Operation());
+
+        model.addAttribute("period", period);
+
+        if(day.isBlank()){
+            model.addAttribute("day", date.getDayOfMonth());
+        }
+        else{
+            model.addAttribute("day", Integer.parseInt(day));
+            date = date.withDayOfMonth(Integer.parseInt(day));
+        }
+
+        if(month.isBlank()){
+            model.addAttribute("month", date.getMonthValue());
+        }
+        else{
+            model.addAttribute("month", Integer.parseInt(month));
+            date = date.withMonth(Integer.parseInt(month));
+        }
+
+        model.addAttribute("displayDate", date.format(formatter));
 
         return "/operations/list";
     }

@@ -60,7 +60,7 @@
 
                 <h1 th:text="${category.getName()}"></h1>
 
-                <h1 class="category__balance" th:if="${category.getTransientBalance() == 0}" th:text="${category.getTransientBalance() + ' ' + user.getSetting().getCurrencyUnit() + '.'}"></h1>
+                <h1 class="category__balance" th:if="${category.getTransientBalance() == 0}" th:text="${amountFormatter.formatAmount(category.getTransientBalance()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"></h1>
                 <h1 th:if="${category.getTransientBalance() != 0}" th:with="type=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}"
                     th:text="${category.getTransientBalance() + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
                     th:style="${category.getCategoryType() == type.INCOME ? 'color:#7cffb2' : 'color:#ff7c7c'}"
