@@ -1,21 +1,29 @@
 .warning-block{
     display: inline-block;
     width: 290px;
-    background-color: #af802e;
-    color: #fdcf7f;
-    padding: 5px;
+
     border-radius: 5px;
+
     font-size: 16px;
+
     margin: 0 0 10px 0;
+    padding: 5px;
+
+    color: #fdcf7f;
+    background-color: #af802e;
 }
 .delete-account-button{
     width: 300px;
+
+    font-weight: 600;
+
     border-style: none;
     border-radius: 5px;
+
     padding: 4px 10px 4px 10px;
-    background-color: #780000;
+
     color: white;
-    font-weight: 600;
+    background-color: #780000;
 }
 .delete-account-button:hover{
     opacity: 0.8;

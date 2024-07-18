@@ -4,14 +4,17 @@
     flex-direction: row;
 }
 .control-panel__element{
-    margin: 10px;
     text-align: center;
+
+    margin: 10px;
 }
 .control-panel__element button{
-    padding: 4px 5px 1px 5px;
-    color: white;
     border-radius: 5px;
     border-style: none;
+
+    padding: 4px 5px 1px 5px;
+
+    color: white;
 }
 .control-panel__element button:hover{
     opacity: 0.8;

@@ -1,28 +1,35 @@
 .header{
     position: relative;
     top: 0;
+
     width: -webkit-fill-available;
     height: 40px;
     padding: 10px;
+
     background-color: #26282c;
 }
 .header__user-balance{
     margin-left: 190px;
+
     text-align: center;
 }
 .header__logout{
-    text-align: right;
     position: relative;
     bottom: 35px;
     width: 83%;
+
     margin-left: 17%;
+
+    text-align: right;
 }
 .logout-button{
+    font-size: 16px;
+    border-style: none;
+
+    padding: 0;
+
     color: white;
     background-color: #26282c;
-    padding: 0;
-    border-style: none;
-    font-size: 16px;
 }
 .logout-button:hover{
     text-decoration: underline;

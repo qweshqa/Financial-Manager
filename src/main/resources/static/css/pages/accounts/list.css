@@ -1,13 +1,14 @@
 .accounts-block{
     text-align: center;
+
     margin: 70px 0 0;
 }
 .accounts-block h1{
     font-size: 16px;
 }
 .accounts-container{
-    text-align: left;
     display: inline-block;
+    text-align: left;
 }
 .accounts-container__header{
     margin: 0 0 5px 20px;
@@ -16,19 +17,24 @@
     opacity: 0.8;
 }
 .accounts{
-    background: #2b2e36;
     display: inline-block;
+
     padding: 5px 15px 5px 15px;
     margin-bottom: 20px;
+
     border-radius: 10px;
+
+    background-color: #2b2e36;
 }
 .account-item{
     width: 350px;
     height: 60px;
+
     border-style: solid;
     border-width: thin;
     border-color: #5e5e5e;
     border-radius: 7px;
+
     padding: 10px;
     margin: 10px 0 15px;
 }
@@ -39,15 +45,17 @@
     color: #838383;;
 }
 .account-item__description{
-    color: #838383;
     max-width: 350px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+
+    color: #838383;
 }
 .new-account{
     width: 370px;
     height: 50px;
+
     padding: 0;
 }
 .new-account:hover{
@@ -55,8 +63,10 @@
 }
 .new-account__href{
     display: flex;
-    padding: 10px 0 10px 10px;
     align-items: center;
+
+    padding: 10px 0 10px 10px;
+
     color: #838383;
 }
 .new-account__href svg{
@@ -64,19 +74,24 @@
 }
 .new-account__href h1{
     display: inline;
+
     position: relative;
     left: 10px;
+
     color: #838383;
 }
 .archive-href{
     font-size: 14px;
-    background-color: transparent;
-    color: wheat;
+
     border-style: solid;
     border-width: thin;
     border-color: #4c4c4c;
     border-radius: 15px;
+
     padding: 10px;
+
+    color: wheat;
+    background-color: transparent;
 }
 .archive-href:hover{
     background-color: #2f3136;

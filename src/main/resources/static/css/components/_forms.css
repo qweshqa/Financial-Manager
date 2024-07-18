@@ -1,11 +1,13 @@
 label{
-    color: white;
     margin: 5px 0 0 5px;;
+
+    color: white;
 }
 .form-block{
-    text-align: center;
     position: relative;
     top: 100px;
+
+    text-align: center;
 }
 .form-header{
     font-size: 24px;
@@ -13,27 +15,33 @@ label{
 .form{
     display: inline-block;
     text-align: left;
-    background-color: #2b2e36;
+
     padding: 15px;
     margin: 10px;
+
     border-radius: 10px;
     border-style: solid;
     border-width: thin;
     border-color: #3e3e3e;
+
+    background-color: #2b2e36;
 }
 .form label{
     font-weight: 500;
 }
 .field{
     font-size: 16px;
-    background-color: #1f2126;
+
+    margin: 5px 0 10px;
+    padding: 10px;
+
     border-style: solid;
     border-color: #6a6a6a;
     border-radius: 5px;
     border-width: 1px;
-    margin: 5px 0 10px;
+
     color: white;
-    padding: 10px;
+    background-color: #1f2126;
 }
 .field--add-width{
     width: 280px;

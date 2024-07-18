@@ -1,15 +1,19 @@
 .btn{
     border-style: none;
     border-radius: 5px;
+
     font-weight: 600;
+
     padding: 5px;
 }
 .btn--basic{
-    background-color: #55bb4d;
-    color: white;
     font-size: 13px;
     width: 300px;
+
     margin: 10px 0 0 0;
+
+    background-color: #55bb4d;
+    color: white;
 }
 .btn:hover{
     opacity: 0.9;

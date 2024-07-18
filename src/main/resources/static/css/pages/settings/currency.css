@@ -1,24 +1,33 @@
 .notify-success-block{
-    width: -webkit-fill-available;
-    text-align: center;
     display: inline-block;
-    background-color: #00ff6f54;
+
+    width: -webkit-fill-available;
+
+    text-align: center;
+
+    border-radius: 5px;
+
     padding: 10px;
     margin: 10px;
-    border-radius: 5px;
+
+    background-color: #00ff6f54;
 }
 .notify-success-block h1{
-    color: #7bff99;
     font-size: 16px;
+
+    color: #7bff99;
 }
 .currency-setting .field{
     margin: 10px;
 }
 .currency-setting .btn{
+    width: 150px;
+
+    font-weight: 600;
+    font-size: 13px;
+
+    margin: 10px;
+
     background-color: #55bb4d;
     color: white;
-    font-size: 13px;
-    width: 150px;
-    margin: 10px;
-    font-weight: 600;
 }

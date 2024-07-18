@@ -7,12 +7,16 @@
 .navbar li a{
     display: block;
     height: 100%;
-    color: white;
-    font-weight: 500;
-    text-decoration: none;
-    border-radius: 10px;
+
     padding: 10px 55px 10px 45px;
     margin: 0 10px 10px 10px;
+
+    border-radius: 10px;
+
+    font-weight: 500;
+    text-decoration: none;
+
+    color: white;
 }
 .navbar li a:hover{
     background-color: #6a6a6a29;
