@@ -60,9 +60,26 @@ public class OperationController {
         switch(period){
             case "all-time":
                 model.addAttribute("operations", operationService.findAllByUser(user));
+                break;
 
             case "year":
-                model.addAttribute("operations", operationService.findAllByYearAndUser(LocalDate.now().getYear(), user));
+                if(year.isBlank()){
+                    model.addAttribute("operations", operationService.findAllByYearAndUser(LocalDate.now().getYear(), user));
+                    model.addAttribute("displayDate", LocalDate.now().getYear());
+                    break;
+                }
+                else{
+                    if (Integer.parseInt(year) < 0) {
+                        return "redirect:/operations?p=year" +
+                                "&y=" + LocalDate.now().getYear();
+                    }
+                    else{
+                        date = date.withYear(Integer.parseInt(year));
+                        model.addAttribute("operations", operationService.findAllByYearAndUser(Integer.parseInt(year), user));
+                        model.addAttribute("displayDate", Integer.parseInt(year));
+                        break;
+                    }
+                }
 
             case "month":
                 model.addAttribute("operations", operationService.findAllByMonthAndUser(LocalDate.now().getMonth(), user));
@@ -73,11 +90,11 @@ public class OperationController {
             case "day":
                 if(day.isBlank()){
                     model.addAttribute("operations", operationService.findAllByDateAndUser(date, user));
+                    model.addAttribute("displayDate", date.format(formatter));
                     break;
                 }
 
                 int yearValue = year.isBlank() ? date.getYear() : Integer.parseInt(year);
-
                 if(Byte.parseByte(month) > 12){
                     date = date.withYear(yearValue + 1).withMonth(1).withDayOfMonth(1);
                     return "redirect:/operations?p=day" +
@@ -92,8 +109,8 @@ public class OperationController {
                             "&m=" + date.getMonth().getValue() +
                             "&d=" + date.getDayOfMonth();
                 }
-                Month monthValue = month.isBlank() ? date.getMonth() : Month.of(Byte.parseByte(month));
 
+                Month monthValue = month.isBlank() ? date.getMonth() : Month.of(Byte.parseByte(month));
                 if(Integer.parseInt(day) > monthValue.maxLength()){
                     date = date.withMonth(monthValue.getValue() + 1).withDayOfMonth(1);
                     return "redirect:/operations?p=" + period +
@@ -107,9 +124,12 @@ public class OperationController {
                             "&d=" + date.getDayOfMonth();
                 }
                 else{
-                    date = date.withDayOfMonth(Integer.parseInt(day));
+                    date = date.withYear(yearValue).withMonth(monthValue.getValue()).withDayOfMonth(Integer.parseInt(day));
                 }
+
                 model.addAttribute("operations", operationService.findAllByDateAndUser(date, user));
+                model.addAttribute("displayDate", date.format(formatter));
+                break;
         }
         model.addAttribute("amountFormatter", amountFormatter);
 
@@ -118,31 +138,7 @@ public class OperationController {
 
         model.addAttribute("period", period);
 
-        if(day.isBlank()){
-            model.addAttribute("day", date.getDayOfMonth());
-        }
-        else{
-            model.addAttribute("day", Integer.parseInt(day));
-            date = date.withDayOfMonth(Integer.parseInt(day));
-        }
-
-        if(month.isBlank()){
-            model.addAttribute("month", date.getMonthValue());
-        }
-        else{
-            model.addAttribute("month", Integer.parseInt(month));
-            date = date.withMonth(Integer.parseInt(month));
-        }
-
-        if(year.isBlank()){
-            model.addAttribute("year", date.getYear());
-        }
-        else{
-            model.addAttribute("year", Integer.parseInt(year));
-            date = date.withYear(Integer.parseInt(year));
-        }
-
-        model.addAttribute("displayDate", date.format(formatter));
+        model.addAttribute("date", date);
 
         return "/operations/list";
     }
