@@ -34,7 +34,13 @@ public class Operation {
     @Column(name = "date")
     private LocalDate date = LocalDate.now();
 
-    private Month month = LocalDate.now().getMonth();;
+    @NotNull
+    @Column(name = "year")
+    private int year = LocalDate.now().getYear();
+
+    @NotNull
+    @Column(name = "month")
+    private int month = LocalDate.now().getMonth().getValue();
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -51,12 +57,14 @@ public class Operation {
     public Operation() {
     }
 
-    public Operation(int id, String name, float amount, String comment, LocalDate date, Month month, User user, Account involvedAccount, Category category) {
+    public Operation(int id, String name, float amount, String comment, LocalDate date,
+                     int year, int month, User user, Account involvedAccount, Category category) {
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.comment = comment;
         this.date = date;
+        this.year = year;
         this.month = month;
         this.user = user;
         this.involvedAccount = involvedAccount;
@@ -99,11 +107,21 @@ public class Operation {
         this.date = date;
     }
 
-    public Month getMonth() {
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
         return month;
     }
 
-    public void setMonth(Month month) { this.month = month; }
+    public void setMonth(int month) {
+        this.month = month;
+    }
 
     public User getUser() {
         return user;

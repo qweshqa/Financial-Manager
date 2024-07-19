@@ -50,10 +50,6 @@ public class OperationService {
         return operationRepository.findAllByDateAndUser(date, user);
     }
 
-    public List<Operation> findAllByMonthAndUser(Month month, User user){
-        return operationRepository.findAllByMonthAndUser(month, user);
-    }
-
     public List<Operation> findAllByWeekAndUser(LocalDate date, User user){
         LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
 
@@ -64,6 +60,14 @@ public class OperationService {
         }
 
         return operations;
+    }
+
+    public List<Operation> findAllByMonthAndUser(Month month, User user){
+        return operationRepository.findAllByMonthAndUser(month.getValue(), user);
+    }
+
+    public List<Operation> findAllByYearAndUser(int year, User user){
+        return operationRepository.findAllByYearAndUser(year, user);
     }
 
     @Transactional

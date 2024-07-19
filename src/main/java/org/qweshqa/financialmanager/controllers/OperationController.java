@@ -45,6 +45,7 @@ public class OperationController {
     public String viewOperations(@RequestParam(value = "p", defaultValue = "day") String period,
                                  @RequestParam(value = "d", defaultValue = "") String day,
                                  @RequestParam(value = "m", defaultValue = "") String month,
+                                 @RequestParam(value = "y", defaultValue = "") String year,
                                  Model model){
         // user info
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -60,6 +61,9 @@ public class OperationController {
             case "all-time":
                 model.addAttribute("operations", operationService.findAllByUser(user));
 
+            case "year":
+                model.addAttribute("operations", operationService.findAllByYearAndUser(LocalDate.now().getYear(), user));
+
             case "month":
                 model.addAttribute("operations", operationService.findAllByMonthAndUser(LocalDate.now().getMonth(), user));
 
@@ -72,6 +76,22 @@ public class OperationController {
                     break;
                 }
 
+                int yearValue = year.isBlank() ? date.getYear() : Integer.parseInt(year);
+
+                if(Byte.parseByte(month) > 12){
+                    date = date.withYear(yearValue + 1).withMonth(1).withDayOfMonth(1);
+                    return "redirect:/operations?p=day" +
+                            "&y=" + date.getYear() +
+                            "&m=" + date.getMonth().getValue() +
+                            "&d=" + date.getDayOfMonth();
+                }
+                if(Byte.parseByte(month) < 1){
+                    date = date.withYear(yearValue - 1).withMonth(12).withDayOfMonth(31);
+                    return "redirect:/operations?p=day" +
+                            "&y=" + date.getYear() +
+                            "&m=" + date.getMonth().getValue() +
+                            "&d=" + date.getDayOfMonth();
+                }
                 Month monthValue = month.isBlank() ? date.getMonth() : Month.of(Byte.parseByte(month));
 
                 if(Integer.parseInt(day) > monthValue.maxLength()){
@@ -112,6 +132,14 @@ public class OperationController {
         else{
             model.addAttribute("month", Integer.parseInt(month));
             date = date.withMonth(Integer.parseInt(month));
+        }
+
+        if(year.isBlank()){
+            model.addAttribute("year", date.getYear());
+        }
+        else{
+            model.addAttribute("year", Integer.parseInt(year));
+            date = date.withYear(Integer.parseInt(year));
         }
 
         model.addAttribute("displayDate", date.format(formatter));
