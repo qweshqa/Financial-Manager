@@ -19,7 +19,5 @@ public interface OperationRepository extends JpaRepository<Operation, Integer> {
 
     List<Operation> findAllByYearAndUser(int year, User user);
 
-    List<Operation> findAllByMonthAndUser(int month, User user);
-
     List<Operation> findAllByInvolvedAccountAndUser(Account involvedAccount, User user);
 }
