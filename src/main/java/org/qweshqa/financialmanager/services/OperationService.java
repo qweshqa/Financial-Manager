@@ -62,8 +62,13 @@ public class OperationService {
         return operations;
     }
 
-    public List<Operation> findAllByMonthAndUser(Month month, User user){
-        return operationRepository.findAllByMonthAndUser(month.getValue(), user);
+    public List<Operation> findAllByMonthAndUser(LocalDate dateWithMonth, User user){
+        List<Operation> operations = new ArrayList<>();
+
+        for(int i = 1; i <= dateWithMonth.getMonth().maxLength(); i++){
+            operations.addAll(operationRepository.findAllByDateAndUser(dateWithMonth.withDayOfMonth(i), user));
+        }
+        return operations;
     }
 
     public List<Operation> findAllByYearAndUser(int year, User user){

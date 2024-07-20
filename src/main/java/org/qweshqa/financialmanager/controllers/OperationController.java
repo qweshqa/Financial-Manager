@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.Locale;
 
 @Controller
@@ -82,7 +83,30 @@ public class OperationController {
                 }
 
             case "month":
-                model.addAttribute("operations", operationService.findAllByMonthAndUser(LocalDate.now().getMonth(), user));
+                if(month.isBlank()){
+                    model.addAttribute("operations", operationService.findAllByMonthAndUser(LocalDate.now(), user));
+                    model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
+                    break;
+                }
+
+                int yearValueForMonth = year.isBlank() ? date.getYear() : Integer.parseInt(year);
+                if(Byte.parseByte(month) > 12){
+                    date = date.withYear(yearValueForMonth + 1).withMonth(1);
+                    return "redirect:/operations?p=day" +
+                            "&y=" + date.getYear() +
+                            "&m=" + date.getMonth().getValue();
+                }
+                if(Byte.parseByte(month) < 1){
+                    date = date.withYear(yearValueForMonth - 1).withMonth(12);
+                    return "redirect:/operations?p=day" +
+                            "&y=" + date.getYear() +
+                            "&m=" + date.getMonth().getValue();
+                }
+                date = date.withYear(yearValueForMonth).withMonth(Integer.parseInt(month));
+                model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
+                model.addAttribute("operations", operationService.findAllByMonthAndUser(date, user));
+                break;
+
 
             case "week":
                 model.addAttribute("operations", operationService.findAllByWeekAndUser(LocalDate.now(), user));
@@ -94,16 +118,16 @@ public class OperationController {
                     break;
                 }
 
-                int yearValue = year.isBlank() ? date.getYear() : Integer.parseInt(year);
+                int yearValueForDay = year.isBlank() ? date.getYear() : Integer.parseInt(year);
                 if(Byte.parseByte(month) > 12){
-                    date = date.withYear(yearValue + 1).withMonth(1).withDayOfMonth(1);
+                    date = date.withYear(yearValueForDay + 1).withMonth(1).withDayOfMonth(1);
                     return "redirect:/operations?p=day" +
                             "&y=" + date.getYear() +
                             "&m=" + date.getMonth().getValue() +
                             "&d=" + date.getDayOfMonth();
                 }
                 if(Byte.parseByte(month) < 1){
-                    date = date.withYear(yearValue - 1).withMonth(12).withDayOfMonth(31);
+                    date = date.withYear(yearValueForDay - 1).withMonth(12).withDayOfMonth(31);
                     return "redirect:/operations?p=day" +
                             "&y=" + date.getYear() +
                             "&m=" + date.getMonth().getValue() +
@@ -124,7 +148,7 @@ public class OperationController {
                             "&d=" + date.getDayOfMonth();
                 }
                 else{
-                    date = date.withYear(yearValue).withMonth(monthValue.getValue()).withDayOfMonth(Integer.parseInt(day));
+                    date = date.withYear(yearValueForDay).withMonth(monthValue.getValue()).withDayOfMonth(Integer.parseInt(day));
                 }
 
                 model.addAttribute("operations", operationService.findAllByDateAndUser(date, user));
