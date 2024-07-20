@@ -96,7 +96,7 @@
 
     <div class="operations" style="overflow: hidden;">
         <div class="operation" th:each="operation: ${operations}">
-            <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}">
+            <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}" th:style="${operation.getComment().isBlank() ? '' : 'height:50px'}">
 
                 <h1 class="operation-item__category" th:text="${operation.getCategory().getName()}"></h1>
 
@@ -125,8 +125,6 @@
                     <h1 th:text="${operation.getInvolvedAccount().getName()}"></h1>
                 </div>
 
-                <h1 class="operation-item__comment" th:text="${operation.getComment()}"></h1>
-
                 <form class="delete-operation-item-form" th:method="POST" th:action="@{/operations/delete/{id}(id=${operation.getId()})}" th:object="${operation}">
 
                     <button class="delete-operation-item btn" type="submit">
@@ -136,6 +134,9 @@
                         </svg>
                     </button>
                 </form>
+
+                <h1 class="operation-item__comment" th:text="${operation.getComment()}"></h1>
+
             </div>
         </div>
     </div>

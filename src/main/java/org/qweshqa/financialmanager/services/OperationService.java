@@ -4,15 +4,12 @@ import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.OperationRepository;
-import org.qweshqa.financialmanager.utils.enums.CategoryType;
 import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,13 +58,6 @@ public class OperationService {
 
     public List<Operation> findAllByYearAndUser(int year, User user){
         return operationRepository.findAllByYearAndUser(year, user);
-    }
-
-    @Transactional
-    public void processOperationSetup(Operation operation){
-        if(operation.getComment().isEmpty()){
-            operation.setComment("No comment.");
-        }
     }
 
     @Transactional

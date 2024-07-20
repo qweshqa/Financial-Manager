@@ -134,8 +134,6 @@
                     <h1 th:text="${operation.getInvolvedAccount().getName()}"></h1>
                 </div>
 
-                <h1 class="operation-item__comment" th:text="${operation.getComment()}"></h1>
-
                 <form class="delete-operation-item-form" th:method="POST" th:action="@{/operations/delete/{id}(id=${operation.getId()})}" th:object="${operation}">
 
                     <button class="delete-operation-item btn" type="submit">
@@ -145,6 +143,8 @@
                         </svg>
                     </button>
                 </form>
+
+                <h1 class="operation-item__comment" th:text="${operation.getComment()}"></h1>
             </div>
         </div>
     </div>

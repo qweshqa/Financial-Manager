@@ -23,7 +23,7 @@
     padding: 0;
 }
 .operation-item{
-    height: 60px;
+    height: 45px;
 
     border-radius: 10px;
 
@@ -59,8 +59,8 @@
 }
 .operation-item__amount{
     position: relative;
-    left: 525px;
-    bottom: 24px;
+    left: 540px;
+    bottom: 28px;
 
     width: fit-content;
 
@@ -69,7 +69,7 @@
 .operation-item__account{
     position: relative;
     left: 900px;
-    bottom: 48px;
+    bottom: 52px;
 
     display: flex;
     align-items: center;
@@ -85,7 +85,7 @@
 }
 .operation-item__comment{
     position: relative;
-    bottom: 40px;
+    bottom: 85px;
 
     font-size: 15px;
 
@@ -93,8 +93,8 @@
 }
 .delete-operation-item-form{
     position: relative;
-    left: 1070px;
-    bottom: 97px;
+    left: 1080px;
+    bottom: 85px;
 
     display: inline-block;
 }

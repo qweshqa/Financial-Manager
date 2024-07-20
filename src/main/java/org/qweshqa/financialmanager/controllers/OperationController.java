@@ -190,8 +190,6 @@ public class OperationController {
         User user = userService.findUserByEmail(authentication.getName());
         operation.setUser(user);
 
-        operationService.processOperationSetup(operation);
-
         operationService.save(operation);
 
         return "redirect:/operations";
