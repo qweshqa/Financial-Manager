@@ -50,18 +50,6 @@ public class OperationService {
         return operationRepository.findAllByDateAndUser(date, user);
     }
 
-    public List<Operation> findAllByWeekAndUser(LocalDate date, User user){
-        LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
-
-        List<Operation> operations = new ArrayList<>();
-        for(int i = 0; i < 7; i++){
-            List<Operation> financesInDay = operationRepository.findAllByDateAndUser(startOfWeek.plusDays(i), user);
-            operations.addAll(financesInDay);
-        }
-
-        return operations;
-    }
-
     public List<Operation> findAllByMonthAndUser(LocalDate dateWithMonth, User user){
         List<Operation> operations = new ArrayList<>();
 

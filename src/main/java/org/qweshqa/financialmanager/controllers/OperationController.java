@@ -61,6 +61,7 @@ public class OperationController {
         switch(period){
             case "all-time":
                 model.addAttribute("operations", operationService.findAllByUser(user));
+                model.addAttribute("displayDate", "All time");
                 break;
 
             case "year":
@@ -106,10 +107,6 @@ public class OperationController {
                 model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
                 model.addAttribute("operations", operationService.findAllByMonthAndUser(date, user));
                 break;
-
-
-            case "week":
-                model.addAttribute("operations", operationService.findAllByWeekAndUser(LocalDate.now(), user));
 
             case "day":
                 if(day.isBlank()){
