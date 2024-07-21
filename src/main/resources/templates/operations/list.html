@@ -55,7 +55,7 @@
             <button class="btn" type="submit">Submit</button>
         </form>
 
-        <div class="date-navigation" th:if="${displayDate}">
+        <div class="date-navigation" th:if="${displayDate}" th:style="${period.equals('all-time') ? 'justify-content: center;' : ''}">
 
             <a th:if="${period.equals('day')}" th:href="@{/operations(p=${period}, y=${date.getYear()}, m=${date.getMonthValue()}, d=${date.getDayOfMonth() - 1})}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
@@ -96,13 +96,11 @@
 
     <div class="operations" style="overflow: hidden;">
         <div class="operation" th:each="operation: ${operations}">
-            <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}" th:style="${operation.getComment().isBlank() ? '' : 'height:50px'}">
+            <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}" th:style="${operation.getComment().isBlank() ? '' : 'height:60px'}">
 
-                <h1 class="operation-item__category" th:text="${operation.getCategory().getName()}"></h1>
+                <span class="operation-item__category" th:text="${operation.getCategory().getName()}"></span>
 
-                <span class="operation-item__name" th:text="${operation.getName()}"></span>
-
-                <form th:method="GET" th:action="@{/operations/edit/{id}(id=${operation.getId()})}" style="display: inline">
+                <form th:method="GET" th:action="@{/operations/edit/{id}(id=${operation.getId()})}" style="display: inline-flex">
 
                     <button type="submit" class="edit-form-url">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -112,11 +110,6 @@
                     </button>
                 </form>
 
-                <h1 class="operation-item__amount"
-                    th:style="${operation.getCategory().getCategoryType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2'}"
-                    th:text="${amountFormatter.formatAmount(operation.getAmount()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}">
-                </h1>
-
                 <div class="operation-item__account">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
                         <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
@@ -125,7 +118,13 @@
                     <h1 th:text="${operation.getInvolvedAccount().getName()}"></h1>
                 </div>
 
-                <form class="delete-operation-item-form" th:method="POST" th:action="@{/operations/delete/{id}(id=${operation.getId()})}" th:object="${operation}">
+                <h1 class="operation-item__amount"
+                    th:style="${operation.getCategory().getCategoryType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2;'} + ${operation.getComment().isBlank() ? '' : 'bottom: 30px;'}"
+                    th:text="${amountFormatter.formatAmount(operation.getAmount()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}">
+                </h1>
+
+                <form class="delete-operation-item-form" th:method="POST" th:action="@{/operations/delete/{id}(id=${operation.getId()})}" th:object="${operation}"
+                      th:style="${operation.getComment().isBlank() ? '' : 'bottom: 60px;'}">
 
                     <button class="delete-operation-item btn" type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">

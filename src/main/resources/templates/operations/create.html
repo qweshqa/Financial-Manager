@@ -54,15 +54,6 @@
             </select>
             <br/>
 
-            <label for="new-operation-name">Name</label>
-            <br/>
-            <input class="field field--add-width" type="text" th:field="*{name}" id="new-operation-name">
-            <br/>
-            <div class="error-block" th:if="${#fields.hasErrors('name')}">
-                <h1 th:errors="*{name}"></h1>
-            </div>
-            <br th:if="${#fields.hasErrors('name')}"/>
-
             <label for="new-operation-amount">Amount</label>
             <br/>
             <input class="field field--add-width" type="text" th:field="*{amount}" id="new-operation-amount">

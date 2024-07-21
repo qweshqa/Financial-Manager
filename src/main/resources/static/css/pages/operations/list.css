@@ -23,7 +23,7 @@
     padding: 0;
 }
 .operation-item{
-    height: 45px;
+    height: 50px;
 
     border-radius: 10px;
 
@@ -36,17 +36,13 @@
     opacity: 0.95
 }
 .operation-item__category{
-    width: fit-content;
-
-    font-size: 14px;
-}
-.operation-item__name{
-    font-weight: 500;
     font-size: 20px;
 
     color: white;
 }
 .edit-form-url{
+    height: 18px;
+
     border-style: none;
 
     padding: 0;
@@ -57,20 +53,7 @@
 .edit-form-url:hover{
     color: #b6bdf3;
 }
-.operation-item__amount{
-    position: relative;
-    left: 540px;
-    bottom: 28px;
-
-    width: fit-content;
-
-    font-size: 20px;
-}
 .operation-item__account{
-    position: relative;
-    left: 900px;
-    bottom: 52px;
-
     display: flex;
     align-items: center;
 
@@ -83,9 +66,18 @@
 
     margin-left: 5px;
 }
+.operation-item__amount{
+    position: relative;
+    left: 525px;
+    bottom: 35px;
+
+    width: fit-content;
+
+    font-size: 20px;
+}
 .operation-item__comment{
     position: relative;
-    bottom: 85px;
+    bottom: 60px;
 
     font-size: 15px;
 
@@ -93,8 +85,8 @@
 }
 .delete-operation-item-form{
     position: relative;
-    left: 1080px;
-    bottom: 85px;
+    left: 1070px;
+    bottom: 65px;
 
     display: inline-block;
 }

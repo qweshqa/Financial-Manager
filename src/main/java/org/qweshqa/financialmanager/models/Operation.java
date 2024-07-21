@@ -17,11 +17,6 @@ public class Operation {
     @Column(name = "id")
     private int id;
 
-    @NotBlank(message = "Name must not be blank")
-    @Size(max = 50, message = "Name length must be smaller than 50")
-    @Column(name = "name")
-    private String name;
-
     @NotNull(message = "Amount must not be blank")
     @Min(value = 0, message = "Amount minimum value is 0")
     @Column(name = "amount")
@@ -53,10 +48,9 @@ public class Operation {
     public Operation() {
     }
 
-    public Operation(int id, String name, float amount, String comment, LocalDate date, int year,
+    public Operation(int id, float amount, String comment, LocalDate date, int year,
                      User user, Account involvedAccount, Category category) {
         this.id = id;
-        this.name = name;
         this.amount = amount;
         this.comment = comment;
         this.date = date;
@@ -72,14 +66,6 @@ public class Operation {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public @NotNull @Size(max = 50) String getName() {
-        return name;
-    }
-
-    public void setName(@NotNull @Size(max = 50) String name) {
-        this.name = name;
     }
 
     public @NotNull float getAmount() {
