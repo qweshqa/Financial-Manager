@@ -50,6 +50,10 @@ public class OperationService {
         return operationRepository.findAllByDateAndUser(date, user);
     }
 
+    public List<Operation> findAllByDateAndUserAndCategory(LocalDate date, User user, Category category){
+        return operationRepository.findAllByDateAndUserAndCategory(date, user, category);
+    }
+
     public List<Operation> findAllByMonthAndUser(LocalDate dateWithMonth, User user){
         List<Operation> operations = new ArrayList<>();
 
@@ -59,8 +63,21 @@ public class OperationService {
         return operations;
     }
 
+    public List<Operation> findAllByMonthAndUserAndCategory(LocalDate dateWithMonth, User user, Category category){
+        List<Operation> operations = new ArrayList<>();
+
+        for(int i = 1; i <= dateWithMonth.getMonth().maxLength(); i++){
+            operations.addAll(operationRepository.findAllByDateAndUserAndCategory(dateWithMonth.withDayOfMonth(i), user, category));
+        }
+        return operations;
+    }
+
     public List<Operation> findAllByYearAndUser(int year, User user){
         return operationRepository.findAllByYearAndUser(year, user);
+    }
+
+    public List<Operation> findAllByYearAndUserAndCategory(int year, User user, Category category){
+        return operationRepository.findAllByYearAndUserAndCategory(year, user, category);
     }
 
     public void configureStringDateValues(String year, String month, String day, String period, DateWrapper dateWrapper){

@@ -8,6 +8,7 @@ import org.qweshqa.financialmanager.services.CategoryService;
 import org.qweshqa.financialmanager.services.OperationService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
+import org.qweshqa.financialmanager.utils.DateWrapper;
 import org.qweshqa.financialmanager.utils.converters.CategoryTypeStringConverter;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
 import org.qweshqa.financialmanager.utils.exceptions.CategoryNotFoundException;
@@ -19,7 +20,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/categories")
@@ -89,7 +96,11 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String viewCategory(@PathVariable("id") int id, Model model){
+    public String viewCategory(@PathVariable("id") int id,
+                               @RequestParam(value = "p", defaultValue = "all-time") String operationDisplayPeriod,
+                               @RequestParam(value = "d", defaultValue = "") String day,
+                               @RequestParam(value = "m", defaultValue = "") String month,
+                               @RequestParam(value = "y", defaultValue = "") String year, Model model){
         Category category;
 
         try{
@@ -100,6 +111,29 @@ public class CategoryController {
             return "error";
         }
 
+        DateWrapper dateWrapper = new DateWrapper(LocalDate.now());
+
+        try{
+            operationService.configureStringDateValues(year, month, day, operationDisplayPeriod, dateWrapper);
+        } catch (DateTimeException e){
+            switch (e.getMessage()){
+                case "Year period error":
+                    return "redirect:/categories/" + id + "?p=year" +
+                            "&y=" + dateWrapper.getDate().getYear();
+
+                case "Month period error":
+                    return "redirect:/categories/" + id + "?p=month" +
+                            "&y=" + dateWrapper.getDate().getYear() +
+                            "&m=" + dateWrapper.getDate().getMonth().getValue();
+
+                case "Day period error":
+                    return "redirect:/categories/" + id + "?p=day" +
+                            "&y=" + dateWrapper.getDate().getYear() +
+                            "&m=" + dateWrapper.getDate().getMonth().getValue() +
+                            "&d=" + dateWrapper.getDate().getDayOfMonth();
+            }
+        }
+
         model.addAttribute("category", category);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -108,9 +142,57 @@ public class CategoryController {
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        List<Operation> categoryOperations = operationService.findAllByCategory(category, user);
+        LocalDate date = dateWrapper.getDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH);
 
+        List<Operation> categoryOperations = new ArrayList<>();
+        switch(operationDisplayPeriod){
+            case "all-time":
+                categoryOperations = operationService.findAllByCategory(category, user);
+                model.addAttribute("displayDate", "All time");
+                break;
+
+            case "year":
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
+                }
+                categoryOperations = operationService.findAllByYearAndUserAndCategory(date.getYear(), user, category);
+                model.addAttribute("displayDate", date.getYear());
+                break;
+
+            case "month":
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
+                }
+                if(!month.isBlank()){
+                    date = date.withMonth(Integer.parseInt(month));
+                }
+
+                categoryOperations = operationService.findAllByMonthAndUserAndCategory(date, user, category);
+                model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
+                break;
+
+            case "day":
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
+                }
+                if(!month.isBlank()){
+                    date = date.withMonth(Integer.parseInt(month));
+                }
+                if(!day.isBlank()){
+                    date = date.withDayOfMonth(Integer.parseInt(day));
+                }
+
+                categoryOperations = operationService.findAllByDateAndUserAndCategory(date, user, category);
+                model.addAttribute("displayDate", date.format(formatter));
+                break;
+        }
         model.addAttribute("categoryOperations", categoryOperations);
+        model.addAttribute("category_balance", (float) categoryOperations.stream().mapToDouble(Operation::getAmount).sum());
+
+        model.addAttribute("period", operationDisplayPeriod);
+
+        model.addAttribute("date", date);
 
         return "categories/view";
     }
