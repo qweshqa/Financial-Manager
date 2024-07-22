@@ -7,6 +7,7 @@ import org.qweshqa.financialmanager.services.CategoryService;
 import org.qweshqa.financialmanager.services.OperationService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
+import org.qweshqa.financialmanager.utils.DateWrapper;
 import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -48,16 +50,37 @@ public class OperationController {
                                  @RequestParam(value = "m", defaultValue = "") String month,
                                  @RequestParam(value = "y", defaultValue = "") String year,
                                  Model model){
-        // user info
+        DateWrapper dateWrapper = new DateWrapper(LocalDate.now());
+
+        try{
+            operationService.configureStringDateValues(year, month, day, period, dateWrapper);
+        } catch (DateTimeException e){
+            switch (e.getMessage()){
+                case "Year period error":
+                    return "redirect:/operations?p=year" +
+                            "&y=" + dateWrapper.getDate().getYear();
+
+                case "Month period error":
+                    return "redirect:/operations?p=month" +
+                            "&y=" + dateWrapper.getDate().getYear() +
+                            "&m=" + dateWrapper.getDate().getMonth().getValue();
+
+                case "Day period error":
+                    return "redirect:/operations?p=day" +
+                            "&y=" + dateWrapper.getDate().getYear() +
+                            "&m=" + dateWrapper.getDate().getMonth().getValue() +
+                            "&d=" + dateWrapper.getDate().getDayOfMonth();
+            }
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
         model.addAttribute("user", user);
         model.addAttribute("settings", user.getSetting());
 
-        LocalDate date = LocalDate.now();
+        LocalDate date = dateWrapper.getDate();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH);
 
-        // index
         switch(period){
             case "all-time":
                 model.addAttribute("operations", operationService.findAllByUser(user));
@@ -65,87 +88,34 @@ public class OperationController {
                 break;
 
             case "year":
-                if(year.isBlank()){
-                    model.addAttribute("operations", operationService.findAllByYearAndUser(LocalDate.now().getYear(), user));
-                    model.addAttribute("displayDate", LocalDate.now().getYear());
-                    break;
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
                 }
-                else{
-                    if (Integer.parseInt(year) < 0) {
-                        return "redirect:/operations?p=year" +
-                                "&y=" + LocalDate.now().getYear();
-                    }
-                    else{
-                        date = date.withYear(Integer.parseInt(year));
-                        model.addAttribute("operations", operationService.findAllByYearAndUser(Integer.parseInt(year), user));
-                        model.addAttribute("displayDate", Integer.parseInt(year));
-                        break;
-                    }
-                }
+                model.addAttribute("operations", operationService.findAllByYearAndUser(date.getYear(), user));
+                model.addAttribute("displayDate", date.getYear());
+                break;
 
             case "month":
-                if(month.isBlank()){
-                    model.addAttribute("operations", operationService.findAllByMonthAndUser(LocalDate.now(), user));
-                    model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
-                    break;
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
+                }
+                if(!month.isBlank()){
+                    date = date.withMonth(Integer.parseInt(month));
                 }
 
-                int yearValueForMonth = year.isBlank() ? date.getYear() : Integer.parseInt(year);
-                if(Byte.parseByte(month) > 12){
-                    date = date.withYear(yearValueForMonth + 1).withMonth(1);
-                    return "redirect:/operations?p=day" +
-                            "&y=" + date.getYear() +
-                            "&m=" + date.getMonth().getValue();
-                }
-                if(Byte.parseByte(month) < 1){
-                    date = date.withYear(yearValueForMonth - 1).withMonth(12);
-                    return "redirect:/operations?p=day" +
-                            "&y=" + date.getYear() +
-                            "&m=" + date.getMonth().getValue();
-                }
-                date = date.withYear(yearValueForMonth).withMonth(Integer.parseInt(month));
                 model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
                 model.addAttribute("operations", operationService.findAllByMonthAndUser(date, user));
                 break;
 
             case "day":
-                if(day.isBlank()){
-                    model.addAttribute("operations", operationService.findAllByDateAndUser(date, user));
-                    model.addAttribute("displayDate", date.format(formatter));
-                    break;
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
                 }
-
-                int yearValueForDay = year.isBlank() ? date.getYear() : Integer.parseInt(year);
-                if(Byte.parseByte(month) > 12){
-                    date = date.withYear(yearValueForDay + 1).withMonth(1).withDayOfMonth(1);
-                    return "redirect:/operations?p=day" +
-                            "&y=" + date.getYear() +
-                            "&m=" + date.getMonth().getValue() +
-                            "&d=" + date.getDayOfMonth();
+                if(!month.isBlank()){
+                    date = date.withMonth(Integer.parseInt(month));
                 }
-                if(Byte.parseByte(month) < 1){
-                    date = date.withYear(yearValueForDay - 1).withMonth(12).withDayOfMonth(31);
-                    return "redirect:/operations?p=day" +
-                            "&y=" + date.getYear() +
-                            "&m=" + date.getMonth().getValue() +
-                            "&d=" + date.getDayOfMonth();
-                }
-
-                Month monthValue = month.isBlank() ? date.getMonth() : Month.of(Byte.parseByte(month));
-                if(Integer.parseInt(day) > monthValue.maxLength()){
-                    date = date.withMonth(monthValue.getValue() + 1).withDayOfMonth(1);
-                    return "redirect:/operations?p=" + period +
-                            "&m=" + date.getMonth().getValue() +
-                            "&d=" + date.getDayOfMonth();
-                }
-                else if(Integer.parseInt(day) < 1){
-                    date = date.withMonth(monthValue.getValue() - 1).withDayOfMonth(Month.of(Byte.parseByte(month) - 1).maxLength());
-                    return "redirect:/operations?p=" + period +
-                            "&m=" + date.getMonth().getValue() +
-                            "&d=" + date.getDayOfMonth();
-                }
-                else{
-                    date = date.withYear(yearValueForDay).withMonth(monthValue.getValue()).withDayOfMonth(Integer.parseInt(day));
+                if(!day.isBlank()){
+                    date = date.withDayOfMonth(Integer.parseInt(day));
                 }
 
                 model.addAttribute("operations", operationService.findAllByDateAndUser(date, user));
@@ -153,9 +123,6 @@ public class OperationController {
                 break;
         }
         model.addAttribute("amountFormatter", amountFormatter);
-
-        // empty finance for creating a new one
-        model.addAttribute("new_operation", new Operation());
 
         model.addAttribute("period", period);
 

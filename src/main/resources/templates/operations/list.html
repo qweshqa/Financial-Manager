@@ -55,7 +55,7 @@
             <button class="btn" type="submit">Submit</button>
         </form>
 
-        <div class="date-navigation" th:if="${displayDate}" th:style="${period.equals('all-time') ? 'justify-content: center;' : ''}">
+        <div class="date-navigation" th:style="${period.equals('all-time') ? 'justify-content: center;' : ''}">
 
             <a th:if="${period.equals('day')}" th:href="@{/operations(p=${period}, y=${date.getYear()}, m=${date.getMonthValue()}, d=${date.getDayOfMonth() - 1})}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
