@@ -2,9 +2,11 @@ package org.qweshqa.financialmanager.controllers;
 
 import jakarta.validation.Valid;
 import org.qweshqa.financialmanager.models.Account;
+import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.AccountService;
+import org.qweshqa.financialmanager.services.CategoryService;
 import org.qweshqa.financialmanager.services.OperationService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.DateWrapper;
@@ -43,13 +45,16 @@ public class AccountController {
 
     private final OperationService operationService;
 
+    private final CategoryService categoryService;
+
     @Autowired
-    public AccountController(AccountService accountService, UserService userService, AmountFormatter amountFormatter, AccountTypeStringConverter accountTypeStringConverter, OperationService operationService) {
+    public AccountController(AccountService accountService, UserService userService, AmountFormatter amountFormatter, AccountTypeStringConverter accountTypeStringConverter, OperationService operationService, CategoryService categoryService) {
         this.accountService = accountService;
         this.userService = userService;
         this.amountFormatter = amountFormatter;
         this.accountTypeStringConverter = accountTypeStringConverter;
         this.operationService = operationService;
+        this.categoryService = categoryService;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -235,7 +240,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
-    public String editAccount(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult, Model model,
+    public String editAccount(@ModelAttribute("account") @Valid Account account, BindingResult bindingResult,
                               @PathVariable("id") int id){
         if(bindingResult.hasErrors()){
             return "accounts/edit";
@@ -260,7 +265,8 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/replenish/{id}", method = RequestMethod.GET)
-    public String replenishAccount(@PathVariable("id") int id, Model model){
+    public String replenishAccount(@PathVariable("id") int id, @RequestParam(value = "using", defaultValue = "account") String using,
+                                   Model model){
         Account account;
 
         try{
@@ -274,22 +280,36 @@ public class AccountController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
 
-        List<Account> userAccounts = accountService.findAllByUser(user);
+        switch(using){
+            case "account":
+                List<Account> userAccounts = accountService.findAllByUser(user);
+                userAccounts.remove(account);
 
-        userAccounts.remove(account);
+                model.addAttribute("userAccounts", userAccounts);
+            case "category":
+                model.addAttribute("userCategories", categoryService.findAllByUserAndArchivedAndType(user, false, CategoryType.INCOME));
+        }
 
+        model.addAttribute("using", using);
         model.addAttribute("account", account);
-        model.addAttribute("userAccounts", userAccounts);
 
         return "accounts/replenish";
     }
 
     @RequestMapping(value = "/replenish/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
-    public String replenishAccount(@PathVariable("id") int id, @RequestParam("fromAcc") int accountId, @RequestParam("amount") float amount){
+    public String replenishAccount(@PathVariable("id") int id, @RequestParam("using") String using, @RequestParam("f") int fromObjectId, @RequestParam("amount") float amount){
         Account toAccount = accountService.findById(id);
-        Account fromAccount = accountService.findById(accountId);
+        switch(using){
+            case "account":
+                Account fromAccount = accountService.findById(fromObjectId);
+                accountService.replenish(fromAccount, toAccount, amount);
+                break;
 
-        accountService.replenish(fromAccount, toAccount, amount);
+            case "category":
+                Category fromCategory = categoryService.findById(fromObjectId);
+                accountService.replenish(fromCategory, toAccount, amount);
+                break;
+        }
 
         return "redirect:/accounts/" + id;
     }

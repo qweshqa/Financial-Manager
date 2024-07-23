@@ -38,14 +38,30 @@
     <div class="form-block">
         <h1 class="form-header">Replenish the account</h1>
 
-        <form class="form" th:method="PATCH" th:action="@{/accounts/replenish/{id}(id=${account.getId()})}">
+        <div class="using-param-select">
+            <a th:href="@{/accounts/replenish/{id}(id=${account.getId()}, using=${'account'})}">Using account</a>
 
-            <label for="from-account">From</label>
-            <br/>
-            <select class="field select-field--add-width" id="from-account" name="fromAcc">
-                <option th:each="account: ${userAccounts}" th:value="${account.getId()}" th:text="${account.getName()}"></option>
-            </select>
-            <br/>
+            <a th:href="@{/accounts/replenish/{id}(id=${account.getId()}, using=${'category'})}">Using category</a>
+        </div>
+
+        <form class="form" th:method="PATCH" th:action="@{/accounts/replenish/{id}(id=${account.getId()}, using=${using})}">
+
+            <div th:if="${using.equals('account')}">
+                <label for="from-account">From</label>
+                <br/>
+                <select class="field select-field--add-width" id="from-account" name="f">
+                    <option th:each="account: ${userAccounts}" th:value="${account.getId()}" th:text="${account.getName()}"></option>
+                </select>
+                <br/>
+            </div>
+            <div th:if="${using.equals('category')}">
+                <label for="from-category">From</label>
+                <br/>
+                <select class="field select-field--add-width" id="from-category" name="f">
+                    <option th:each="category: ${userCategories}" th:value="${category.getId()}" th:text="${category.getName()}"></option>
+                </select>
+                <br/>
+            </div>
 
             <label for="amount">Amount</label>
             <br/>

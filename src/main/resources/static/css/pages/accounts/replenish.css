@@ -1,0 +1,13 @@
+.using-param-select a{
+    font-size: 14px;
+
+    margin: 0 15px 0 15px;
+    padding: 2px;
+
+    border-radius: 5px;
+
+    background-color: #00000042;
+}
+.using-param-select a:hover{
+    background-color: #40404042;
+}

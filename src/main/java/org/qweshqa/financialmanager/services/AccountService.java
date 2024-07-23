@@ -1,6 +1,7 @@
 package org.qweshqa.financialmanager.services;
 
 import org.qweshqa.financialmanager.models.Account;
+import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.AccountRepository;
@@ -129,6 +130,12 @@ public class AccountService {
     @Transactional
     public void replenish(Account fromAccount, Account toAccount, float amount){
         fromAccount.minusBalance(amount);
+        toAccount.plusBalance(amount);
+    }
+
+    @Transactional
+    public void replenish(Category fromCategory, Account toAccount, float amount){
+        fromCategory.minusBalance(amount);
         toAccount.plusBalance(amount);
     }
 
