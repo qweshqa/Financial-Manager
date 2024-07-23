@@ -11,6 +11,7 @@ import org.qweshqa.financialmanager.utils.DateWrapper;
 import org.qweshqa.financialmanager.utils.enums.AccountType;
 import org.qweshqa.financialmanager.utils.converters.AccountTypeStringConverter;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
+import org.qweshqa.financialmanager.utils.enums.CategoryType;
 import org.qweshqa.financialmanager.utils.exceptions.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -145,7 +146,10 @@ public class AccountController {
                 break;
         }
         model.addAttribute("accountOperations", accountOperations);
-        model.addAttribute("account_balance", (float) accountOperations.stream().mapToDouble(Operation::getAmount).sum());
+        float account_balance = (float) accountOperations.stream().filter(operation -> operation.getCategory().getCategoryType() == CategoryType.INCOME).mapToDouble(Operation::getAmount).sum()
+                - (float) accountOperations.stream().filter(operation -> operation.getCategory().getCategoryType() == CategoryType.EXPENSE).mapToDouble(Operation::getAmount).sum();
+
+        model.addAttribute("account_balance", account_balance);
 
         model.addAttribute("period", operationDisplayPeriod);
 

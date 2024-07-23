@@ -59,7 +59,6 @@ public class OperationService {
         return operationRepository.findAllByYearAndUser(year, user);
     }
 
-
     public void configureStringDateValues(String year, String month, String day, String period, DateWrapper dateWrapper){
         switch(period){
             case "year":
