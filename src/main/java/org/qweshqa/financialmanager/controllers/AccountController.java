@@ -105,7 +105,7 @@ public class AccountController {
         List<Operation> accountOperations = new ArrayList<>();
         switch(operationDisplayPeriod){
             case "all-time":
-                accountOperations = operationService.findAllByAccount(account, user);
+                accountOperations = accountService.findAllOperationsByUser(account, user);
                 model.addAttribute("displayDate", "All time");
                 break;
 
@@ -113,7 +113,7 @@ public class AccountController {
                 if(!year.isBlank()){
                     date = date.withYear(Integer.parseInt(year));
                 }
-                accountOperations = operationService.findAllByYearAndUserAndAccount(date.getYear(), user, account);
+                accountOperations = accountService.findAllOperationsByUserAndYear(account, user, date.getYear());
                 model.addAttribute("displayDate", date.getYear());
                 break;
 
@@ -125,7 +125,7 @@ public class AccountController {
                     date = date.withMonth(Integer.parseInt(month));
                 }
 
-                accountOperations = operationService.findAllByMonthAndUserAndAccount(date, user, account);
+                accountOperations = accountService.findAllOperationsByUserAndMonth(account, user, date);
                 model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
                 break;
 
@@ -140,7 +140,7 @@ public class AccountController {
                     date = date.withDayOfMonth(Integer.parseInt(day));
                 }
 
-                accountOperations = operationService.findAllByDateAndUserAndAccount(date, user, account);
+                accountOperations = accountService.findAllOperationsByUserAndDate(account, user, date);
                 model.addAttribute("displayDate", date.format(formatter));
                 break;
         }
@@ -163,8 +163,8 @@ public class AccountController {
         model.addAttribute("amountFormatter", amountFormatter);
         model.addAttribute("currency", user.getSetting().getCurrencyUnit());
 
-        List<Account> financialAccounts = accountService.findAllUserAccountsByTypeAndArchive(user, AccountType.FINANCIAL, false);
-        List<Account> savingsAccounts = accountService.findAllUserAccountsByTypeAndArchive(user, AccountType.SAVINGS, false);
+        List<Account> financialAccounts = accountService.findAllByUserAndArchiveAndType(user, false, AccountType.FINANCIAL);
+        List<Account> savingsAccounts = accountService.findAllByUserAndArchiveAndType(user, false, AccountType.SAVINGS);
 
         model.addAttribute("financialAccounts", financialAccounts);
         model.addAttribute("savingsAccounts", savingsAccounts);
@@ -181,7 +181,7 @@ public class AccountController {
         model.addAttribute("amountFormatter", amountFormatter);
         model.addAttribute("currency", user.getSetting().getCurrencyUnit());
 
-        List<Account> archivedAccounts = accountService.findAllUserAccountsByArchive(user, true);
+        List<Account> archivedAccounts = accountService.findAllByUserAndArchive(user, true);
 
         model.addAttribute("archivedAccounts", archivedAccounts);
 

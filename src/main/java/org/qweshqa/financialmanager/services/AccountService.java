@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,21 +40,41 @@ public class AccountService {
         return account.get();
     }
 
+
     public List<Account> findAllByUser(User user){
         return accountRepository.findAllByOwner(user);
     }
 
-    public List<Account> findAllUserAccountsByArchive(User user, boolean isArchive){
+    public List<Account> findAllByUserAndArchive(User user, boolean isArchive){
         return accountRepository.findAllByOwnerAndArchived(user, isArchive);
     }
 
-    public List<Account> findAllUserAccountsByTypeAndArchive(User user, AccountType accountType, boolean isArchived){
-        return accountRepository.findAllByTypeAndOwnerAndArchived(accountType, user, isArchived);
+    public List<Account> findAllByUserAndArchiveAndType(User user, boolean isArchived, AccountType accountType){
+        return accountRepository.findAllByOwnerAndArchivedAndType(user, isArchived, accountType);
     }
 
-    public List<Operation> findAllOperationsByAccountAndUser(Account account, User user){
+
+    public List<Operation> findAllOperationsByUser(Account account, User user){
         return operationRepository.findAllByInvolvedAccountAndUser(account, user);
     }
+
+    public List<Operation> findAllOperationsByUserAndDate(Account account, User user, LocalDate date){
+        return operationRepository.findAllByDateAndUserAndInvolvedAccount(date, user, account);
+    }
+
+    public List<Operation> findAllOperationsByUserAndMonth(Account account, User user, LocalDate dateWithMonth){
+        List<Operation> operations = new ArrayList<>();
+
+        for(int i = 1; i <= dateWithMonth.getMonth().maxLength(); i++){
+            operations.addAll(operationRepository.findAllByDateAndUserAndInvolvedAccount(dateWithMonth.withDayOfMonth(i), user, account));
+        }
+        return operations;
+    }
+
+    public List<Operation> findAllOperationsByUserAndYear(Account account, User user, int year){
+        return operationRepository.findAllByYearAndUserAndInvolvedAccount(year, user, account);
+    }
+
 
     @Transactional
     public List<Account> createAccountsSetsByDefault(User owner){

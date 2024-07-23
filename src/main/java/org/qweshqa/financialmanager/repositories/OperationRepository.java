@@ -10,9 +10,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface OperationRepository extends JpaRepository<Operation, Integer> {
-    List<Operation> findAllByUser(User user);
 
-    List<Operation> findAllByCategoryAndUser(Category category, User user);
+    List<Operation> findAllByUser(User user);
 
     List<Operation> findAllByDateAndUser(LocalDate date, User user);
 
@@ -20,11 +19,15 @@ public interface OperationRepository extends JpaRepository<Operation, Integer> {
 
     List<Operation> findAllByDateAndUserAndCategory(LocalDate date, User user, Category category);
 
-    List<Operation> findAllByYearAndUser(int year, User user);
 
-    List<Operation> findAllByYearAndUserAndCategory(int year, User user, Category category);
+    List<Operation> findAllByYearAndUser(int year, User user);
 
     List<Operation> findAllByYearAndUserAndInvolvedAccount(int year, User user, Account account);
 
+    List<Operation> findAllByYearAndUserAndCategory(int year, User user, Category category);
+
+
     List<Operation> findAllByInvolvedAccountAndUser(Account involvedAccount, User user);
+
+    List<Operation> findAllByCategoryAndUser(Category category, User user);
 }

@@ -60,12 +60,12 @@ public class CategoryController {
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        model.addAttribute("expense_total", categoryService.getCategoriesTotalByTypeAndArchivedAndUser(CategoryType.EXPENSE, false, user));
-        model.addAttribute("income_total", categoryService.getCategoriesTotalByTypeAndArchivedAndUser(CategoryType.INCOME, false, user));
+        model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndArchivedAndType(user,false, CategoryType.EXPENSE));
+        model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndArchivedAndType(user, false, CategoryType.INCOME));
 
         CategoryType categoryType = categoryTypeStringConverter.convert(type.toUpperCase());
         
-        List<Category> categories = categoryService.findAllByTypeAndArchivedAndUser(categoryType, false, user);
+        List<Category> categories = categoryService.findAllByUserAndArchivedAndType(user, false, categoryType);
 
         model.addAttribute("categories", categories);
 
@@ -83,12 +83,12 @@ public class CategoryController {
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        model.addAttribute("expense_total", categoryService.getCategoriesTotalByTypeAndArchivedAndUser(CategoryType.EXPENSE, true, user));
-        model.addAttribute("income_total", categoryService.getCategoriesTotalByTypeAndArchivedAndUser(CategoryType.INCOME, true, user));
+        model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndArchivedAndType(user, false, CategoryType.EXPENSE));
+        model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndArchivedAndType(user, false, CategoryType.INCOME));
 
         CategoryType categoryType = categoryTypeStringConverter.convert(type.toUpperCase());
 
-        List<Category> categories = categoryService.findAllByTypeAndArchivedAndUser(categoryType, true, user);
+        List<Category> categories = categoryService.findAllByUserAndArchivedAndType(user, true, categoryType);
 
         model.addAttribute("categories", categories);
 
@@ -148,7 +148,7 @@ public class CategoryController {
         List<Operation> categoryOperations = new ArrayList<>();
         switch(operationDisplayPeriod){
             case "all-time":
-                categoryOperations = operationService.findAllByCategory(category, user);
+                categoryOperations = categoryService.findAllOperationsByUser(category, user);
                 model.addAttribute("displayDate", "All time");
                 break;
 
@@ -156,7 +156,7 @@ public class CategoryController {
                 if(!year.isBlank()){
                     date = date.withYear(Integer.parseInt(year));
                 }
-                categoryOperations = operationService.findAllByYearAndUserAndCategory(date.getYear(), user, category);
+                categoryOperations = categoryService.findAllOperationsByUserAndYear(category, user, date.getYear());
                 model.addAttribute("displayDate", date.getYear());
                 break;
 
@@ -168,7 +168,7 @@ public class CategoryController {
                     date = date.withMonth(Integer.parseInt(month));
                 }
 
-                categoryOperations = operationService.findAllByMonthAndUserAndCategory(date, user, category);
+                categoryOperations = categoryService.findAllOperationsByUserAndMonth(category, user, date);
                 model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
                 break;
 
@@ -183,7 +183,7 @@ public class CategoryController {
                     date = date.withDayOfMonth(Integer.parseInt(day));
                 }
 
-                categoryOperations = operationService.findAllByDateAndUserAndCategory(date, user, category);
+                categoryOperations = categoryService.findAllOperationsByUserAndDate(category, user, date);
                 model.addAttribute("displayDate", date.format(formatter));
                 break;
         }

@@ -44,6 +44,7 @@ public class UserService {
         return user.get();
     }
 
+
     @Transactional()
     public void save(User user){
         String encodedPassword = passwordEncoder.encode(user.getPassword());

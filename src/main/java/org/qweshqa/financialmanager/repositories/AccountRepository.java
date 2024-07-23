@@ -8,9 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AccountRepository extends JpaRepository<Account, Integer> {
+
     List<Account> findAllByOwner(User owner);
 
     List<Account> findAllByOwnerAndArchived(User owner, boolean isArchived);
 
-    List<Account> findAllByTypeAndOwnerAndArchived(AccountType type, User owner, boolean isArchived);
+    List<Account> findAllByOwnerAndArchivedAndType(User owner, boolean isArchived, AccountType type);
 }

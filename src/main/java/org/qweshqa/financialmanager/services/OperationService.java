@@ -1,14 +1,11 @@
 package org.qweshqa.financialmanager.services;
 
-import org.qweshqa.financialmanager.models.Account;
-import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.OperationRepository;
 import org.qweshqa.financialmanager.utils.DateWrapper;
 import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,31 +37,16 @@ public class OperationService {
         return operation.get();
     }
 
+
     public List<Operation> findAllByUser(User user){
         return operationRepository.findAllByUser(user);
     }
 
-    public List<Operation> findAllByCategory(Category category, User user){
-        return operationRepository.findAllByCategoryAndUser(category, user);
-    }
-
-    public List<Operation> findAllByAccount(Account account, User user){
-        return operationRepository.findAllByInvolvedAccountAndUser(account, user);
-    }
-
-    public List<Operation> findAllByDateAndUser(LocalDate date, User user){
+    public List<Operation> findAllByUserAndDate(User user, LocalDate date){
         return operationRepository.findAllByDateAndUser(date, user);
     }
 
-    public List<Operation> findAllByDateAndUserAndAccount(LocalDate date, User user, Account account){
-        return operationRepository.findAllByDateAndUserAndInvolvedAccount(date, user, account);
-    }
-
-    public List<Operation> findAllByDateAndUserAndCategory(LocalDate date, User user, Category category){
-        return operationRepository.findAllByDateAndUserAndCategory(date, user, category);
-    }
-
-    public List<Operation> findAllByMonthAndUser(LocalDate dateWithMonth, User user){
+    public List<Operation> findAllByUserAndMonth(User user, LocalDate dateWithMonth){
         List<Operation> operations = new ArrayList<>();
 
         for(int i = 1; i <= dateWithMonth.getMonth().maxLength(); i++){
@@ -73,35 +55,10 @@ public class OperationService {
         return operations;
     }
 
-    public List<Operation> findAllByMonthAndUserAndAccount(LocalDate dateWithMonth, User user, Account account){
-        List<Operation> operations = new ArrayList<>();
-
-        for(int i = 1; i <= dateWithMonth.getMonth().maxLength(); i++){
-            operations.addAll(operationRepository.findAllByDateAndUserAndInvolvedAccount(dateWithMonth.withDayOfMonth(i), user, account));
-        }
-        return operations;
-    }
-
-    public List<Operation> findAllByMonthAndUserAndCategory(LocalDate dateWithMonth, User user, Category category){
-        List<Operation> operations = new ArrayList<>();
-
-        for(int i = 1; i <= dateWithMonth.getMonth().maxLength(); i++){
-            operations.addAll(operationRepository.findAllByDateAndUserAndCategory(dateWithMonth.withDayOfMonth(i), user, category));
-        }
-        return operations;
-    }
-
-    public List<Operation> findAllByYearAndUser(int year, User user){
+    public List<Operation> findAllByUserAndYear(User user, int year){
         return operationRepository.findAllByYearAndUser(year, user);
     }
 
-    public List<Operation> findAllByYearAndUserAndCategory(int year, User user, Category category){
-        return operationRepository.findAllByYearAndUserAndCategory(year, user, category);
-    }
-
-    public List<Operation> findAllByYearAndUserAndAccount(int year, User user, Account account){
-        return operationRepository.findAllByYearAndUserAndInvolvedAccount(year, user, account);
-    }
 
     public void configureStringDateValues(String year, String month, String day, String period, DateWrapper dateWrapper){
         switch(period){
@@ -183,6 +140,7 @@ public class OperationService {
                 }
         }
     }
+
 
     @Transactional
     public void save(Operation operation){

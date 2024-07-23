@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -91,7 +90,7 @@ public class OperationController {
                 if(!year.isBlank()){
                     date = date.withYear(Integer.parseInt(year));
                 }
-                model.addAttribute("operations", operationService.findAllByYearAndUser(date.getYear(), user));
+                model.addAttribute("operations", operationService.findAllByUserAndYear(user, date.getYear()));
                 model.addAttribute("displayDate", date.getYear());
                 break;
 
@@ -104,7 +103,7 @@ public class OperationController {
                 }
 
                 model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
-                model.addAttribute("operations", operationService.findAllByMonthAndUser(date, user));
+                model.addAttribute("operations", operationService.findAllByUserAndMonth(user, date));
                 break;
 
             case "day":
@@ -118,7 +117,7 @@ public class OperationController {
                     date = date.withDayOfMonth(Integer.parseInt(day));
                 }
 
-                model.addAttribute("operations", operationService.findAllByDateAndUser(date, user));
+                model.addAttribute("operations", operationService.findAllByUserAndDate(user, date));
                 model.addAttribute("displayDate", date.format(formatter));
                 break;
         }
@@ -180,8 +179,7 @@ public class OperationController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
-    public String editOperation(@PathVariable("id") int id, @ModelAttribute("operation") @Valid Operation operation, BindingResult bindingResult,
-                                  Model model){
+    public String editOperation(@PathVariable("id") int id, @ModelAttribute("operation") @Valid Operation operation, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
             return "/operations/edit";

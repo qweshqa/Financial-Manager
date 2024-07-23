@@ -3,7 +3,6 @@ package org.qweshqa.financialmanager.services;
 import org.qweshqa.financialmanager.models.Setting;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.SettingRepository;
-import org.qweshqa.financialmanager.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +15,9 @@ public class SettingService {
 
     private final SettingRepository settingRepository;
 
-    private final UserRepository userRepository;
-
     @Autowired
-    public SettingService(SettingRepository settingRepository, UserRepository userRepository) {
+    public SettingService(SettingRepository settingRepository) {
         this.settingRepository = settingRepository;
-        this.userRepository = userRepository;
     }
 
     @Transactional
