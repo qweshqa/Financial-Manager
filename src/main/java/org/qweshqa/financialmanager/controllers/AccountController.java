@@ -314,6 +314,38 @@ public class AccountController {
         return "redirect:/accounts/" + id;
     }
 
+    @RequestMapping(value = "/transfer/{id}", method = RequestMethod.GET)
+    public String transfer(@PathVariable("id") int id, Model model){
+        Account account;
+
+        try{
+            account = accountService.findById(id);
+        } catch (AccountNotFoundException e){
+            model.addAttribute("errorTitle", "404 Nothing found");
+            model.addAttribute("errorMessage", "Account with this id doesn't exist");
+            return "error";
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName());
+
+        model.addAttribute("accounts", accountService.findAllByUserAndArchive(user, false));
+        // selected value by default
+        model.addAttribute("account", account);
+
+        return "/accounts/transfer";
+    }
+
+    @RequestMapping(value = "/transfer/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
+    public String transfer(@PathVariable("id") int id, @RequestParam("to") int toAccountId, @RequestParam("amount") float amount){
+        Account fromAccount = accountService.findById(id);
+        Account toAccount = accountService.findById(toAccountId);
+
+        accountService.replenish(fromAccount, toAccount, amount);
+
+        return "redirect:/accounts/" + id;
+    }
+
     @RequestMapping(value = "/archive/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
     public String archiveAccount(@PathVariable("id") int id){
         Account account = accountService.findById(id);

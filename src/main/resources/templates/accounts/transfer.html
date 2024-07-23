@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${'Transfer from the ' + account.getName()}"></title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="sidebar">
+    <header>Flanaer</header>
+    <ul class="navbar">
+        <li><a href="/categories">Categories</a></li>
+
+        <li><a href="/operations">Operations</a></li>
+
+        <li><a href="/accounts">Accounts</a></li>
+
+        <li><a href="/settings/currency">Settings</a></li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <div class="form-block">
+        <h1 class="form-header">Transfer</h1>
+
+        <form class="form" th:method="PATCH" th:action="@{/accounts/transfer/{id}(id=${account.getId()})}">
+
+            <label for="from-account">To</label>
+            <br/>
+            <select class="field select-field--add-width" id="from-account" name="to">
+                <option th:each="account: ${accounts}" th:value="${account.getId()}" th:text="${account.getName()}"></option>
+            </select>
+            <br/>
+
+            <label for="amount">Amount</label>
+            <br/>
+            <input class="field field--add-width" id="amount" type="text" name="amount"/>
+            <br/>
+
+            <button class="btn btn--basic">Transfer</button>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
