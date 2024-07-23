@@ -1,5 +1,6 @@
 package org.qweshqa.financialmanager.services;
 
+import org.qweshqa.financialmanager.models.Account;
 import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
@@ -7,6 +8,7 @@ import org.qweshqa.financialmanager.repositories.OperationRepository;
 import org.qweshqa.financialmanager.utils.DateWrapper;
 import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,8 +48,16 @@ public class OperationService {
         return operationRepository.findAllByCategoryAndUser(category, user);
     }
 
+    public List<Operation> findAllByAccount(Account account, User user){
+        return operationRepository.findAllByInvolvedAccountAndUser(account, user);
+    }
+
     public List<Operation> findAllByDateAndUser(LocalDate date, User user){
         return operationRepository.findAllByDateAndUser(date, user);
+    }
+
+    public List<Operation> findAllByDateAndUserAndAccount(LocalDate date, User user, Account account){
+        return operationRepository.findAllByDateAndUserAndInvolvedAccount(date, user, account);
     }
 
     public List<Operation> findAllByDateAndUserAndCategory(LocalDate date, User user, Category category){
@@ -59,6 +69,15 @@ public class OperationService {
 
         for(int i = 1; i <= dateWithMonth.getMonth().maxLength(); i++){
             operations.addAll(operationRepository.findAllByDateAndUser(dateWithMonth.withDayOfMonth(i), user));
+        }
+        return operations;
+    }
+
+    public List<Operation> findAllByMonthAndUserAndAccount(LocalDate dateWithMonth, User user, Account account){
+        List<Operation> operations = new ArrayList<>();
+
+        for(int i = 1; i <= dateWithMonth.getMonth().maxLength(); i++){
+            operations.addAll(operationRepository.findAllByDateAndUserAndInvolvedAccount(dateWithMonth.withDayOfMonth(i), user, account));
         }
         return operations;
     }
@@ -78,6 +97,10 @@ public class OperationService {
 
     public List<Operation> findAllByYearAndUserAndCategory(int year, User user, Category category){
         return operationRepository.findAllByYearAndUserAndCategory(year, user, category);
+    }
+
+    public List<Operation> findAllByYearAndUserAndAccount(int year, User user, Account account){
+        return operationRepository.findAllByYearAndUserAndInvolvedAccount(year, user, account);
     }
 
     public void configureStringDateValues(String year, String month, String day, String period, DateWrapper dateWrapper){

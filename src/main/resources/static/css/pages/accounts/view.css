@@ -1,10 +1,6 @@
 .account-container{
     text-align: center;
 
-    border-bottom-style: solid;
-    border-bottom-width: thin;
-    border-bottom-color: #404040;
-
     margin: 50px 0 20px 0;
 }
 .account{

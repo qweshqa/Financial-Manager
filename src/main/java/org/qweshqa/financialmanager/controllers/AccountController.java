@@ -5,7 +5,9 @@ import org.qweshqa.financialmanager.models.Account;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.AccountService;
+import org.qweshqa.financialmanager.services.OperationService;
 import org.qweshqa.financialmanager.services.UserService;
+import org.qweshqa.financialmanager.utils.DateWrapper;
 import org.qweshqa.financialmanager.utils.enums.AccountType;
 import org.qweshqa.financialmanager.utils.converters.AccountTypeStringConverter;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
@@ -18,7 +20,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/accounts")
@@ -32,16 +40,24 @@ public class AccountController {
 
     private final AccountTypeStringConverter accountTypeStringConverter;
 
+    private final OperationService operationService;
+
     @Autowired
-    public AccountController(AccountService accountService, UserService userService, AmountFormatter amountFormatter, AccountTypeStringConverter accountTypeStringConverter) {
+    public AccountController(AccountService accountService, UserService userService, AmountFormatter amountFormatter, AccountTypeStringConverter accountTypeStringConverter, OperationService operationService) {
         this.accountService = accountService;
         this.userService = userService;
         this.amountFormatter = amountFormatter;
         this.accountTypeStringConverter = accountTypeStringConverter;
+        this.operationService = operationService;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String viewAccount(@PathVariable("id") int id, Model model){
+    public String viewAccount(@PathVariable("id") int id,
+                              @RequestParam(value = "p", defaultValue = "day") String operationDisplayPeriod,
+                              @RequestParam(value = "d", defaultValue = "") String day,
+                              @RequestParam(value = "m", defaultValue = "") String month,
+                              @RequestParam(value = "y", defaultValue = "") String year,
+                              Model model){
         Account account;
 
         try{
@@ -52,6 +68,30 @@ public class AccountController {
             return "error";
         }
 
+        DateWrapper dateWrapper = new DateWrapper(LocalDate.now());
+
+        try{
+            operationService.configureStringDateValues(year, month, day, operationDisplayPeriod, dateWrapper);
+        } catch (DateTimeException e){
+            switch (e.getMessage()){
+                case "Year period error":
+                    return "redirect:/accounts/" + id + "?p=year" +
+                            "&y=" + dateWrapper.getDate().getYear();
+
+                case "Month period error":
+                    return "redirect:/accounts/" + id + "?p=month" +
+                            "&y=" + dateWrapper.getDate().getYear() +
+                            "&m=" + dateWrapper.getDate().getMonth().getValue();
+
+                case "Day period error":
+                    return "redirect:/accounts/" + id + "?p=day" +
+                            "&y=" + dateWrapper.getDate().getYear() +
+                            "&m=" + dateWrapper.getDate().getMonth().getValue() +
+                            "&d=" + dateWrapper.getDate().getDayOfMonth();
+            }
+        }
+        model.addAttribute("account", account);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
 
@@ -59,12 +99,59 @@ public class AccountController {
         model.addAttribute("amountFormatter", amountFormatter);
         model.addAttribute("settings", user.getSetting());
 
-        model.addAttribute("account", account);
+        LocalDate date = dateWrapper.getDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH);
 
-        List<Operation> accountOperations = accountService.findAllOperationsByAccountAndUser(account, user);
+        List<Operation> accountOperations = new ArrayList<>();
+        switch(operationDisplayPeriod){
+            case "all-time":
+                accountOperations = operationService.findAllByAccount(account, user);
+                model.addAttribute("displayDate", "All time");
+                break;
+
+            case "year":
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
+                }
+                accountOperations = operationService.findAllByYearAndUserAndAccount(date.getYear(), user, account);
+                model.addAttribute("displayDate", date.getYear());
+                break;
+
+            case "month":
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
+                }
+                if(!month.isBlank()){
+                    date = date.withMonth(Integer.parseInt(month));
+                }
+
+                accountOperations = operationService.findAllByMonthAndUserAndAccount(date, user, account);
+                model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
+                break;
+
+            case "day":
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
+                }
+                if(!month.isBlank()){
+                    date = date.withMonth(Integer.parseInt(month));
+                }
+                if(!day.isBlank()){
+                    date = date.withDayOfMonth(Integer.parseInt(day));
+                }
+
+                accountOperations = operationService.findAllByDateAndUserAndAccount(date, user, account);
+                model.addAttribute("displayDate", date.format(formatter));
+                break;
+        }
         model.addAttribute("accountOperations", accountOperations);
+        model.addAttribute("account_balance", (float) accountOperations.stream().mapToDouble(Operation::getAmount).sum());
 
-        return "accounts/view";
+        model.addAttribute("period", operationDisplayPeriod);
+
+        model.addAttribute("date", date);
+
+        return "/accounts/view";
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)

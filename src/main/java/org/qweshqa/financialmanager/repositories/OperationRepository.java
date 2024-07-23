@@ -7,7 +7,6 @@ import org.qweshqa.financialmanager.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 public interface OperationRepository extends JpaRepository<Operation, Integer> {
@@ -17,11 +16,15 @@ public interface OperationRepository extends JpaRepository<Operation, Integer> {
 
     List<Operation> findAllByDateAndUser(LocalDate date, User user);
 
+    List<Operation> findAllByDateAndUserAndInvolvedAccount(LocalDate date, User user, Account account);
+
     List<Operation> findAllByDateAndUserAndCategory(LocalDate date, User user, Category category);
 
     List<Operation> findAllByYearAndUser(int year, User user);
 
     List<Operation> findAllByYearAndUserAndCategory(int year, User user, Category category);
+
+    List<Operation> findAllByYearAndUserAndInvolvedAccount(int year, User user, Account account);
 
     List<Operation> findAllByInvolvedAccountAndUser(Account involvedAccount, User user);
 }

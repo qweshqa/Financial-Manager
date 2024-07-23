@@ -49,8 +49,8 @@
             <h1 class="account__name" th:text="${account.getName()}"></h1>
 
             <h1 style="font-size: 16px; text-align: center">Current balance</h1>
-            <h1 class="account__balance" th:text="${amountFormatter.formatAmount(account.getTransientBalance()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
-            th:style="${account.getTransientBalance() > 0 ? 'color: #7cffb2;' : 'color:#ff7c7c'}"></h1>
+            <h1 class="account__balance" th:text="${amountFormatter.formatAmount(account_balance + account.getBalance()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
+            th:style="${account_balance + account.getBalance() > 0 ? 'color: #7cffb2;' : 'color:#ff7c7c'}"></h1>
 
             <h1 class="account__description" th:text="${account.getDescription()}" th:title="${account.getDescription()}"></h1>
 
@@ -103,50 +103,115 @@
 
     </div>
 
-    <div class="operations">
-        <div class="operation" th:each="operation: ${accountOperations}">
-            <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}" th:style="${operation.getComment().isBlank() ? '' : 'height:60px'}">
 
-                <span class="operation-item__category" th:text="${operation.getCategory().getName()}"></span>
+    <div class="operations-block">
+        <div class="operations-block">
 
-                <form th:method="GET" th:action="@{/operations/edit/{id}(id=${operation.getId()})}" style="display: inline-flex">
+            <div class="operations-header">
+                <h4 th:text="${'Operations: ' + accountOperations.size()}"></h4>
+            </div>
 
-                    <button type="submit" class="edit-form-url">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                        </svg>
-                    </button>
+            <div class="operations-period-navigation-block block--border-bottom">
+
+                <form class="operations-period-navigation" th:method="GET" th:action="@{/accounts/{id}(id=${account.getId()})}">
+                    <label for="period"></label>
+                    <select class="field" name="p" id="period">
+                        <option value="all-time">All time</option>
+                        <option value="year">Year</option>
+                        <option value="month">Month</option>
+                        <option value="day">Day</option>
+                    </select>
+                    <br/>
+
+                    <button class="btn" type="submit">Submit</button>
                 </form>
 
-                <div class="operation-item__account">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
-                        <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
-                    </svg>
+                <div class="date-navigation" th:style="${period.equals('all-time') ? 'justify-content: center;' : ''}">
 
-                    <h1 th:text="${operation.getInvolvedAccount().getName()}"></h1>
+                    <a th:if="${period.equals('day')}" th:href="@{/accounts/{id}(id=${account.getId()}, p=${period}, y=${date.getYear()}, m=${date.getMonthValue()}, d=${date.getDayOfMonth() - 1})}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"></path>
+                        </svg>
+                    </a>
+                    <a th:if="${period.equals('month')}" th:href="@{/accounts/{id}(id=${account.getId()}, p=${period}, y=${date.getYear()}, m=${date.getMonthValue() - 1})}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"></path>
+                        </svg>
+                    </a>
+                    <a th:if="${period.equals('year')}" th:href="@{/accounts/{id}(id=${account.getId()}, p=${period}, y=${date.getYear() - 1})}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"></path>
+                        </svg>
+                    </a>
+
+                    <span th:text="${displayDate}"></span>
+
+                    <a th:if="${period.equals('day')}" th:href="@{/accounts/{id}(id=${account.getId()}, p=${period}, y=${date.getYear()}, m=${date.getMonthValue()}, d=${date.getDayOfMonth() + 1})}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"></path>
+                        </svg>
+                    </a>
+                    <a th:if="${period.equals('month')}" th:href="@{/accounts/{id}(id=${account.getId()}, p=${period}, y=${date.getYear()}, m=${date.getMonthValue() + 1})}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"></path>
+                        </svg>
+                    </a>
+                    <a th:if="${period.equals('year')}" th:href="@{/accounts/{id}(id=${account.getId()}, p=${period}, y=${date.getYear() + 1})}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"></path>
+                        </svg>
+                    </a>
+
                 </div>
+            </div>
 
-                <h1 class="operation-item__amount"
-                    th:style="${operation.getCategory().getCategoryType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2;'} + ${operation.getComment().isBlank() ? '' : 'bottom: 30px;'}"
-                    th:text="${amountFormatter.formatAmount(operation.getAmount()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}">
-                </h1>
+            <div class="operations">
+                <div class="operation" th:each="operation: ${accountOperations}">
+                    <div class="operation-item" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}" th:style="${operation.getComment().isBlank() ? '' : 'height:60px'}">
 
-                <form class="delete-operation-item-form" th:method="POST" th:action="@{/operations/delete/{id}(id=${operation.getId()})}" th:object="${operation}"
-                      th:style="${operation.getComment().isBlank() ? '' : 'bottom: 60px;'}">
+                        <span class="operation-item__category" th:text="${operation.getCategory().getName()}"></span>
 
-                    <button class="delete-operation-item btn" type="submit">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
-                            <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"></path>
-                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"></path>
-                        </svg>
-                    </button>
-                </form>
+                        <form th:method="GET" th:action="@{/operations/edit/{id}(id=${operation.getId()})}" style="display: inline-flex">
 
-                <h1 class="operation-item__comment" th:text="${operation.getComment()}"></h1>
+                            <button type="submit" class="edit-form-url">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                            </button>
+                        </form>
 
+                        <div class="operation-item__account">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                                <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
+                            </svg>
+
+                            <h1 th:text="${operation.getInvolvedAccount().getName()}"></h1>
+                        </div>
+
+                        <h1 class="operation-item__amount"
+                            th:style="${operation.getCategory().getCategoryType() == typeClass.EXPENSE ? 'color:#ff7c7c;' : 'color:#7cffb2;'} + ${operation.getComment().isBlank() ? '' : 'bottom: 30px;'}"
+                            th:text="${amountFormatter.formatAmount(operation.getAmount()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}">
+                        </h1>
+
+                        <form class="delete-operation-item-form" th:method="POST" th:action="@{/operations/delete/{id}(id=${operation.getId()})}" th:object="${operation}"
+                              th:style="${operation.getComment().isBlank() ? '' : 'bottom: 60px;'}">
+
+                            <button class="delete-operation-item btn" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
+                                    <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"></path>
+                                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"></path>
+                                </svg>
+                            </button>
+                        </form>
+
+                        <h1 class="operation-item__comment" th:text="${operation.getComment()}"></h1>
+
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 
 </div>
