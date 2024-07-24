@@ -190,7 +190,7 @@ public class OperationController {
         operation.setUser(operationToUpdate.getUser());
         operation.setCategory(operationToUpdate.getCategory());
 
-        operationService.update(id, operation);
+        operationService.update(operationToUpdate, operation);
 
         return "redirect:/operations";
     }
@@ -200,7 +200,7 @@ public class OperationController {
 
         Operation operation = operationService.findById(id);
 
-        operationService.delete(id);
+        operationService.delete(operation);
 
         return "redirect:/operations";
     }

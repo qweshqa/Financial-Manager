@@ -151,10 +151,6 @@ public class AccountController {
                 break;
         }
         model.addAttribute("accountOperations", accountOperations);
-        float account_balance = (float) accountOperations.stream().filter(operation -> operation.getCategory().getCategoryType() == CategoryType.INCOME).mapToDouble(Operation::getAmount).sum()
-                - (float) accountOperations.stream().filter(operation -> operation.getCategory().getCategoryType() == CategoryType.EXPENSE).mapToDouble(Operation::getAmount).sum();
-
-        model.addAttribute("account_balance", account_balance);
 
         model.addAttribute("period", operationDisplayPeriod);
 

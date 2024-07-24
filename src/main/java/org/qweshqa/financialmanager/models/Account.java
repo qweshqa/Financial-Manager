@@ -101,10 +101,6 @@ public class Account {
         this.balance -= amount;
     }
 
-    public float getTransientBalance(){
-        return (float) accountLinkedOperations.stream().mapToDouble(Operation::getAmount).sum() + this.balance;
-    }
-
     public boolean isArchived() {
         return archived;
     }

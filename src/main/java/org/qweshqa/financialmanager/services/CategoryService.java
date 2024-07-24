@@ -53,7 +53,7 @@ public class CategoryService {
     public float getCategoriesTotalByUserAndArchivedAndType(User user, boolean archived, CategoryType type){
         List<Category> categories = categoryRepository.findAllByUserAndArchivedAndCategoryType(user, archived, type);
 
-        return (float) categories.stream().mapToDouble(Category::getTransientBalance).sum();
+        return (float) categories.stream().mapToDouble(Category::getBalance).sum();
     }
 
 

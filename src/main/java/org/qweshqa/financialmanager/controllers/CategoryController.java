@@ -188,7 +188,6 @@ public class CategoryController {
                 break;
         }
         model.addAttribute("categoryOperations", categoryOperations);
-        model.addAttribute("category_balance", (float) categoryOperations.stream().mapToDouble(Operation::getAmount).sum());
 
         model.addAttribute("period", operationDisplayPeriod);
 

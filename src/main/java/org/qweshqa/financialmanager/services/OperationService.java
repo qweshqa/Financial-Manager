@@ -4,6 +4,7 @@ import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.OperationRepository;
 import org.qweshqa.financialmanager.utils.DateWrapper;
+import org.qweshqa.financialmanager.utils.enums.CategoryType;
 import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,21 +141,53 @@ public class OperationService {
         }
     }
 
-
     @Transactional
     public void save(Operation operation){
+
+        if(operation.getCategory().getCategoryType() == CategoryType.EXPENSE){
+            operation.getInvolvedAccount().minusBalance(operation.getAmount());
+            operation.getCategory().minusBalance(operation.getAmount());
+        }
+        else{
+            operation.getInvolvedAccount().plusBalance(operation.getAmount());
+            operation.getCategory().plusBalance(operation.getAmount());
+        }
         operationRepository.save(operation);
-        operation.getInvolvedAccount().addAccountLinkedFinance(operation);
     }
 
     @Transactional
-    public void update(int operationToUpdateId, Operation updatedOperation){
-        updatedOperation.setId(operationToUpdateId);
+    public void update(Operation operationToUpdate, Operation updatedOperation){
+        updatedOperation.setId(operationToUpdate.getId());
+
+        if(updatedOperation.getCategory().getCategoryType() == CategoryType.INCOME){
+            operationToUpdate.getInvolvedAccount().minusBalance(operationToUpdate.getAmount());
+            updatedOperation.getInvolvedAccount().plusBalance(updatedOperation.getAmount());
+
+            operationToUpdate.getCategory().minusBalance(operationToUpdate.getAmount());
+            updatedOperation.getCategory().plusBalance(updatedOperation.getAmount());
+        }
+        else{
+            operationToUpdate.getInvolvedAccount().plusBalance(operationToUpdate.getAmount());
+            updatedOperation.getInvolvedAccount().minusBalance(updatedOperation.getAmount());
+
+            operationToUpdate.getCategory().plusBalance(operationToUpdate.getAmount());
+            updatedOperation.getCategory().minusBalance(updatedOperation.getAmount());
+        }
+
         operationRepository.save(updatedOperation);
     }
 
     @Transactional
-    public void delete(int id){
-        operationRepository.deleteById(id);
+    public void delete(Operation operation){
+        if(operation.getCategory().getCategoryType() == CategoryType.INCOME){
+            operation.getInvolvedAccount().minusBalance(operation.getAmount());
+            operation.getCategory().minusBalance(operation.getAmount());
+        }
+        else{
+            operation.getInvolvedAccount().plusBalance(operation.getAmount());
+            operation.getCategory().plusBalance(operation.getAmount());
+        }
+
+        operationRepository.deleteById(operation.getId());
     }
 }
