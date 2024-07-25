@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.money.CurrencyUnit;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,9 +20,9 @@ public class SettingService {
     }
 
     @Transactional
-    public void saveSettingSetup(Setting setting, User user, CurrencyUnit currencyUnit){
+    public void saveSettingSetup(Setting setting, User user, String currencyUnit){
         setting.setUser(user);
-        setting.setCurrencyUnit(currencyUnit.getCurrencyCode());
+        setting.setCurrencyUnit(currencyUnit);
 
         settingRepository.save(setting);
     }

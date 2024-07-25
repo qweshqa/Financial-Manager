@@ -16,9 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.money.CurrencyUnit;
-import javax.money.Monetary;
-
 @Controller
 public class AuthController {
 
@@ -92,8 +89,7 @@ public class AuthController {
     public String performUserSetup(@RequestParam("currency") String currency,
                                    @RequestParam(value = "display-name", defaultValue = "", required = false) String displayName) {
 
-        CurrencyUnit currencyUnit = Monetary.getCurrency(currency);
-        settingService.saveSettingSetup(new Setting(), userService.findUserById(user_id), currencyUnit);
+        settingService.saveSettingSetup(new Setting(), userService.findUserById(user_id), currency);
 
         return "redirect:/login";
     }

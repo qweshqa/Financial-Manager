@@ -18,3 +18,13 @@
 
     background-color: #0000003b;
 }
+.statistic-chart{
+    position: relative;
+    left: 100px;
+    top: 70px;
+
+    width: 960px;
+    height: 600px;
+
+    border-radius: 10px;
+}

@@ -97,6 +97,17 @@
         </div>
     </div>
 
+    <div class="category-type-navigation">
+        <div class="category-type-block">
+            <a class="category-type btn" th:href="@{/statistics(p=${period}, t='expense')}">Expenses
+                <h1 th:text="${amountFormatter.formatAmount(expense_total) + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#ff7c7c;"></h1></a>
+        </div>
+        <div class="category-type-block">
+            <a class="category-type btn" th:href="@{/statistics(p=${period}, t='income')}">Incomes
+                <h1 th:text="${amountFormatter.formatAmount(income_total) + ' ' + user.getSetting().getCurrencyUnit()}" style="color:#7cffb2"></h1></a>
+        </div>
+    </div>
+
     <div class="cash-flow">
         <div>
             <h1>Cash flow</h1>
@@ -106,6 +117,8 @@
             th:style="${cash_flow > 0.0 ? 'color:#7cffb2;' : 'color:#ff7c7c;'}"></h1>
         </div>
     </div>
+
+    <img class="statistic-chart" th:src="@{/statistics/generateChart(p=${period}, t=${type}, d=${date.getDayOfMonth()}, m=${date.getMonthValue()}, y=${date.getYear()})}">
 
 </div>
 
