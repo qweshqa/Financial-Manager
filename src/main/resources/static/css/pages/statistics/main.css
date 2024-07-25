@@ -1,0 +1,20 @@
+.cash-flow{
+    position: relative;
+    top: 50px;
+
+    text-align: center;
+
+    border-style: solid;
+    border-width: thin;
+    border-color: #404040;
+    border-radius: 10px;
+
+    margin: 0 20px 0;
+}
+.cash-flow div{
+    font-size: 14px;
+
+    padding: 10px;
+
+    background-color: #0000003b;
+}
