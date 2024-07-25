@@ -52,24 +52,109 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String viewCategories(@RequestParam(value = "t", defaultValue = "expense") String type,
+    public String viewCategories(@RequestParam(value = "p", defaultValue = "day") String period,
+                                 @RequestParam(value = "d", defaultValue = "") String day,
+                                 @RequestParam(value = "m", defaultValue = "") String month,
+                                 @RequestParam(value = "y", defaultValue = "") String year,
+                                 @RequestParam(value = "t", defaultValue = "expense") String type,
                                  Model model){
+        DateWrapper dateWrapper = new DateWrapper(LocalDate.now());
+
+        try{
+            operationService.configureStringDateValues(year, month, day, period, dateWrapper);
+        } catch (DateTimeException e){
+            switch (e.getMessage()){
+                case "Year period error":
+                    return "redirect:/categories?p=year" +
+                            "&y=" + dateWrapper.getDate().getYear();
+
+                case "Month period error":
+                    return "redirect:/categories?p=month" +
+                            "&y=" + dateWrapper.getDate().getYear() +
+                            "&m=" + dateWrapper.getDate().getMonth().getValue();
+
+                case "Day period error":
+                    return "redirect:/categories?p=day" +
+                            "&y=" + dateWrapper.getDate().getYear() +
+                            "&m=" + dateWrapper.getDate().getMonth().getValue() +
+                            "&d=" + dateWrapper.getDate().getDayOfMonth();
+            }
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
 
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndArchivedAndType(user,false, CategoryType.EXPENSE));
-        model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndArchivedAndType(user, false, CategoryType.INCOME));
+        LocalDate date = dateWrapper.getDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH);
+
+        switch (period){
+            case "all-time":
+                model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndType(user, CategoryType.EXPENSE));
+                model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndType(user, CategoryType.INCOME));
+
+                model.addAttribute("displayDate", "All time");
+
+                break;
+
+            case "year":
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
+                }
+
+                model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndYearAndType(user, date.getYear(), CategoryType.EXPENSE));
+                model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndYearAndType(user, date.getYear(), CategoryType.INCOME));
+
+                model.addAttribute("displayDate", date.getYear());
+
+                break;
+
+            case "month":
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
+                }
+                if(!month.isBlank()){
+                    date = date.withMonth(Integer.parseInt(month));
+                }
+
+                model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndYearAndMonthAndType(user, date.getYear(), date.getMonthValue(), CategoryType.EXPENSE));
+                model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndYearAndMonthAndType(user, date.getYear(), date.getMonthValue(), CategoryType.INCOME));
+
+                model.addAttribute("displayDate", (date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + ", " + date.getYear()));
+
+                break;
+
+            case "day":
+                if(!year.isBlank()){
+                    date = date.withYear(Integer.parseInt(year));
+                }
+                if(!month.isBlank()){
+                    date = date.withMonth(Integer.parseInt(month));
+                }
+                if(!day.isBlank()){
+                    date = date.withDayOfMonth(Integer.parseInt(day));
+                }
+
+                model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndDateAndType(user, date, CategoryType.EXPENSE));
+                model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndDateAndType(user, date, CategoryType.INCOME));
+
+                model.addAttribute("displayDate", date.format(formatter));
+
+                break;
+        }
 
         CategoryType categoryType = categoryTypeStringConverter.convert(type.toUpperCase());
         
         List<Category> categories = categoryService.findAllByUserAndArchivedAndType(user, false, categoryType);
-
         model.addAttribute("categories", categories);
 
+        model.addAttribute("categoryService", categoryService);
         model.addAttribute("type", type);
+
+        model.addAttribute("date", date);
+        model.addAttribute("period", period);
 
         return "categories/list";
     }
@@ -83,8 +168,8 @@ public class CategoryController {
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
 
-        model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndArchivedAndType(user, false, CategoryType.EXPENSE));
-        model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndArchivedAndType(user, false, CategoryType.INCOME));
+        model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndType(user, CategoryType.EXPENSE));
+        model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndType(user, CategoryType.INCOME));
 
         CategoryType categoryType = categoryTypeStringConverter.convert(type.toUpperCase());
 

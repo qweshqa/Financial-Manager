@@ -50,10 +50,44 @@ public class CategoryService {
     }
 
 
-    public float getCategoriesTotalByUserAndArchivedAndType(User user, boolean archived, CategoryType type){
-        List<Category> categories = categoryRepository.findAllByUserAndArchivedAndCategoryType(user, archived, type);
+    public float getCategoriesTotalByUserAndType(User user, CategoryType type){
+        return (float) operationRepository.findAllByUserAndCategoryType(user, type)
+                .stream().mapToDouble(Operation::getAmount).sum();
+    }
 
-        return (float) categories.stream().mapToDouble(Category::getBalance).sum();
+    public float getCategoriesTotalByUserAndYearAndType(User user, int year, CategoryType type){
+        return (float) operationRepository.findAllByYearAndUserAndCategoryType(year, user, type)
+                .stream().mapToDouble(Operation::getAmount).sum();
+    }
+
+    public float getCategoriesTotalByUserAndYearAndMonthAndType(User user, int year, int month, CategoryType type){
+        return (float) operationRepository.findAllByYearAndMonthAndUserAndCategoryType(year, month, user, type)
+                .stream().mapToDouble(Operation::getAmount).sum();
+    }
+
+    public float getCategoriesTotalByUserAndDateAndType(User user, LocalDate date, CategoryType categoryType){
+        return (float) operationRepository.findAllByDateAndUserAndCategoryType(date, user, categoryType)
+                .stream().mapToDouble(Operation::getAmount).sum();
+    }
+
+    public float getCategoryTotalByUser(Category category, User user){
+        return (float) operationRepository.findAllByCategoryAndUser(category, user)
+                .stream().mapToDouble(Operation::getAmount).sum();
+    }
+
+    public float getCategoryTotalByUserAndYear(Category category, User user, int year){
+        return (float) operationRepository.findAllByYearAndUserAndCategory(year, user, category)
+                .stream().mapToDouble(Operation::getAmount).sum();
+    }
+
+    public float getCategoryTotalByUserAndYearAndMonth(Category category, User user, int year, int month){
+        return (float) operationRepository.findAllByYearAndMonthAndUserAndCategory(year, month, user, category)
+                .stream().mapToDouble(Operation::getAmount).sum();
+    }
+
+    public float getCategoryTotalByUserAndDate(Category category, User user, LocalDate date){
+        return (float) operationRepository.findAllByDateAndUserAndCategory(date, user, category)
+                .stream().mapToDouble(Operation::getAmount).sum();
     }
 
 

@@ -41,6 +41,60 @@
 
 <div class="content">
 
+    <div class="operations-period-navigation-block block--border-bottom">
+
+        <form class="operations-period-navigation" th:method="GET" th:action="@{/categories}">
+            <label for="period"></label>
+            <select class="field" name="p" id="period">
+                <option value="all-time">All time</option>
+                <option value="year">Year</option>
+                <option value="month">Month</option>
+                <option value="day">Day</option>
+            </select>
+            <br/>
+
+            <button class="btn" type="submit">Submit</button>
+        </form>
+
+        <div class="date-navigation" th:style="${period.equals('all-time') ? 'justify-content: center;' : ''}">
+
+            <a th:if="${period.equals('day')}" th:href="@{/categories(p=${period}, y=${date.getYear()}, m=${date.getMonthValue()}, d=${date.getDayOfMonth() - 1})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"></path>
+                </svg>
+            </a>
+            <a th:if="${period.equals('month')}" th:href="@{/categories(p=${period}, y=${date.getYear()}, m=${date.getMonthValue() - 1})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"></path>
+                </svg>
+            </a>
+            <a th:if="${period.equals('year')}" th:href="@{/categories(p=${period}, y=${date.getYear() - 1})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"></path>
+                </svg>
+            </a>
+
+            <span th:text="${displayDate}"></span>
+
+            <a th:if="${period.equals('day')}" th:href="@{/categories(p=${period}, y=${date.getYear()}, m=${date.getMonthValue()}, d=${date.getDayOfMonth() + 1})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"></path>
+                </svg>
+            </a>
+            <a th:if="${period.equals('month')}" th:href="@{/categories(p=${period}, y=${date.getYear()}, m=${date.getMonthValue() + 1})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"></path>
+                </svg>
+            </a>
+            <a th:if="${period.equals('year')}" th:href="@{/categories(p=${period}, y=${date.getYear() + 1})}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"></path>
+                </svg>
+            </a>
+
+        </div>
+    </div>
+
     <div class="category-type-navigation">
         <div class="category-type-block">
             <a class="category-type btn" href="/categories?t=expense">Expenses
@@ -60,11 +114,34 @@
 
                 <h1 th:text="${category.getName()}"></h1>
 
-                <h1 class="category__balance" th:if="${category.getBalance() == 0}" th:text="${amountFormatter.formatAmount(category.getBalance()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"></h1>
-                <h1 th:if="${category.getBalance() != 0}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}"
-                    th:text="${category.getBalance() + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
-                    th:style="${category.getCategoryType() == typeClass.INCOME ? 'color:#7cffb2' : 'color:#ff7c7c'}"
-                ></h1>
+                <div th:if="${period.equals('all-time')}">
+                    <h1 class="category__balance" th:if="${categoryService.getCategoryTotalByUser(category, user) == 0}" th:text="${amountFormatter.formatAmount(categoryService.getCategoryTotalByUser(category, user)) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"></h1>
+                    <h1 th:if="${categoryService.getCategoryTotalByUser(category, user) != 0}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}"
+                        th:text="${categoryService.getCategoryTotalByUser(category, user) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
+                        th:style="${category.getCategoryType() == typeClass.INCOME ? 'color:#7cffb2' : 'color:#ff7c7c'}"
+                    ></h1>
+                </div>
+                <div th:if="${period.equals('year')}">
+                    <h1 class="category__balance" th:if="${categoryService.getCategoryTotalByUserAndYear(category, user, date.getYear()) == 0}" th:text="${amountFormatter.formatAmount(categoryService.getCategoryTotalByUserAndYear(category, user, date.getYear())) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"></h1>
+                    <h1 th:if="${categoryService.getCategoryTotalByUserAndYear(category, user, date.getYear()) != 0}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}"
+                        th:text="${categoryService.getCategoryTotalByUserAndYear(category, user, date.getYear()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
+                        th:style="${category.getCategoryType() == typeClass.INCOME ? 'color:#7cffb2' : 'color:#ff7c7c'}"
+                    ></h1>
+                </div>
+                <div th:if="${period.equals('month')}">
+                    <h1 class="category__balance" th:if="${categoryService.getCategoryTotalByUserAndYearAndMonth(category, user, date.getYear(), date.getMonthValue()) == 0}" th:text="${amountFormatter.formatAmount(categoryService.getCategoryTotalByUserAndYearAndMonth(category, user, date.getYear(), date.getMonthValue())) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"></h1>
+                    <h1 th:if="${categoryService.getCategoryTotalByUserAndYearAndMonth(category, user, date.getYear(), date.getMonthValue()) != 0}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}"
+                        th:text="${categoryService.getCategoryTotalByUserAndYearAndMonth(category, user, date.getYear(), date.getMonthValue()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
+                        th:style="${category.getCategoryType() == typeClass.INCOME ? 'color:#7cffb2' : 'color:#ff7c7c'}"
+                    ></h1>
+                </div>
+                <div th:if="${period.equals('day')}">
+                    <h1 class="category__balance" th:if="${categoryService.getCategoryTotalByUserAndDate(category, user, date) == 0}" th:text="${amountFormatter.formatAmount(categoryService.getCategoryTotalByUserAndDate(category, user, date)) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"></h1>
+                    <h1 th:if="${categoryService.getCategoryTotalByUserAndDate(category, user, date) != 0}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}"
+                        th:text="${categoryService.getCategoryTotalByUserAndDate(category, user, date) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
+                        th:style="${category.getCategoryType() == typeClass.INCOME ? 'color:#7cffb2' : 'color:#ff7c7c'}"
+                    ></h1>
+                </div>
 
             </div>
 

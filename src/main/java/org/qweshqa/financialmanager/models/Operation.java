@@ -33,6 +33,10 @@ public class Operation {
     @Column(name = "year")
     private int year = LocalDate.now().getYear();
 
+    @NotNull
+    @Column(name = "month")
+    private int month = LocalDate.now().getMonth().getValue();
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -48,13 +52,13 @@ public class Operation {
     public Operation() {
     }
 
-    public Operation(int id, float amount, String comment, LocalDate date, int year,
-                     User user, Account involvedAccount, Category category) {
+    public Operation(int id, float amount, String comment, LocalDate date, int year, int month, User user, Account involvedAccount, Category category) {
         this.id = id;
         this.amount = amount;
         this.comment = comment;
         this.date = date;
         this.year = year;
+        this.month = month;
         this.user = user;
         this.involvedAccount = involvedAccount;
         this.category = category;
@@ -94,6 +98,14 @@ public class Operation {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public @NotNull int getMonth() {
+        return month;
+    }
+
+    public void setMonth(@NotNull int month) {
+        this.month = month;
     }
 
     public User getUser() {
