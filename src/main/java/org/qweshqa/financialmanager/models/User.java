@@ -3,8 +3,10 @@ package org.qweshqa.financialmanager.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -21,9 +23,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Size(max = 50)
-    @Column(name = "user_display_name")
-    private String userDisplayName;
+    @NotNull
+    @Column(name = "register_date")
+    private LocalDate registerDate = LocalDate.now();
 
     @NotBlank(message = "Password field is required to fill")
     @Size(min = 8, message = "Password length must be at least 8")
@@ -39,9 +41,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Category> userCategories;
 
-    @Transient
-    private float balance;
-
     @OneToOne(mappedBy = "user")
     private Setting setting;
 
@@ -49,15 +48,13 @@ public class User {
 
     }
 
-    public User(int id, String email, String userDisplayName, String password, List<Operation> userOperations, List<Account> userAccounts, List<Category> userCategories, float balance, Setting setting) {
+    public User(int id, String email, String password, List<Operation> userOperations, List<Account> userAccounts, List<Category> userCategories, Setting setting) {
         this.id = id;
         this.email = email;
-        this.userDisplayName = userDisplayName;
         this.password = password;
         this.userOperations = userOperations;
         this.userAccounts = userAccounts;
         this.userCategories = userCategories;
-        this.balance = balance;
         this.setting = setting;
     }
 
@@ -77,12 +74,12 @@ public class User {
         this.email = email;
     }
 
-    public @Size(max = 50) String getUserDisplayName() {
-        return userDisplayName;
+    public @NotNull LocalDate getRegisterDate() {
+        return registerDate;
     }
 
-    public void setUserDisplayName(@Size(max = 50) String userDisplayName) {
-        this.userDisplayName = userDisplayName;
+    public void setRegisterDate(@NotNull LocalDate registerDate) {
+        this.registerDate = registerDate;
     }
 
     public @NotBlank(message = "Password field is required to fill") @Size(min = 8, message = "Password length must be at least 8") String getPassword() {
@@ -93,11 +90,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Operation> getUserFinances() {
+    public List<Operation> getUserOperations() {
         return userOperations;
     }
 
-    public void setUserFinances(List<Operation> userOperations) {
+    public void setUserOperations(List<Operation> userOperations) {
         this.userOperations = userOperations;
     }
 
@@ -117,15 +114,15 @@ public class User {
         this.userCategories = userCategories;
     }
 
-    public float getBalance() {
-        return (float) userAccounts.stream().mapToDouble(Account::getBalance).sum();
-    }
-
     public Setting getSetting() {
         return setting;
     }
 
     public void setSetting(Setting setting) {
         this.setting = setting;
+    }
+
+    public float getBalance() {
+        return (float) userAccounts.stream().mapToDouble(Account::getBalance).sum();
     }
 }

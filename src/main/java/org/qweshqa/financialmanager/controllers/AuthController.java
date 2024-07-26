@@ -86,8 +86,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/registration/setup", method = RequestMethod.POST)
-    public String performUserSetup(@RequestParam("currency") String currency,
-                                   @RequestParam(value = "display-name", defaultValue = "", required = false) String displayName) {
+    public String performUserSetup(@RequestParam("currency") String currency) {
 
         settingService.saveSettingSetup(new Setting(), userService.findUserById(user_id), currency);
 

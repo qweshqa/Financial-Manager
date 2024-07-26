@@ -28,8 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.awt.*;
 import java.io.IOException;
-import java.time.DateTimeException;
-import java.time.LocalDate;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -87,6 +86,7 @@ public class StatisticController {
                             "&d=" + dateWrapper.getDate().getDayOfMonth();
             }
         }
+        CategoryType categoryType = categoryTypeStringConverter.convert(type.toUpperCase());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(authentication.getName());
@@ -95,6 +95,8 @@ public class StatisticController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH);
 
         float cash_flow = 0.0f;
+        float total_value = 0.0f;
+
         switch(period){
             case "all-time":
                 cash_flow = categoryService.getCategoriesTotalByUserAndType(user, CategoryType.INCOME)
@@ -104,6 +106,12 @@ public class StatisticController {
 
                 model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndType(user, CategoryType.EXPENSE));
                 model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndType(user, CategoryType.INCOME));
+
+                total_value = categoryService.getCategoriesTotalByUserAndType(user, categoryType);
+                long userDaysAfterRegistration = user.getRegisterDate().datesUntil(LocalDate.now().plusDays(1)).count();
+
+                model.addAttribute("daily_average_value", total_value / userDaysAfterRegistration);
+
                 break;
 
             case "year":
@@ -118,6 +126,11 @@ public class StatisticController {
 
                 model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndYearAndType(user, date.getYear(), CategoryType.EXPENSE));
                 model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndYearAndType(user, date.getYear(), CategoryType.INCOME));
+
+                total_value = categoryService.getCategoriesTotalByUserAndYearAndType(user, date.getYear(), categoryType);
+                model.addAttribute("daily_average_value", total_value / date.lengthOfYear());
+                model.addAttribute("monthly_average_value", total_value / date.lengthOfMonth());
+
                 break;
 
             case "month":
@@ -135,6 +148,10 @@ public class StatisticController {
 
                 model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndYearAndMonthAndType(user, date.getYear(), date.getMonthValue(), CategoryType.EXPENSE));
                 model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndYearAndMonthAndType(user, date.getYear(), date.getMonthValue(), CategoryType.INCOME));
+
+                total_value = categoryService.getCategoriesTotalByUserAndYearAndMonthAndType(user, date.getYear(), date.getMonthValue(), categoryType);
+                model.addAttribute("daily_average_value", total_value / date.lengthOfMonth());
+
                 break;
 
             case "day":

@@ -118,7 +118,25 @@
         </div>
     </div>
 
-    <img class="statistic-chart" th:src="@{/statistics/generateChart(p=${period}, t=${type}, d=${date.getDayOfMonth()}, m=${date.getMonthValue()}, y=${date.getYear()})}">
+    <div class="statistic-chart">
+        <img th:src="@{/statistics/generateChart(p=${period}, t=${type}, d=${date.getDayOfMonth()}, m=${date.getMonthValue()}, y=${date.getYear()})}">
+    </div>
+
+    <div class="average-values">
+        <h1 class="average-values__header" style="text-align: center;">Average values</h1>
+        <h1 th:if="${daily_average_value == null && monthly_average_value == null}" style="text-align: center">
+            None</h1>
+
+        <h1 class="average-value" th:if="${daily_average_value != null}">
+            <span>Day</span>
+            <span th:text="${amountFormatter.formatAmount(daily_average_value) + ' ' + settings.getCurrencyUnit() + '.'}"></span>
+        </h1>
+
+        <h1 class="average-value" th:if="${monthly_average_value != null}">
+            <span>Month</span>
+            <span th:text="${amountFormatter.formatAmount(monthly_average_value) + ' ' + settings.getCurrencyUnit() + '.'}"></span>
+        </h1>
+    </div>
 
 </div>
 

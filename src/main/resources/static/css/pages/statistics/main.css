@@ -19,12 +19,27 @@
     background-color: #0000003b;
 }
 .statistic-chart{
-    position: relative;
-    left: 100px;
-    top: 70px;
+    text-align: center;
 
+    margin-top: 70px;
+}
+.statistic-chart img{
     width: 960px;
     height: 600px;
 
     border-radius: 10px;
+}
+.average-values{
+    font-size: 12px;
+
+    border-radius: 10px;
+
+    padding: 10px;
+    margin: 40px 100px;
+
+    background-color: #0000003b;
+}
+.average-value{
+    display: flex;
+    justify-content: space-between;
 }
