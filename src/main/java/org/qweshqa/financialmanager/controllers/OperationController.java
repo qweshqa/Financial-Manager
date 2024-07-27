@@ -156,6 +156,7 @@ public class OperationController {
         User user = userService.findUserByEmail(authentication.getName());
         operation.setUser(user);
 
+        operationService.prepareForSave(operation);
         operationService.save(operation);
 
         return "redirect:/operations";
@@ -190,6 +191,7 @@ public class OperationController {
         operation.setUser(operationToUpdate.getUser());
         operation.setCategory(operationToUpdate.getCategory());
 
+        operationService.prepareForUpdate(operationToUpdate, operation);
         operationService.update(operationToUpdate, operation);
 
         return "redirect:/operations";
@@ -200,6 +202,7 @@ public class OperationController {
 
         Operation operation = operationService.findById(id);
 
+        operationService.prepareForDelete(operation);
         operationService.delete(operation);
 
         return "redirect:/operations";

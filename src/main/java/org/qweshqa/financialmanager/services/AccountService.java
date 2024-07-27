@@ -130,8 +130,8 @@ public class AccountService {
 
     @Transactional
     public void replenish(Account fromAccount, Account toAccount, float amount){
-        fromAccount.minusBalance(amount);
-        toAccount.plusBalance(amount);
+        fromAccount.setBalance(fromAccount.getBalance() - amount);
+        toAccount.setBalance(toAccount.getBalance() + amount);
     }
 
     @Transactional
@@ -144,11 +144,13 @@ public class AccountService {
         operation.setAmount(amount);
         operation.setComment("");
 
+        Account account = operation.getInvolvedAccount();
+
         if(operation.getCategory().getCategoryType() == CategoryType.EXPENSE){
-            operation.getInvolvedAccount().minusBalance(operation.getAmount());
+            account.setBalance(account.getBalance() - amount);
         }
         else{
-            operation.getInvolvedAccount().plusBalance(operation.getAmount());
+            account.setBalance(account.getBalance() + amount);
         }
 
         operationRepository.save(operation);

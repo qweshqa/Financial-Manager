@@ -93,14 +93,6 @@ public class Account {
         this.balance = balance;
     }
 
-    public void plusBalance(float amount) {
-        this.balance += amount;
-    }
-
-    public void minusBalance(float amount) {
-        this.balance -= amount;
-    }
-
     public boolean isArchived() {
         return archived;
     }
