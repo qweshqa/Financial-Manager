@@ -138,6 +138,37 @@
         </h1>
     </div>
 
+    <div style="margin: 0 100px;">
+        <div class="category-percent-of-cash-flow" th:each="category: ${categories}">
+            <h1 th:text="${category.getName()}"></h1>
+
+            <div th:if="${period.equals('day')}">
+                <h1 th:text="${amountFormatter.formatAmount(categoryService.getCategoryTotalByUserAndDate(category, user, date)) + ' ' + settings.getCurrencyUnit() + ' | ' +
+                categoryService.getCategoryTotalByUserAndDate(category, user, date) / cash_flow * 100 + '%'}"></h1>
+
+                <div class="cash-flow-percent-line" th:style="${'width:' + categoryService.getCategoryTotalByUser(category, user) / cash_flow * 100 + '%;' + 'background-color:' + (type.equals('income') ? '#7cffb2;' : '#ff7c7c;')}"></div>
+            </div>
+            <div th:if="${period.equals('month')}">
+                <h1 th:text="${amountFormatter.formatAmount(categoryService.getCategoryTotalByUserAndYearAndMonth(category, user, date.getYear(), date.getMonthValue())) + ' ' + settings.getCurrencyUnit() + ' | ' +
+                categoryService.getCategoryTotalByUserAndYearAndMonth(category, user, date.getYear(), date.getMonthValue()) / cash_flow * 100 + '%'}"></h1>
+
+                <div class="cash-flow-percent-line" th:style="${'width:' + categoryService.getCategoryTotalByUser(category, user) / cash_flow * 100 + '%;' + 'background-color:' + (type.equals('income') ? '#7cffb2;' : '#ff7c7c;')}"></div>
+            </div>
+            <div th:if="${period.equals('year')}">
+                <h1 th:text="${amountFormatter.formatAmount(categoryService.getCategoryTotalByUserAndYear(category, user, date.getYear())) + ' ' + settings.getCurrencyUnit() + ' | ' +
+                categoryService.getCategoryTotalByUser(category, user) / cash_flow * 100 + '%'}"></h1>
+
+                <div class="cash-flow-percent-line" th:style="${'width:' + categoryService.getCategoryTotalByUserAndYear(category, user, date.getYear()) / cash_flow * 100 + '%;' + 'background-color:' + (type.equals('income') ? '#7cffb2;' : '#ff7c7c;')}"></div>
+            </div>
+            <div th:if="${period.equals('all-time')}">
+                <h1 th:text="${amountFormatter.formatAmount(categoryService.getCategoryTotalByUser(category, user)) + ' ' + settings.getCurrencyUnit() + ' | ' +
+                categoryService.getCategoryTotalByUser(category, user) / cash_flow * 100 + '%'}"></h1>
+
+                <div class="cash-flow-percent-line" th:style="${'width:' + categoryService.getCategoryTotalByUser(category, user) / cash_flow * 100 + '%;' + 'background-color:' + (type.equals('income') ? '#7cffb2;' : '#ff7c7c;')}"></div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 </body>

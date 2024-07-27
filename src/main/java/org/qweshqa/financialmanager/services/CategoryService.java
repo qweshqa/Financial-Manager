@@ -45,6 +45,10 @@ public class CategoryService {
         return categoryRepository.findAllByUser(user);
     }
 
+    public List<Category> findAllByUserAndType(User user, CategoryType type){
+        return categoryRepository.findAllByUserAndCategoryType(user, type);
+    }
+
     public List<Category> findAllByUserAndArchivedAndType(User user, boolean archived, CategoryType type){
         return categoryRepository.findAllByUserAndArchivedAndCategoryType(user, archived, type);
     }
@@ -70,22 +74,22 @@ public class CategoryService {
                 .stream().mapToDouble(Operation::getAmount).sum();
     }
 
-    public float getCategoryTotalByUser(Category category, User user){
+    public Float getCategoryTotalByUser(Category category, User user){
         return (float) operationRepository.findAllByCategoryAndUser(category, user)
                 .stream().mapToDouble(Operation::getAmount).sum();
     }
 
-    public float getCategoryTotalByUserAndYear(Category category, User user, int year){
+    public Float getCategoryTotalByUserAndYear(Category category, User user, int year){
         return (float) operationRepository.findAllByYearAndUserAndCategory(year, user, category)
                 .stream().mapToDouble(Operation::getAmount).sum();
     }
 
-    public float getCategoryTotalByUserAndYearAndMonth(Category category, User user, int year, int month){
+    public Float getCategoryTotalByUserAndYearAndMonth(Category category, User user, int year, int month){
         return (float) operationRepository.findAllByYearAndMonthAndUserAndCategory(year, month, user, category)
                 .stream().mapToDouble(Operation::getAmount).sum();
     }
 
-    public float getCategoryTotalByUserAndDate(Category category, User user, LocalDate date){
+    public Float getCategoryTotalByUserAndDate(Category category, User user, LocalDate date){
         return (float) operationRepository.findAllByDateAndUserAndCategory(date, user, category)
                 .stream().mapToDouble(Operation::getAmount).sum();
     }

@@ -12,7 +12,6 @@ import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.services.CategoryService;
 import org.qweshqa.financialmanager.services.OperationService;
-import org.qweshqa.financialmanager.services.StatisticService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
 import org.qweshqa.financialmanager.utils.DateWrapper;
@@ -46,6 +45,7 @@ public class StatisticController {
     private final CategoryService categoryService;
 
     private final AmountFormatter amountFormatter;
+
     private final CategoryTypeStringConverter categoryTypeStringConverter;
 
     public StatisticController(OperationService operationService, UserService userService, CategoryService categoryService, AmountFormatter amountFormatter, CategoryTypeStringConverter categoryTypeStringConverter) {
@@ -112,6 +112,11 @@ public class StatisticController {
 
                 model.addAttribute("daily_average_value", total_value / userDaysAfterRegistration);
 
+                model.addAttribute("categories", categoryService.findAllByUserAndType(user, categoryType)
+                        .stream().sorted((category1, category2)
+                                -> categoryService.getCategoryTotalByUser(category1, user)
+                                .compareTo(categoryService.getCategoryTotalByUser(category2, user))).toList());
+
                 break;
 
             case "year":
@@ -130,6 +135,12 @@ public class StatisticController {
                 total_value = categoryService.getCategoriesTotalByUserAndYearAndType(user, date.getYear(), categoryType);
                 model.addAttribute("daily_average_value", total_value / date.lengthOfYear());
                 model.addAttribute("monthly_average_value", total_value / date.lengthOfMonth());
+
+                int yearValue = date.getYear();
+                model.addAttribute("categories", categoryService.findAllByUserAndType(user, categoryType)
+                        .stream().sorted((category1, category2)
+                                -> categoryService.getCategoryTotalByUserAndYear(category1, user, yearValue)
+                                .compareTo(categoryService.getCategoryTotalByUserAndYear(category2, user, yearValue))).toList());
 
                 break;
 
@@ -152,6 +163,13 @@ public class StatisticController {
                 total_value = categoryService.getCategoriesTotalByUserAndYearAndMonthAndType(user, date.getYear(), date.getMonthValue(), categoryType);
                 model.addAttribute("daily_average_value", total_value / date.lengthOfMonth());
 
+                yearValue = date.getYear();
+                int monthValue = date.getMonthValue();
+                model.addAttribute("categories", categoryService.findAllByUserAndType(user, categoryType)
+                        .stream().sorted((category1, category2)
+                                -> categoryService.getCategoryTotalByUserAndYearAndMonth(category1, user, yearValue, monthValue)
+                                .compareTo(categoryService.getCategoryTotalByUserAndYear(category2, user, yearValue))).toList());
+
                 break;
 
             case "day":
@@ -172,6 +190,13 @@ public class StatisticController {
 
                 model.addAttribute("expense_total", categoryService.getCategoriesTotalByUserAndDateAndType(user, date, CategoryType.EXPENSE));
                 model.addAttribute("income_total", categoryService.getCategoriesTotalByUserAndDateAndType(user, date, CategoryType.INCOME));
+
+                LocalDate dateCopy = date;
+                model.addAttribute("categories", categoryService.findAllByUserAndType(user, categoryType)
+                        .stream().sorted((category1, category2)
+                                -> categoryService.getCategoryTotalByUserAndDate(category1, user, dateCopy)
+                                .compareTo(categoryService.getCategoryTotalByUserAndDate(category2, user, dateCopy))).toList());
+
                 break;
 
         }
@@ -179,6 +204,8 @@ public class StatisticController {
         model.addAttribute("cash_flow", cash_flow);
 
         model.addAttribute("type", type);
+
+        model.addAttribute("categoryService", categoryService);
 
         model.addAttribute("user", user);
         model.addAttribute("settings", user.getSetting());
@@ -192,7 +219,7 @@ public class StatisticController {
     }
 
     @RequestMapping(value = "/generateChart", method = RequestMethod.GET)
-    public void generateChart(@RequestParam("p") String period, @RequestParam("t") String type,
+    public void generateAverageValuesChart(@RequestParam("p") String period, @RequestParam("t") String type,
                               @RequestParam(value = "d", defaultValue = "") String day,
                               @RequestParam(value = "m", defaultValue = "") String month,
                               @RequestParam(value = "y", defaultValue = "") String year,

@@ -43,3 +43,20 @@
     display: flex;
     justify-content: space-between;
 }
+.category-percent-of-cash-flow{
+    font-size: 12px;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background-color: #0000003b;
+}
+.category-percent-of-cash-flow h1{
+    margin-bottom: 2px;
+}
+.cash-flow-percent-line{
+    height: 10px;
+
+    border-radius: 15px;
+}

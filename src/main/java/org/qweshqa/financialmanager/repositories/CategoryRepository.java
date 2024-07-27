@@ -11,5 +11,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     List<Category> findAllByUser(User user);
 
+    List<Category> findAllByUserAndCategoryType(User user, CategoryType type);
+
     List<Category> findAllByUserAndArchivedAndCategoryType(User user, boolean archived, CategoryType type);
 }
