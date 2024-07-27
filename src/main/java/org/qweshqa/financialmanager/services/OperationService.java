@@ -166,11 +166,9 @@ public class OperationService {
 
         if(operation.getCategory().getCategoryType() == CategoryType.EXPENSE){
             operation.getInvolvedAccount().minusBalance(operation.getAmount());
-            operation.getCategory().minusBalance(operation.getAmount());
         }
         else{
             operation.getInvolvedAccount().plusBalance(operation.getAmount());
-            operation.getCategory().plusBalance(operation.getAmount());
         }
         operationRepository.save(operation);
     }
@@ -182,16 +180,10 @@ public class OperationService {
         if(updatedOperation.getCategory().getCategoryType() == CategoryType.INCOME){
             operationToUpdate.getInvolvedAccount().minusBalance(operationToUpdate.getAmount());
             updatedOperation.getInvolvedAccount().plusBalance(updatedOperation.getAmount());
-
-            operationToUpdate.getCategory().minusBalance(operationToUpdate.getAmount());
-            updatedOperation.getCategory().plusBalance(updatedOperation.getAmount());
         }
         else{
             operationToUpdate.getInvolvedAccount().plusBalance(operationToUpdate.getAmount());
             updatedOperation.getInvolvedAccount().minusBalance(updatedOperation.getAmount());
-
-            operationToUpdate.getCategory().plusBalance(operationToUpdate.getAmount());
-            updatedOperation.getCategory().minusBalance(updatedOperation.getAmount());
         }
 
         operationRepository.save(updatedOperation);
@@ -201,11 +193,9 @@ public class OperationService {
     public void delete(Operation operation){
         if(operation.getCategory().getCategoryType() == CategoryType.INCOME){
             operation.getInvolvedAccount().minusBalance(operation.getAmount());
-            operation.getCategory().minusBalance(operation.getAmount());
         }
         else{
             operation.getInvolvedAccount().plusBalance(operation.getAmount());
-            operation.getCategory().plusBalance(operation.getAmount());
         }
 
         operationRepository.deleteById(operation.getId());

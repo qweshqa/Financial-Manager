@@ -7,6 +7,7 @@ import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.AccountRepository;
 import org.qweshqa.financialmanager.repositories.OperationRepository;
 import org.qweshqa.financialmanager.utils.enums.AccountType;
+import org.qweshqa.financialmanager.utils.enums.CategoryType;
 import org.qweshqa.financialmanager.utils.exceptions.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,9 +135,23 @@ public class AccountService {
     }
 
     @Transactional
-    public void replenish(Category fromCategory, Account toAccount, float amount){
-        fromCategory.minusBalance(amount);
-        toAccount.plusBalance(amount);
+    public void replenish(Category fromCategory, Account toAccount, float amount, User user){
+        Operation operation = new Operation();
+
+        operation.setCategory(fromCategory);
+        operation.setInvolvedAccount(toAccount);
+        operation.setUser(user);
+        operation.setAmount(amount);
+        operation.setComment("");
+
+        if(operation.getCategory().getCategoryType() == CategoryType.EXPENSE){
+            operation.getInvolvedAccount().minusBalance(operation.getAmount());
+        }
+        else{
+            operation.getInvolvedAccount().plusBalance(operation.getAmount());
+        }
+
+        operationRepository.save(operation);
     }
 
     @Transactional

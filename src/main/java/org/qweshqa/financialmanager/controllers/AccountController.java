@@ -294,6 +294,9 @@ public class AccountController {
 
     @RequestMapping(value = "/replenish/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
     public String replenishAccount(@PathVariable("id") int id, @RequestParam("using") String using, @RequestParam("f") int fromObjectId, @RequestParam("amount") float amount){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName());
+
         Account toAccount = accountService.findById(id);
         switch(using){
             case "account":
@@ -303,7 +306,7 @@ public class AccountController {
 
             case "category":
                 Category fromCategory = categoryService.findById(fromObjectId);
-                accountService.replenish(fromCategory, toAccount, amount);
+                accountService.replenish(fromCategory, toAccount, amount, user);
                 break;
         }
 

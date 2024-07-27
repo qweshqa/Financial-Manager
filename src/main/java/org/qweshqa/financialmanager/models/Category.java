@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.ColumnDefault;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -20,10 +21,6 @@ public class Category {
     @NotBlank(message = "This field shouldn't be blank")
     @Column(name = "name")
     private String name;
-
-    @NotNull
-    @Column(name = "balance")
-    private float balance = 0;
 
     @NotNull
     @ColumnDefault("false")
@@ -45,10 +42,9 @@ public class Category {
     public Category() {
     }
 
-    public Category(int id, String name, float balance, List<Operation> operationList, User user) {
+    public Category(int id, String name, List<Operation> operationList, User user) {
         this.id = id;
         this.name = name;
-        this.balance = balance;
         this.operationList = operationList;
         this.user = user;
     }
@@ -69,18 +65,11 @@ public class Category {
         this.name = name;
     }
 
-    @NotNull
     public float getBalance() {
-        return balance;
+        return (float) operationList.stream()
+                .filter(operation -> operation.getDate().isBefore(LocalDate.now()) || operation.getDate().isEqual(LocalDate.now()))
+                .mapToDouble(Operation::getAmount).sum();
     }
-
-    public void setBalance(@NotNull float balance) {
-        this.balance = balance;
-    }
-
-    public void plusBalance(float amount){ this.balance += amount; }
-
-    public void minusBalance(float amount){ this.balance -= amount; }
 
     @NotNull
     public boolean isArchived() {

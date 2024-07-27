@@ -52,15 +52,6 @@
             </div>
             <br th:if="${#fields.hasErrors('name')}"/>
 
-            <label for="category__balance">Balance</label>
-            <br/>
-            <input class="field field--add-width" type="text" id="category__balance" th:field="*{balance}"/>
-            <br/>
-            <div class="error-block" th:if="${#fields.hasErrors('balance')}">
-                <h1 th:errors="*{balance}"></h1>
-            </div>
-            <br th:if="${#fields.hasErrors('balance')}"/>
-
             <label for="category__type">Type</label>
             <br/>
             <select class="field select-field--add-width" id="category__type" th:field="*{categoryType}" th:with="typeClass=${T(org.qweshqa.financialmanager.utils.enums.CategoryType)}">
