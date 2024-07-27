@@ -108,6 +108,10 @@ public class Operation {
         this.month = month;
     }
 
+    public boolean isScheduled() {
+        return date.isAfter(LocalDate.now());
+    }
+
     public User getUser() {
         return user;
     }

@@ -39,6 +39,10 @@ public class OperationService {
         return operation.get();
     }
 
+    public List<Operation> findAll(){
+        return operationRepository.findAll();
+    }
+
 
     public List<Operation> findAllByUser(User user){
         return operationRepository.findAllByUser(user);

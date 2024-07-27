@@ -74,6 +74,39 @@
             </div>
             <br th:if="${#fields.hasErrors('comment')}"/>
 
+            <div class="date-select">
+                <div>
+                    <label for="year-select">Year</label>
+                    <br/>
+                    <select class="field" id="year-select" name="y">
+                        <option selected th:value="${now.getYear()}" th:text="${now.getYear()}"></option>
+                        <option th:each="year: ${years}" th:value="${year}" th:text="${year}"></option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="month-select">Month</label>
+                    <br/>
+                    <select class="field" id="month-select" name="m">
+                        <option selected th:value="${now.getMonthValue()}" th:text="${now.getMonthValue()}"></option>
+                        <option th:each="month: ${months}" th:value="${month}" th:text="${month}"></option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="day-select">Day</label>
+                    <br/>
+                    <select class="field" id="day-select" name="d">
+                        <option selected th:value="${now.getDayOfMonth()}" th:text="${now.getDayOfMonth()}"></option>
+                        <option th:each="day: ${days}" th:value="${day}" th:text="${day}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="error-block" th:if="${param.de}">
+                <h1>Selected date is invalid. Choose the future or today date</h1>
+            </div>
+            <br/>
+
             <button class="btn btn--basic" type="submit">Create</button>
 
         </form>

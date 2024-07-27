@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Controller
@@ -141,11 +144,44 @@ public class OperationController {
 
         model.addAttribute("userCategories", categoryService.findAllByUser(user));
 
+        List<Integer> years = new ArrayList<>();
+        for(int i = LocalDate.now().getYear(); i <= 2100; i++){
+            years.add(i);
+        }
+        List<Integer> months = new ArrayList<>();
+        for(int i = 1; i <= 12; i++){
+            months.add(i);
+        }
+        List<Integer> days = new ArrayList<>();
+        for(int i = 1; i <= 31; i++){
+            days.add(i);
+        }
+
+        model.addAttribute("years", years);
+        model.addAttribute("months", months);
+        model.addAttribute("days", days);
+
+        model.addAttribute("now", LocalDate.now());
         return "operations/create";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String createOperation(@ModelAttribute("new_operation") @Valid Operation operation, BindingResult bindingResult, Model model){
+    public String createOperation(@ModelAttribute("new_operation") @Valid Operation operation, BindingResult bindingResult,
+                                  @RequestParam("y") int year,
+                                  @RequestParam("m") int month,
+                                  @RequestParam("d") int day,
+                                  Model model){
+        LocalDate date;
+
+        try{
+            date = LocalDate.of(year, month, day);
+        } catch (DateTimeParseException e){
+            return "redirect:/operations/create?de";
+        }
+        if(date.isBefore(LocalDate.now())){
+            return "redirect:/operations/create?de";
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(bindingResult.hasErrors()){
@@ -155,8 +191,11 @@ public class OperationController {
 
         User user = userService.findUserByEmail(authentication.getName());
         operation.setUser(user);
+        operation.setDate(date);
 
-        operationService.prepareForSave(operation);
+        if(!operation.isScheduled()){
+            operationService.prepareForSave(operation);
+        }
         operationService.save(operation);
 
         return "redirect:/operations";
