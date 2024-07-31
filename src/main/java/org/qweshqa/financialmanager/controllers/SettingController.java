@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,8 +56,14 @@ public class SettingController {
 
     @RequestMapping(value = "/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
     public String saveCurrencySettings(@PathVariable("id") int id,
-                                       @ModelAttribute("settings") Setting setting){
-        settingService.updateCurrencySetup(id, setting);
+                                       @ModelAttribute("settings") Setting updatedSettings) throws IOException, InterruptedException {
+        Setting settingsToUpdate = settingService.findById(id);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName());
+        settingService.convertAmountsToNewCurrency(user, settingsToUpdate, updatedSettings.getCurrencyUnit());
+
+        settingService.changeCurrencyUnit(settingsToUpdate, updatedSettings);
 
         return "redirect:/settings/currency?success";
     }
