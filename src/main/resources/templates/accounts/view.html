@@ -51,8 +51,15 @@
             <h1 class="account__name" th:text="${account.getName()}"></h1>
 
             <h1 style="font-size: 16px; text-align: center">Current balance</h1>
-            <h1 class="account__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + user.getSetting().getCurrencyUnit() + '.'}"
-            th:style="${account.getBalance() > 0 ? 'color: #7cffb2;' : 'color:#ff7c7c'}"></h1>
+            <h1 th:if="${account.getBalance() != 0}" class="account-item__balance" th:style="${account.getBalance() < 0 ? 'color:#ff7c7c;' : 'color:#7cffb2'}">
+                <span th:text="${amountFormatter.formatAmount(accountService.getAccountBalanceWithAccountCurrency(account, currency)) + ' ' + account.getCurrency() + '.'}"></span>
+                <span th:if="${!currency.equals(account.getCurrency())}" th:text="${'(' + amountFormatter.formatAmount(accountService.getAccountBalanceWithBasicCurrency(account, currency)) + ' ' + currency + ')'}"></span>
+            </h1>
+
+            <h1 th:if="${account.getBalance() == 0}" class="account-item__balance">
+                <span th:text="${amountFormatter.formatAmount(accountService.getAccountBalanceWithAccountCurrency(account, currency)) + ' ' + account.getCurrency() + '.'}"></span>
+                <span th:if="${!currency.equals(account.getCurrency())}" th:text="${'(' + amountFormatter.formatAmount(accountService.getAccountBalanceWithBasicCurrency(account, currency)) + ' ' + currency + ')'}"></span>
+            </h1>
 
             <h1 class="account__description" th:text="${account.getDescription()}" th:title="${account.getDescription()}"></h1>
 

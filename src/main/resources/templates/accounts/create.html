@@ -51,6 +51,15 @@
             </div>
             <br th:if="${#fields.hasErrors('name')}"/>
 
+            <label for="new-account__currency">Currency</label>
+            <br/>
+            <select class="field select-field--add-width" id="new-account__currency" th:field="*{currency}">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="RUB">RUB</option>
+            </select>
+            <br/>
+
             <label for="new-account__description">Description</label>
             <br/>
             <input class="field field--add-width" type="text" id="new-account__description" th:field="*{description}"/>

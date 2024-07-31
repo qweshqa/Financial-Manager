@@ -104,6 +104,7 @@ public class AccountController {
         model.addAttribute("user", user);
         model.addAttribute("amountFormatter", amountFormatter);
         model.addAttribute("settings", user.getSetting());
+        model.addAttribute("currency", user.getSetting().getCurrencyUnit());
 
         LocalDate date = dateWrapper.getDate();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH);
@@ -156,6 +157,8 @@ public class AccountController {
 
         model.addAttribute("date", date);
 
+        model.addAttribute("accountService", accountService);
+
         return "/accounts/view";
     }
 
@@ -174,6 +177,8 @@ public class AccountController {
         model.addAttribute("financialAccounts", financialAccounts);
         model.addAttribute("savingsAccounts", savingsAccounts);
 
+        model.addAttribute("accountService", accountService);
+
         return "accounts/list";
     }
 
@@ -189,6 +194,8 @@ public class AccountController {
         List<Account> archivedAccounts = accountService.findAllByUserAndArchive(user, true);
 
         model.addAttribute("archivedAccounts", archivedAccounts);
+
+        model.addAttribute("accountService", accountService);
 
         return "accounts/archivedList";
     }

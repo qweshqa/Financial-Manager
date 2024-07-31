@@ -1,11 +1,14 @@
 package org.qweshqa.financialmanager.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.qweshqa.financialmanager.models.Account;
 import org.qweshqa.financialmanager.models.Category;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.AccountRepository;
 import org.qweshqa.financialmanager.repositories.OperationRepository;
+import org.qweshqa.financialmanager.utils.RequestSender;
 import org.qweshqa.financialmanager.utils.enums.AccountType;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
 import org.qweshqa.financialmanager.utils.exceptions.AccountNotFoundException;
@@ -13,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +31,13 @@ public class AccountService {
 
     private final OperationRepository operationRepository;
 
+    private final RequestSender requestSender;
+
     @Autowired
-    public AccountService(AccountRepository accountRepository, OperationRepository operationRepository) {
+    public AccountService(AccountRepository accountRepository, OperationRepository operationRepository, RequestSender requestSender) {
         this.accountRepository = accountRepository;
         this.operationRepository = operationRepository;
+        this.requestSender = requestSender;
     }
 
     public Account findById(int id){
@@ -75,6 +83,30 @@ public class AccountService {
 
     public List<Operation> findAllOperationsByUserAndYear(Account account, User user, int year){
         return operationRepository.findAllByYearAndUserAndInvolvedAccount(year, user, account);
+    }
+
+    public float getAccountBalanceWithBasicCurrency(Account account, String basicCurrencyUnit) throws IOException, InterruptedException {
+        HttpResponse<String> reverseResponse = requestSender.sendCurrencyConvertRequest(account.getCurrency(), basicCurrencyUnit);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode reverseNode = objectMapper.readTree(reverseResponse.body());
+
+        float defaultBalance = account.getBalance() * (float) reverseNode.get("data").get(basicCurrencyUnit).asDouble();
+
+        HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(basicCurrencyUnit, account.getCurrency());
+
+        JsonNode node = objectMapper.readTree(response.body());
+
+        return defaultBalance * (float) node.get("data").get(account.getCurrency()).asDouble();
+    }
+
+    public float getAccountBalanceWithAccountCurrency(Account account, String basicCurrencyUnit) throws IOException, InterruptedException {
+        HttpResponse<String> reverseResponse = requestSender.sendCurrencyConvertRequest(basicCurrencyUnit, account.getCurrency());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode reverseNode = objectMapper.readTree(reverseResponse.body());
+
+        return account.getBalance() * (float) reverseNode.get("data").get(account.getCurrency()).asDouble();
     }
 
     @Transactional

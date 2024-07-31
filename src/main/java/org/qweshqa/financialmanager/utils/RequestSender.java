@@ -20,7 +20,7 @@ public class RequestSender {
         this.accessToken = accessToken;
     }
 
-    public HttpResponse<String> sendCurrencyConvertRequest(String from, String to, float amount) throws IOException, InterruptedException {
+    public HttpResponse<String> sendCurrencyConvertRequest(String from, String to) throws IOException, InterruptedException {
         String requestUrl = "https://api.freecurrencyapi.com/v1/latest";
         String requestBody = "apikey=" + accessToken +
                 "&base_currency=" + from +

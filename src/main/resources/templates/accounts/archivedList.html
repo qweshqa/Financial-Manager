@@ -53,11 +53,15 @@
                     <div class="account-item" th:style="${account.getDescription().isEmpty() ? 'height:50px;' : 'height:60px'}">
                         <h1 class="account-item__name" th:text="${account.getName()}"></h1>
 
-                        <h1 th:if="${account.getBalance() < 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
-                            style="color:#ff7c7c;"></h1>
-                        <h1 th:if="${account.getBalance() > 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"
-                            style="color:#7cffb2"></h1>
-                        <h1 th:if="${account.getBalance() == 0}" class="account-item__balance" th:text="${amountFormatter.formatAmount(account.getBalance()) + ' ' + currency + '.'}"></h1>
+                        <h1 th:if="${account.getBalance() != 0}" class="account-item__balance" th:style="${account.getBalance() < 0 ? 'color:#ff7c7c;' : 'color:#7cffb2'}">
+                            <span th:text="${amountFormatter.formatAmount(accountService.getAccountBalanceWithAccountCurrency(account, currency)) + ' ' + account.getCurrency() + '.'}"></span>
+                            <span th:if="${!currency.equals(account.getCurrency())}" th:text="${'(' + amountFormatter.formatAmount(accountService.getAccountBalanceWithBasicCurrency(account, currency)) + ' ' + currency + ')'}"></span>
+                        </h1>
+
+                        <h1 th:if="${account.getBalance() == 0}" class="account-item__balance">
+                            <span th:text="${amountFormatter.formatAmount(accountService.getAccountBalanceWithAccountCurrency(account, currency)) + ' ' + account.getCurrency() + '.'}"></span>
+                            <span th:if="${!currency.equals(account.getCurrency())}" th:text="${'(' + amountFormatter.formatAmount(accountService.getAccountBalanceWithBasicCurrency(account, currency)) + ' ' + currency + ')'}"></span>
+                        </h1>
 
                         <h1 class="account-item__description" style="font-size:16px;" th:text="${account.getDescription()}"></h1>
                     </div>

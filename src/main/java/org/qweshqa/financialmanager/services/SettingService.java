@@ -61,7 +61,7 @@ public class SettingService {
         List<Operation> operations = user.getUserOperations();
 
         for (Operation operation : operations) {
-            HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(setting.getCurrencyUnit(), newCurrencyUnit, operation.getAmount());
+            HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(setting.getCurrencyUnit(), newCurrencyUnit);
 
             if(response.statusCode() == 200){
                 ObjectMapper objectMapper = new ObjectMapper();
@@ -74,7 +74,7 @@ public class SettingService {
         List<Account> accounts = user.getUserAccounts();
 
         for(Account account: accounts){
-            HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(setting.getCurrencyUnit(), newCurrencyUnit, account.getBalance());
+            HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(setting.getCurrencyUnit(), newCurrencyUnit);
 
             if(response.statusCode() == 200){
                 ObjectMapper objectMapper = new ObjectMapper();

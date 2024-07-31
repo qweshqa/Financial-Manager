@@ -1,16 +1,22 @@
 package org.qweshqa.financialmanager.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.qweshqa.financialmanager.models.Account;
 import org.qweshqa.financialmanager.models.Operation;
+import org.qweshqa.financialmanager.models.Setting;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.OperationRepository;
 import org.qweshqa.financialmanager.utils.DateWrapper;
+import org.qweshqa.financialmanager.utils.RequestSender;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
 import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -23,10 +29,12 @@ import java.util.Optional;
 public class OperationService {
 
     private final OperationRepository operationRepository;
+    private final RequestSender requestSender;
 
     @Autowired
-    public OperationService(OperationRepository operationRepository) {
+    public OperationService(OperationRepository operationRepository, RequestSender requestSender) {
         this.operationRepository = operationRepository;
+        this.requestSender = requestSender;
     }
 
     public Operation findById(int id){
@@ -167,14 +175,19 @@ public class OperationService {
     }
 
     @Transactional
-    public void prepareForSave(Operation operation){
+    public void prepareForSave(Operation operation) throws IOException, InterruptedException{
         Account account = operation.getInvolvedAccount();
+        HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(account.getCurrency(), operation.getUser().getSetting().getCurrencyUnit());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode node = objectMapper.readTree(response.body());
+        float currencyValue = (float) node.get("data").get(operation.getUser().getSetting().getCurrencyUnit()).asDouble();
 
         if(operation.getCategory().getCategoryType() == CategoryType.EXPENSE){
-            account.setBalance(account.getBalance() - operation.getAmount());
+            account.setBalance(account.getBalance() - ( operation.getAmount() * currencyValue));
         }
         else{
-            account.setBalance(account.getBalance() + operation.getAmount());
+            account.setBalance(account.getBalance() + ( operation.getAmount() * currencyValue));
         }
     }
 
@@ -184,14 +197,19 @@ public class OperationService {
     }
 
     @Transactional
-    public void prepareForUpdate(Operation operationToUpdate, Operation updatedOperation){
+    public void prepareForUpdate(Operation operationToUpdate, Operation updatedOperation) throws IOException, InterruptedException{
         Account account = updatedOperation.getInvolvedAccount();
+        HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(account.getCurrency(), operationToUpdate.getUser().getSetting().getCurrencyUnit());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode node = objectMapper.readTree(response.body());
+        float currencyValue = (float) node.get("data").get(operationToUpdate.getUser().getSetting().getCurrencyUnit()).asDouble();
 
         if(updatedOperation.getCategory().getCategoryType() == CategoryType.INCOME){
-            account.setBalance(account.getBalance() - operationToUpdate.getAmount() + updatedOperation.getAmount());
+            account.setBalance(account.getBalance() - (operationToUpdate.getAmount() * currencyValue) + (updatedOperation.getAmount() * currencyValue));
         }
         else{
-            account.setBalance(account.getBalance() + operationToUpdate.getAmount() - updatedOperation.getAmount());
+            account.setBalance(account.getBalance() + (operationToUpdate.getAmount() * currencyValue) - (updatedOperation.getAmount() * currencyValue));
         }
     }
 
@@ -203,14 +221,19 @@ public class OperationService {
     }
 
     @Transactional
-    public void prepareForDelete(Operation operation){
+    public void prepareForDelete(Operation operation) throws IOException, InterruptedException{
         Account account = operation.getInvolvedAccount();
+        HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(account.getCurrency(), operation.getUser().getSetting().getCurrencyUnit());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode node = objectMapper.readTree(response.body());
+        float currencyValue = (float) node.get("data").get(operation.getUser().getSetting().getCurrencyUnit()).asDouble();
 
         if(operation.getCategory().getCategoryType() == CategoryType.INCOME){
-            account.setBalance(account.getBalance() - operation.getAmount());
+            account.setBalance(account.getBalance() - ( operation.getAmount() * currencyValue));
         }
         else{
-            account.setBalance(account.getBalance() + operation.getAmount());
+            account.setBalance(account.getBalance() + ( operation.getAmount() * currencyValue));
         }
     }
 

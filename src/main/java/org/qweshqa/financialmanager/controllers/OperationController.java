@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -170,7 +171,7 @@ public class OperationController {
                                   @RequestParam("y") int year,
                                   @RequestParam("m") int month,
                                   @RequestParam("d") int day,
-                                  Model model){
+                                  Model model) throws IOException, InterruptedException{
         LocalDate date;
 
         try{
@@ -219,7 +220,7 @@ public class OperationController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
-    public String editOperation(@PathVariable("id") int id, @ModelAttribute("operation") @Valid Operation operation, BindingResult bindingResult){
+    public String editOperation(@PathVariable("id") int id, @ModelAttribute("operation") @Valid Operation operation, BindingResult bindingResult) throws IOException, InterruptedException{
 
         if(bindingResult.hasErrors()){
             return "/operations/edit";
@@ -237,7 +238,7 @@ public class OperationController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
-    public String deleteOperation(@PathVariable("id") int id){
+    public String deleteOperation(@PathVariable("id") int id) throws IOException, InterruptedException{
 
         Operation operation = operationService.findById(id);
 

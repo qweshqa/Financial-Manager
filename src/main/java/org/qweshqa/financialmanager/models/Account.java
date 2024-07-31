@@ -33,6 +33,10 @@ public class Account {
     private float balance = 0;
 
     @NotNull
+    @Column(name = "currency")
+    private String currency;
+
+    @NotNull
     @Column(name = "archived")
     private boolean archived = false;
 
@@ -50,11 +54,12 @@ public class Account {
     public Account() {
     }
 
-    public Account(int id, String name, String description, float balance, boolean archived, User owner, AccountType type, List<Operation> accountLinkedOperations) {
+    public Account(int id, String name, String description, float balance, String currency, boolean archived, User owner, AccountType type, List<Operation> accountLinkedOperations) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.balance = balance;
+        this.currency = currency;
         this.archived = archived;
         this.owner = owner;
         this.type = type;
@@ -91,6 +96,14 @@ public class Account {
 
     public void setBalance(@NotNull float balance){
         this.balance = balance;
+    }
+
+    public @NotNull String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(@NotNull String currency) {
+        this.currency = currency;
     }
 
     public boolean isArchived() {
