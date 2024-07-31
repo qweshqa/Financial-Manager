@@ -77,41 +77,6 @@ public class AccountService {
         return operationRepository.findAllByYearAndUserAndInvolvedAccount(year, user, account);
     }
 
-
-    @Transactional
-    public List<Account> createAccountsSetsByDefault(User owner){
-        List<Account> accounts = new ArrayList<>();
-
-        Account cashFinancialAccount = new Account();
-        cashFinancialAccount.setOwner(owner);
-        cashFinancialAccount.setType(AccountType.FINANCIAL);
-        cashFinancialAccount.setName("Cash");
-        cashFinancialAccount.setDescription("");
-
-        accounts.add(cashFinancialAccount);
-        accountRepository.save(cashFinancialAccount);
-
-        Account cardFinancialAccount = new Account();
-        cardFinancialAccount.setOwner(owner);
-        cardFinancialAccount.setType(AccountType.FINANCIAL);
-        cardFinancialAccount.setName("Card");
-        cardFinancialAccount.setDescription("");
-
-        accounts.add(cardFinancialAccount);
-        accountRepository.save(cardFinancialAccount);
-
-        Account savingsAccount = new Account();
-        savingsAccount.setOwner(owner);
-        savingsAccount.setType(AccountType.SAVINGS);
-        savingsAccount.setName("For a dream");
-        savingsAccount.setDescription("");
-
-        accounts.add(savingsAccount);
-        accountRepository.save(savingsAccount);
-
-        return accounts;
-    }
-
     @Transactional
     public void update(int accountIdToUpdate, Account updatedAccount){
         updatedAccount.setId(accountIdToUpdate);

@@ -68,7 +68,6 @@ public class AuthController {
             return "auth/registration";
         }
         userService.save(user);
-        user.setUserAccounts(accountService.createAccountsSetsByDefault(user));
 
         this.user_id = user.getId();
 
