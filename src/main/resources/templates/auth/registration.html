@@ -37,6 +37,17 @@
         <div class="error-block" th:if="${#fields.hasErrors('password')}">
             <h1 th:errors="*{password}"></h1>
         </div>
+        <br th:if="${#fields.hasErrors('password')}"/>
+
+        <label for="repeat-password">Repeat password</label>
+        <br/>
+
+        <input class="field field--add-width" type="password" id="repeat-password" name="repeated_password"/>
+        <br/>
+
+        <div class="error-block" th:if="${param.passwordsDontMatch}">
+            <h1>Passwords aren't the same</h1>
+        </div>
         <br/>
 
         <input class="btn auth-button" required type="submit" value="Sign up">

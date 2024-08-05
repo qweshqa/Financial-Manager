@@ -25,17 +25,13 @@ public class AuthController {
 
     private final SettingService settingService;
 
-    private final AccountService accountService;
-
     private int user_id;
 
     @Autowired
-    public AuthController(UserValidator userValidator, UserService userService, SettingService settingService,
-                          AccountService accountService) {
+    public AuthController(UserValidator userValidator, UserService userService, SettingService settingService) {
         this.userValidator = userValidator;
         this.userService = userService;
         this.settingService = settingService;
-        this.accountService = accountService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -61,11 +57,14 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String register(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model){
+    public String register(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @RequestParam("repeated_password") String password){
         userValidator.validate(user, bindingResult);
 
         if(bindingResult.hasErrors()){
             return "auth/registration";
+        }
+        else if(!password.equals(user.getPassword())){
+            return "redirect:/registration?passwordsDontMatch";
         }
         userService.save(user);
 
