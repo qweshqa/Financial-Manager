@@ -171,7 +171,7 @@ public class OperationController {
                                   @RequestParam("y") int year,
                                   @RequestParam("m") int month,
                                   @RequestParam("d") int day,
-                                  Model model) throws IOException, InterruptedException{
+                                  Model model) {
         LocalDate date;
 
         try{
@@ -220,7 +220,7 @@ public class OperationController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = {RequestMethod.PATCH, RequestMethod.POST})
-    public String editOperation(@PathVariable("id") int id, @ModelAttribute("operation") @Valid Operation operation, BindingResult bindingResult) throws IOException, InterruptedException{
+    public String editOperation(@PathVariable("id") int id, @ModelAttribute("operation") @Valid Operation operation, BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()){
             return "/operations/edit";
@@ -238,7 +238,7 @@ public class OperationController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = {RequestMethod.DELETE, RequestMethod.POST})
-    public String deleteOperation(@PathVariable("id") int id) throws IOException, InterruptedException{
+    public String deleteOperation(@PathVariable("id") int id) {
 
         Operation operation = operationService.findById(id);
 

@@ -20,17 +20,25 @@ public class RequestSender {
         this.accessToken = accessToken;
     }
 
-    public HttpResponse<String> sendCurrencyConvertRequest(String from, String to) throws IOException, InterruptedException {
+    public HttpResponse<String> sendCurrencyConvertRequest(String from, String to) {
         String requestUrl = "https://api.freecurrencyapi.com/v1/latest";
         String requestBody = "apikey=" + accessToken +
                 "&base_currency=" + from +
                 "&currencies=" + to;
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(requestUrl + "?" + requestBody))
-                .GET().build();
+        HttpResponse<String> response = null;
+        try{
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(requestUrl + "?" + requestBody))
+                    .GET().build();
 
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        } catch (IOException | InterruptedException e){
+            return response;
+        }
+
+        return response;
     }
 }

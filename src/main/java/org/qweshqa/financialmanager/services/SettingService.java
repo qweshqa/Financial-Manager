@@ -1,5 +1,6 @@
 package org.qweshqa.financialmanager.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.qweshqa.financialmanager.models.Account;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +57,7 @@ public class SettingService {
     }
 
     @Transactional
-    public void convertAmountsToNewCurrency(User user, Setting setting, String newCurrencyUnit) throws IOException, InterruptedException{
+    public void convertAmountsToNewCurrency(User user, Setting setting, String newCurrencyUnit) {
         List<Operation> operations = user.getUserOperations();
 
         for (Operation operation : operations) {
@@ -65,7 +65,13 @@ public class SettingService {
 
             if(response.statusCode() == 200){
                 ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode node = objectMapper.readTree(response.body());
+                JsonNode node = null;
+
+                try{
+                    node = objectMapper.readTree(response.body());
+                } catch (JsonProcessingException e){
+                    e.printStackTrace();
+                }
 
                 operation.setAmount(operation.getAmount() * (float) node.get("data").get(newCurrencyUnit).asDouble());
             }
@@ -78,11 +84,16 @@ public class SettingService {
 
             if(response.statusCode() == 200){
                 ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode node = objectMapper.readTree(response.body());
+                JsonNode node = null;
+
+                try{
+                    node = objectMapper.readTree(response.body());
+                } catch (JsonProcessingException e){
+                    e.printStackTrace();
+                }
 
                 account.setBalance(account.getBalance() * (float) node.get("data").get(newCurrencyUnit).asDouble());
             }
         }
-
     }
 }
