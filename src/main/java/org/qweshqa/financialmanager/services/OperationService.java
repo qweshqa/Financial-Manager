@@ -223,10 +223,12 @@ public class OperationService {
             float currencyValue = (float) node.get("data").get(operationToUpdate.getUser().getSetting().getCurrencyUnit()).asDouble();
 
             if(updatedOperation.getCategory().getCategoryType() == CategoryType.INCOME){
-                account.setBalance(account.getBalance() - (operationToUpdate.getAmount() * currencyValue) + (updatedOperation.getAmount() * currencyValue));
+                account.setBalance(account.getBalance() - ( operationToUpdate.getAmount() * currencyValue));
+                account.setBalance(account.getBalance() + ( updatedOperation.getAmount() * currencyValue));
             }
             else{
-                account.setBalance(account.getBalance() + (operationToUpdate.getAmount() * currencyValue) - (updatedOperation.getAmount() * currencyValue));
+                account.setBalance(account.getBalance() + ( operationToUpdate.getAmount() * currencyValue));
+                account.setBalance(account.getBalance() - ( updatedOperation.getAmount() * currencyValue));
             }
         }
     }
