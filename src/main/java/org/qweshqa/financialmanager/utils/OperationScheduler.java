@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -20,7 +19,7 @@ public class OperationScheduler {
     }
 
     @Scheduled(fixedRate = 60000)
-    public void processScheduledOperations() throws IOException, InterruptedException{
+    public void processScheduledOperations() {
         List<Operation> operations = operationService.findAll()
                 .stream().filter(Operation::isScheduled).toList();
 

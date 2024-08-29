@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create budget</title>
+
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="header">
+
+    <div class="header__user-balance">
+        <h5>General balance</h5>
+        <h2 th:text="${amountFormatter.formatAmount(user.getBalance()) + ' ' + user.getSetting().getCurrencyUnit()}"></h2>
+    </div>
+
+    <div class="header__logout">
+        <form th:action="@{/logout}" method="post">
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div class="sidebar">
+    <header>Flanaer</header>
+    <ul class="navbar">
+        <li><a href="/categories">Categories</a></li>
+
+        <li><a href="/operations">Operations</a></li>
+
+        <li><a href="/accounts">Accounts</a></li>
+
+        <li><a href="/budgets">Budgets</a></li>
+
+        <li><a href="/statistics">Statistics</a></li>
+
+        <li><a href="/settings/currency">Settings</a></li>
+    </ul>
+</div>
+
+<div class="content">
+
+    <div class="form-block">
+        <h1 class="form-header">Create budget</h1>
+
+        <div class="using-param-select">
+            <a th:href="@{/budgets/create(on=${'expenses'})}">On all expenses</a>
+
+            <a th:href="@{/budgets/create(on=${'category'})}">On category</a>
+        </div>
+
+        <form class="form" th:method="POST" th:action="@{/budgets/create}" th:object="${budget}">
+
+            <div th:if="${budget_on.equals('category')}">
+                <label for="category">Category</label>
+                <br/>
+                <select class="field select-field--add-width" id="category" th:field="*{categoryId}">
+                    <option th:each="category: ${all_categories}" th:value="${category.getId()}" th:text="${category.getName()}"></option>
+                </select>
+                <br/>
+            </div>
+            <div th:if="${budget_on.equals('expenses')}">
+                <input type="hidden" value="-1" th:field="*{categoryId}">
+                <input type="hidden" th:value="${true}" th:field="*{onAllExpenses}">
+            </div>
+
+            <label for="amount">Amount</label>
+            <br/>
+            <input class="field field--add-width" type="text" id="amount" th:field="*{amount}">
+            <br/>
+
+            <label for="description">Description</label>
+            <br/>
+            <input class="field field--add-width" type="text" id="description" th:field="*{description}">
+            <br/>
+
+            <input type="hidden" th:value="${user.getId()}" th:field="*{userId}">
+
+
+            <button class="btn btn--basic">Create</button>
+
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

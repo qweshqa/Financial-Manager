@@ -18,6 +18,8 @@
 
 @import url('pages/auth/login.css');
 
+@import url('pages/budgets/list.css');
+
 @import url('pages/categories/list.css');
 @import url('pages/categories/view.css');
 

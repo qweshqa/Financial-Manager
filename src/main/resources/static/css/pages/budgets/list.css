@@ -1,0 +1,68 @@
+.budgets{
+    text-align: center;
+
+    margin: 20px;
+}
+.budgets__header{
+    margin-bottom: 10px;
+}
+.budget{
+    text-align: left;
+    font-size: 12px;
+
+    border-radius: 10px;
+
+    padding: 10px;
+    margin: 10px 0;
+
+    background-color: #17181ab0;
+}
+.budget__on{
+    font-size: 26px;
+    font-style: italic;
+
+    padding: 5px;
+}
+.budget__current-amount-line{
+    width: 100%;
+    height: 20px;
+
+    border-radius: 10px;
+
+    background-color: #a3a3a3;
+}
+.budget__current-amount-line__progress{
+    width: 0;
+    height: 20px;
+
+    border-radius: 10px;
+
+    background-color: #7cffb2;
+}
+.budget__current-amount{
+    display: flex;
+    justify-content: space-between;
+
+    padding: 5px;
+}
+.budget__description{
+    padding: 0 5px 0 5px;
+    font-size: 16px;
+    color: #838383;
+}
+.new_budget a{
+    display: flex;
+
+    font-size: 14px;
+
+    color: #838383;
+}
+.new_budget a h1{
+    position: relative;
+    left: 10px;
+
+    color: #838383;
+}
+.new_budget:hover{
+    opacity: 0.8;
+}

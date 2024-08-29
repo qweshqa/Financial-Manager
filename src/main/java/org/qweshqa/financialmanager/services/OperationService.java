@@ -1,22 +1,17 @@
 package org.qweshqa.financialmanager.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.qweshqa.financialmanager.models.Account;
+import org.qweshqa.financialmanager.models.Budget;
 import org.qweshqa.financialmanager.models.Operation;
 import org.qweshqa.financialmanager.models.User;
 import org.qweshqa.financialmanager.repositories.OperationRepository;
 import org.qweshqa.financialmanager.utils.DateWrapper;
-import org.qweshqa.financialmanager.utils.RequestSender;
 import org.qweshqa.financialmanager.utils.enums.CategoryType;
 import org.qweshqa.financialmanager.utils.exceptions.OperationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -29,12 +24,13 @@ import java.util.Optional;
 public class OperationService {
 
     private final OperationRepository operationRepository;
-    private final RequestSender requestSender;
+
+    private final BudgetService budgetService;
 
     @Autowired
-    public OperationService(OperationRepository operationRepository, RequestSender requestSender) {
+    public OperationService(OperationRepository operationRepository, BudgetService budgetService) {
         this.operationRepository = operationRepository;
-        this.requestSender = requestSender;
+        this.budgetService = budgetService;
     }
 
     public Operation findById(int id){
@@ -177,26 +173,21 @@ public class OperationService {
     @Transactional
     public void prepareForSave(Operation operation) {
         Account account = operation.getInvolvedAccount();
-        HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(account.getCurrency(), operation.getUser().getSetting().getCurrencyUnit());
 
-        if(response.statusCode() == 200){
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode node = null;
+        if(operation.getCategory().getCategoryType() == CategoryType.EXPENSE){
+            account.setBalance(account.getBalance() - operation.getAmount());
 
-            try{
-                node = objectMapper.readTree(response.body());
-            } catch (JsonProcessingException e){
-                e.printStackTrace();
+            List<Budget> userBudgets = budgetService.findAllByUserId(account.getOwner().getId());
+            for(int i = 0; i < userBudgets.size(); i++){
+                Budget budget = userBudgets.get(i);
+
+                if(budget.isOnAllExpenses() || budget.getCategoryId() == operation.getCategory().getId()){
+                    budget.setCurrentAmount(budget.getCurrentAmount() + operation.getAmount());
+                }
             }
-
-            float currencyValue = (float) node.get("data").get(operation.getUser().getSetting().getCurrencyUnit()).asDouble();
-
-            if(operation.getCategory().getCategoryType() == CategoryType.EXPENSE){
-                account.setBalance(account.getBalance() - ( operation.getAmount() * currencyValue));
-            }
-            else{
-                account.setBalance(account.getBalance() + ( operation.getAmount() * currencyValue));
-            }
+        }
+        else{
+            account.setBalance(account.getBalance() + operation.getAmount());
         }
     }
 
@@ -208,27 +199,23 @@ public class OperationService {
     @Transactional
     public void prepareForUpdate(Operation operationToUpdate, Operation updatedOperation) {
         Account account = updatedOperation.getInvolvedAccount();
-        HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(account.getCurrency(), operationToUpdate.getUser().getSetting().getCurrencyUnit());
 
-        if(response.statusCode() == 200){
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode node = null;
+        if(updatedOperation.getCategory().getCategoryType() == CategoryType.INCOME){
+            account.setBalance(account.getBalance() - operationToUpdate.getAmount());
+            account.setBalance(account.getBalance() + updatedOperation.getAmount());
+        }
+        else{
+            account.setBalance(account.getBalance() + operationToUpdate.getAmount());
+            account.setBalance(account.getBalance() - updatedOperation.getAmount());
 
-            try{
-                node = objectMapper.readTree(response.body());
-            } catch (JsonProcessingException e){
-                e.printStackTrace();
-            }
+            List<Budget> userBudgets = budgetService.findAllByUserId(account.getOwner().getId());
+            for(int i = 0; i < userBudgets.size(); i++){
+                Budget budget = userBudgets.get(i);
 
-            float currencyValue = (float) node.get("data").get(operationToUpdate.getUser().getSetting().getCurrencyUnit()).asDouble();
-
-            if(updatedOperation.getCategory().getCategoryType() == CategoryType.INCOME){
-                account.setBalance(account.getBalance() - ( operationToUpdate.getAmount() * currencyValue));
-                account.setBalance(account.getBalance() + ( updatedOperation.getAmount() * currencyValue));
-            }
-            else{
-                account.setBalance(account.getBalance() + ( operationToUpdate.getAmount() * currencyValue));
-                account.setBalance(account.getBalance() - ( updatedOperation.getAmount() * currencyValue));
+                if(budget.isOnAllExpenses() || budget.getCategoryId() == updatedOperation.getCategory().getId()){
+                    budget.setCurrentAmount(budget.getCurrentAmount() - operationToUpdate.getAmount());
+                    budget.setCurrentAmount(budget.getCurrentAmount() + updatedOperation.getAmount());
+                }
             }
         }
     }
@@ -243,25 +230,21 @@ public class OperationService {
     @Transactional
     public void prepareForDelete(Operation operation) {
         Account account = operation.getInvolvedAccount();
-        HttpResponse<String> response = requestSender.sendCurrencyConvertRequest(account.getCurrency(), operation.getUser().getSetting().getCurrencyUnit());
 
-        if(response.statusCode() == 200){
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode node = null;
+        if(operation.getCategory().getCategoryType() == CategoryType.INCOME){
+            account.setBalance(account.getBalance() - operation.getAmount());
+        }
 
-            try{
-                node = objectMapper.readTree(response.body());
-            } catch (JsonProcessingException e){
-                e.printStackTrace();
-            }
+        else{
+            account.setBalance(account.getBalance() + operation.getAmount());
 
-            float currencyValue = (float) node.get("data").get(operation.getUser().getSetting().getCurrencyUnit()).asDouble();
+            List<Budget> userBudgets = budgetService.findAllByUserId(account.getOwner().getId());
+            for(int i = 0; i < userBudgets.size(); i++){
+                Budget budget = userBudgets.get(i);
 
-            if(operation.getCategory().getCategoryType() == CategoryType.INCOME){
-                account.setBalance(account.getBalance() - ( operation.getAmount() * currencyValue));
-            }
-            else{
-                account.setBalance(account.getBalance() + ( operation.getAmount() * currencyValue));
+                if(budget.isOnAllExpenses() || budget.getCategoryId() == operation.getCategory().getId()){
+                    budget.setCurrentAmount(budget.getCurrentAmount() - operation.getAmount());
+                }
             }
         }
     }
