@@ -7,16 +7,14 @@ import org.qweshqa.financialmanager.services.BudgetService;
 import org.qweshqa.financialmanager.services.CategoryService;
 import org.qweshqa.financialmanager.services.UserService;
 import org.qweshqa.financialmanager.utils.AmountFormatter;
+import org.qweshqa.financialmanager.utils.exceptions.BudgetNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -96,6 +94,56 @@ public class BudgetController {
         }
 
         budgetService.save(budget);
+
+        return "redirect:/budgets";
+    }
+
+    @RequestMapping(value = "/edit/{uuid}", method = RequestMethod.GET)
+    public String editBudget(@PathVariable("uuid") String uuid, @RequestParam(value = "on", defaultValue = "expenses") String budgetOn, Model model){
+        Budget budget;
+
+        try{
+            budget = budgetService.findByUuid(uuid);
+        } catch (BudgetNotFoundException e){
+            model.addAttribute("errorTitle", "404 Nothing found");
+            model.addAttribute("errorMessage", "Budget with this uuid doesn't exist");
+            return "error";
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName());
+
+        model.addAttribute("user", user);
+        model.addAttribute("amountFormatter", amountFormatter);
+        model.addAttribute("currency", user.getSetting().getCurrencyUnit());
+
+        model.addAttribute("budget", budget);
+
+        if(budgetOn.equals("category")){
+            model.addAttribute("all_categories", categoryService.findAllByUser(user));
+        }
+
+        model.addAttribute("on", budgetOn);
+
+        return "budgets/edit";
+    }
+
+    @RequestMapping(value = "/edit/{uuid}", method = {RequestMethod.PATCH, RequestMethod.POST})
+    public String editBudget(@PathVariable("uuid") String uuid, @RequestParam("on") String budgetOn, @ModelAttribute("budget") @Valid Budget updatedBudget, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "budgets/edit";
+        }
+
+        Budget budget = budgetService.findByUuid(uuid);
+
+        if(budgetOn.equals("category")){
+            updatedBudget.setOnAllExpenses(false);
+        }
+        else{
+            updatedBudget.setOnAllExpenses(true);
+        }
+
+        budgetService.update(budget, updatedBudget);
 
         return "redirect:/budgets";
     }

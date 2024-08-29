@@ -18,6 +18,8 @@
     background-color: #17181ab0;
 }
 .budget__on{
+    display: inline;
+
     font-size: 26px;
     font-style: italic;
 
